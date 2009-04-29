@@ -18,7 +18,8 @@ from opencv.highgui import *
 cascade = None
 storage = cvCreateMemStorage(0)
 
-cascade_dir = "/home/brian/Documents/opencv-svn/data/haarcascades/"
+cascade_dir = "/usr/local/share/opencv/haarcascades/"
+
 #cascade_name = "haarcascade_frontalface_alt.xml"
 #cascade_name = "haarcascade_eye.xml"
 cascade_name =  "haarcascade_frontalface_default.xml"
