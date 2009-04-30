@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# TODO Third option for edge detect - use opencv
+
 import pygame
 from VideoCapturePlayer import *
 
@@ -10,23 +12,12 @@ from pygame import transform
 
 useOpenCvCam = True
 edgeDetection = True
-useScipy = False         # Otherwise use pygames inbuilt transform tools.
+useScipy = False         # Otherwise use pygames inbuilt transform tools for the edge detection.
 scipySpline = useScipy and True     # or laplacian filter...
 
-""" performance of get and process image: shows that it makes very little
-opencv      edgeDetection       scipy       spline      result
-true        false               N/A         N/A          66ms
-false       false               n/A         n/a          66ms 
-true        true                false       N/A          209ms  // opencv capture, pygame edge detection
-false       true                false       n/a          211ms
-true        true                true        false        553ms
-false       true                true        false        551ms
-true        true                true        true         790ms
-false       true                true        true         795ms
-
-"""
 
 if useOpenCvCam:
+    # We want to raise an exception as soon as possible if no opencv found when required
     import opencv
     
 def edgeDetectionProcess(surf):

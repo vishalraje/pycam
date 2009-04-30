@@ -3,7 +3,9 @@
 This program is demonstration for face and object detection using haar-like features.
 The program finds faces in a camera image or video stream and displays a red box around them.
 
-TODO: make into an object
+TODO: make into a class
+TODO: use optparser
+
 
 Original C implementation by:  ?
 Python implementation by: Roman Stanchak
@@ -18,8 +20,7 @@ from opencv.highgui import *
 cascade = None
 storage = cvCreateMemStorage(0)
 
-cascade_dir = "/usr/local/share/opencv/haarcascades/"
-
+cascade_dir = "/usr/share/opencv/haarcascades/"
 #cascade_name = "haarcascade_frontalface_alt.xml"
 #cascade_name = "haarcascade_eye.xml"
 cascade_name =  "haarcascade_frontalface_default.xml"

@@ -1,4 +1,5 @@
-# This is from the svn of opencv - the one included in ubuntu is too old.
+# Note: This file is from the svn of opencv - the one included in ubuntu is too old.
+# Can change pygameFaceDetect.py file to use the opencv version if you have a svn build
 """Adaptors to interchange data with numpy and/or PIL
 
 This module provides explicit conversion of OpenCV images/matrices to and from

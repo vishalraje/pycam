@@ -1,7 +1,15 @@
 #!/usr/bin/python
+"""
+Uses pygame to take images from a live webcam, converts the numpy array to opencv format and uses 
+the opencv library to detect faces, draws rectangles around each face with pygame, renders the finished image
+with pygame.
+
+"""
+
 from VideoCapturePlayer import *
 import faceDetect
 import opencv
+
 #from opencv 
 import adaptors
 import pygame
@@ -9,7 +17,7 @@ from pygame.locals import *
 from pygame import surfarray
 
 # While opencv has the image for detecting faces it can paint a rect 
-# around the faces...
+# around the faces... Note pygame is still rendering the result
 drawWithOpenCv = True
 
 def drawFacesOnSurface(surf,faces):
