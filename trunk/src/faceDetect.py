@@ -49,8 +49,8 @@ cascade = cvLoadHaarClassifierCascade( cascade_name, cvSize(1,1) )
 # min_size=<minimum possible face size
 min_size = cvSize(20,20)
 image_scale = 1.3
-haar_scale = 1.2
-min_neighbors = 2
+haar_scale = 1.1
+min_neighbors = 3
 haar_flags = 0
 
 
@@ -87,6 +87,7 @@ def detect_and_draw( img ):
             pt2 = cvPoint( int((r.x+r.width)*image_scale), int((r.y+r.height)*image_scale) )
             cvRectangle( img, pt1, pt2, CV_RGB(255,0,0), 3, 8, 0 )
     cvShowImage( "result", img ) # TODO is this reqd if pygame renders?
+    return img
 
 def main():
     if len(sys.argv) > 1:

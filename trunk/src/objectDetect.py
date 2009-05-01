@@ -38,23 +38,32 @@ cascades = {
             }
 
 cascadeExtension = ".xml"
+# TODO: generate these from evironment vars... eg for windows...
 cascadePaths = (
                 '/usr/local/share/opencv/haarcascades/',
                 '/usr/share/opencv/haarcascades/',
                 ) 
 
 def findCascade(cascade):
-    """Given the most flimsy of names like "face" or "eye" give a valid file path of a Haar cascade.
     """
-    if not cascade.endswith(cascadeExtension):
-        cascade += cascadeExtension
-    if path.exists(cascade):
-        return cascade
+    Given the most flimsy of names like "face" or "eye" give a valid file path of a Haar cascade.
+        
+        >>> findCascade('eye')
+        '/usr/local/share/opencv/haarcascades/haarcascade_eye.xml'
+        
+    """
     if cascades.has_key(cascade):
         for cp in cascadePaths:
             testFile = cp + cascades[cascade] + cascadeExtension
             if path.exists(testFile):
                 return testFile
+    
+    if not cascade.endswith(cascadeExtension):
+        cascade += cascadeExtension
+    
+    if path.exists(cascade):
+        return cascade
+    
     for objectString in cascades:
         if cascade in objectString:
             return findCascade(cascades[objectString])
@@ -67,6 +76,7 @@ class ObjectDetector(object):
     def __init__(self,cascadeName="face"):
         self.storage = cvCreateMemStorage(0)
         self.cascade_name = findCascade(cascadeName)
+        print cascadeName
         
         # the OpenCV API says this function is obsolete, but we can't
         # cast the output of cvLoad to a HaarClassifierCascade, so use this anyways
@@ -121,31 +131,17 @@ class ObjectDetector(object):
         """
         draw a box with opencv on the image around the detected faces.
         """
-        objects = detectObject(img)
+        objects = self.detectObject(img)
         if objects:
             for r in objects:
-                print "Oject found at (x,y) = (%i,%i)" % (r.x*image_scale,r.y*image_scale)
-                pt1 = cvPoint( int(r.x*image_scale), int(r.y*image_scale))
-                pt2 = cvPoint( int((r.x+r.width)*image_scale), int((r.y+r.height)*image_scale) )
+                print "Oject found at (x,y) = (%i,%i)" % (r.x*self.image_scale,r.y*self.image_scale)
+                pt1 = cvPoint( int(r.x*self.image_scale), int(r.y*self.image_scale))
+                pt2 = cvPoint( int((r.x+r.width)*self.image_scale), int((r.y+r.height)*self.image_scale) )
                 cvRectangle( img, pt1, pt2, CV_RGB(255,0,0), 3, 8, 0 )
-        cvShowImage( "result", img ) # TODO is this reqd if pygame renders?
+        cvShowImage( "result", img ) # This isreqd if opencv is rendering... TODO: what if pygame renders?
 
 def main():
-    if len(sys.argv) > 1:
-
-        if sys.argv[1].startswith("--cascade="):
-            cascade_name = sys.argv[1][ len("--cascade="): ]
-            if len(sys.argv) > 2:
-                input_name = sys.argv[2]
-
-        elif sys.argv[1] == "--help" or sys.argv[1] == "-h":
-            print "Usage: facedetect --cascade=\"<cascade_path>\" [filename|camera_index]\n" 
-            sys.exit(-1)
-
-        else:
-            input_name = sys.argv[1]
-
-
+   
     input_name = '0'
 
     if input_name.isdigit():

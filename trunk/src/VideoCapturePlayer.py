@@ -2,6 +2,7 @@ import pygame
 import pygame.camera
 from pygame.locals import *
 import numpy
+import exceptions
 
 class VideoCapturePlayer(object):
     """A VideoCapturePlayer object is an encapsulation of 
@@ -63,19 +64,23 @@ class VideoCapturePlayer(object):
         self.snapshot = self.camera.get_image(self.snapshot).convert()
         #self.snapshot = self.camera.get_image(self.snapshot) # if not use this line
    
-        # todo would this work? - Would be far better style!
-        #self.snapshot = self.camera.get_image()
-   
         if self.processFunction:
             self.processClock.tick()
             if self.processClock.get_fps() < 2:
                 print "Running your resource intensive process at %f fps" % self.processClock.get_fps()
                 # flush the camera buffer to get a new image... 
                 # we have the time since the process is so damn slow...
-                for i in range(3):
+                for i in range(5):
                     self.waitForCam()
                     self.snapshot = self.camera.get_image(self.snapshot).convert()
-            self.snapshot = self.processFunction(self.snapshot)
+                
+                #try:
+                res = self.processFunction(self.snapshot)
+                if isinstance(res,pygame.Surface): self.snapshot = res
+                    
+                #except Exception, e:
+                #    print e
+                #    raise exceptions.RuntimeError("error while running the process function")
         
         # blit it to the display surface.  simple!
         self.display.blit(self.snapshot, (0,0))
@@ -112,7 +117,6 @@ class VideoCapturePlayer(object):
         print avg
         
 if __name__ == "__main__":
-    
-    vcp = VideoCapturePlayer(processFunction=None,forceOpenCv=True)
+    vcp = VideoCapturePlayer(processFunction=None,forceOpenCv=False)
     vcp.main()
     pygame.quit()
