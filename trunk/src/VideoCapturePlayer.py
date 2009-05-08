@@ -4,6 +4,8 @@ from pygame.locals import *
 import numpy
 import exceptions
 
+verbose = False
+
 class VideoCapturePlayer(object):
     """A VideoCapturePlayer object is an encapsulation of 
     the display of a video stream. A process can be 
@@ -20,7 +22,7 @@ class VideoCapturePlayer(object):
     """
     size = width,height = 640, 480
    
-    def __init__(self, processFunction = None, forceOpenCv = False, **argd):
+    def __init__(self, processFunction = None, forceOpenCv = False, displaySurface=None, show=True, **argd):
         self.__dict__.update(**argd)
         super(VideoCapturePlayer, self).__init__(**argd)
         
@@ -33,9 +35,16 @@ class VideoCapturePlayer(object):
         
         self.processFunction = processFunction
         
-        # create a display surface. standard pygame stuff
-        self.display = pygame.display.set_mode( self.size, 0 )
-
+        self.show = show
+        
+        self.display = displaySurface
+        if self.display is None:
+            if show is True:
+                # create a display surface. standard pygame stuff
+                self.display = pygame.display.set_mode( self.size, 0 )
+            else:
+                pygame.display.set_mode((0,0),0)
+                self.display = pygame.surface.Surface(self.size)
         # gets a list of available cameras.
         self.clist = pygame.camera.list_cameras()
         if not self.clist:
@@ -66,25 +75,26 @@ class VideoCapturePlayer(object):
    
         if self.processFunction:
             self.processClock.tick()
-            if self.processClock.get_fps() < 2:
+            #if self.processClock.get_fps() < 2:
+            if verbose:
                 print "Running your resource intensive process at %f fps" % self.processClock.get_fps()
-                # flush the camera buffer to get a new image... 
-                # we have the time since the process is so damn slow...
-                for i in range(5):
-                    self.waitForCam()
-                    self.snapshot = self.camera.get_image(self.snapshot).convert()
-                
-                #try:
-                res = self.processFunction(self.snapshot)
-                if isinstance(res,pygame.Surface): self.snapshot = res
+            # flush the camera buffer to get a new image... 
+            # we have the time since the process is so damn slow...
+            for i in range(5):
+                self.waitForCam()
+                self.snapshot = self.camera.get_image(self.snapshot).convert()
+            
+            #try:
+            res = self.processFunction(self.snapshot)
+            if isinstance(res,pygame.Surface): self.snapshot = res
                     
                 #except Exception, e:
                 #    print e
                 #    raise exceptions.RuntimeError("error while running the process function")
-        
-        # blit it to the display surface.  simple!
-        self.display.blit(self.snapshot, (0,0))
-        pygame.display.flip()
+        if self.show is not False:
+            # blit it to the display surface.  simple!
+            self.display.blit(self.snapshot, (0,0))
+            pygame.display.flip()
    
     def waitForCam(self):
        # Wait until camera is ready to take image
@@ -92,7 +102,8 @@ class VideoCapturePlayer(object):
             pass
     
     def main(self):
-        print "Video Capture & Display Started... press Escape to quit"
+        if verbose:
+            print "Video Capture & Display Started... press Escape to quit"
         going = True
         fpslist = []
         while going:
@@ -116,6 +127,7 @@ class VideoCapturePlayer(object):
         avg = numpy.average(fpslist)
         print avg
         
+
 if __name__ == "__main__":
     vcp = VideoCapturePlayer(processFunction=None,forceOpenCv=False)
     vcp.main()

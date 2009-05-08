@@ -11,7 +11,6 @@ Usage:
     45
     >>> object.x
     200
-    
 
 
 TODO: make into a class
@@ -26,6 +25,8 @@ import exceptions
 import opencv
 from opencv.cv import *
 from opencv.highgui import *
+
+verbose = False
 
 cascades = {
             'eye': "haarcascade_eye",
@@ -83,7 +84,8 @@ class ObjectDetector(object):
         # the size parameter is ignored
         self.cascade = cvLoadHaarClassifierCascade( self.cascade_name, cvSize(1,1) )
         if( self.cascade ):
-            print "cascade loaded..."
+            if verbose:
+                print "cascade loaded..."
         else:
             raise exceptions.IOError("Could not locate cascade file.")
         self.cvWin = cvNamedWindow( "result", 1 ) # is this needed? return value?
@@ -95,11 +97,11 @@ class ObjectDetector(object):
         # images the settings are: 
         # scale_factor=1.2, min_neighbors=2, flags=CV_HAAR_DO_CANNY_PRUNING, 
         # min_size=<minimum possible object size
-        self.min_size = cvSize(15,15)
+        self.min_size = cvSize(20,20)
         self.image_scale = 1.3        # TODO what does this one do?
-        self.haar_scale = 1.2
-        self.min_neighbors = 2
-        self.haar_flags = 0
+        self.haar_scale = 1.3
+        self.min_neighbors = 4
+        self.haar_flags = CV_HAAR_DO_CANNY_PRUNING
 
 
 
@@ -122,7 +124,8 @@ class ObjectDetector(object):
             objects = cvHaarDetectObjects( small_img, self.cascade, self.storage,
                                          self.haar_scale, self.min_neighbors, self.haar_flags, self.min_size )
             t = cvGetTickCount() - t
-            print "%i objects found, detection time = %gms" % (objects.total,t/(cvGetTickFrequency()*1000.))
+            if verbose:
+                print "%i objects found, detection time = %gms" % (objects.total,t/(cvGetTickFrequency()*1000.))
             return objects
         else:
             print "no cascade"
@@ -134,7 +137,8 @@ class ObjectDetector(object):
         objects = self.detectObject(img)
         if objects:
             for r in objects:
-                print "Oject found at (x,y) = (%i,%i)" % (r.x*self.image_scale,r.y*self.image_scale)
+                if verbose:
+                    print "Oject found at (x,y) = (%i,%i)" % (r.x*self.image_scale,r.y*self.image_scale)
                 pt1 = cvPoint( int(r.x*self.image_scale), int(r.y*self.image_scale))
                 pt2 = cvPoint( int((r.x+r.width)*self.image_scale), int((r.y+r.height)*self.image_scale) )
                 cvRectangle( img, pt1, pt2, CV_RGB(255,0,0), 3, 8, 0 )
