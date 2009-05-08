@@ -15,6 +15,7 @@ import pygame
 from pygame.locals import *
 from pygame import surfarray
 
+
 # While opencv has the image for detecting faces it can paint a rect 
 # around the faces... Note pygame is still rendering the result
 drawWithOpenCv = False
