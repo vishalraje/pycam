@@ -16,7 +16,6 @@ Usage:
 TODO: make into a class
 TODO: make it standalone runnable as well...
 TODO: use optparser
-
 """
 
 from os import path
