@@ -10,9 +10,9 @@ import numpy
 from scipy import signal
 from pygame import transform
 
-useOpenCvCam = True
+useOpenCvCam = False
 edgeDetection = True
-useScipy = False         # Otherwise use pygames inbuilt transform tools for the edge detection.
+useScipy = True         # Otherwise use pygames inbuilt transform tools for the edge detection.
 scipySpline = useScipy and True     # or laplacian filter...
 
 
