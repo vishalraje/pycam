@@ -7,7 +7,8 @@ import exceptions
 verbose = False
 
 class VideoCapturePlayer(object):
-    """A VideoCapturePlayer object is an encapsulation of 
+    """
+    A VideoCapturePlayer object is an encapsulation of 
     the display of a video stream. A process can be 
     given (as a function) that is done on every frame
     
