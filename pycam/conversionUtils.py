@@ -1,5 +1,6 @@
 from opencv import adaptors
 from pygame import surfarray
+
 def surf2CV(surf):
     """Given a surface, convert to an opencv format (cvMat)
     """
