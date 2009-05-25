@@ -38,7 +38,7 @@ class Camera():
         return True
     
 def list_cameras():
-    return [1]  # FIXME
+    return [0]  # FIXME
     cams = []
     for i in range(6):
         try:
