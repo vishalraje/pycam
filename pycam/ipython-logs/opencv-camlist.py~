@@ -5,12 +5,15 @@
 #log# It is safe to make manual edits below here.
 #log#-----------------------------------------------------------------------
 import opencv
+import opencv
 import opencv.cv as cv
 import opencv.highgui as hg
 import conversionUtils
-# on the olpc this takes ages!
+#?hg.cvCreateCameraCapture
+cap = hg.cvCreateCameraCapture('/dev/video2')
 cap = hg.cvCreateCameraCapture(0)
-
+cap = hg.cvCreateCameraCapture(1)
+cap = hg.cvCreateCameraCapture(2)
 cap
 #?cap
 q = hg.cvQueryFrame(cap)
