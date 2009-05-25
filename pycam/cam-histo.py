@@ -63,6 +63,7 @@ def on_mouse( event, x, y, flags, param = [] ):
         print("Mouse up at (%i,%i)" % (x,y))
         mouse_select_object = False
         if( mouse_selection.width > 0 and mouse_selection.height > 0 ):
+            global track_object
             track_object = -1
         return
     if mouse_select_object:
@@ -126,9 +127,10 @@ if __name__ == '__main__':
 
     global mouse_origin
     global mouse_selection
-    global mouse_select_object 
+    global mouse_select_object
     mouse_select_object = False
     global track_object
+    track_object = 0
     highgui.cvSetMouseCallback( "Camera", on_mouse, 0 )
     
     
@@ -247,12 +249,52 @@ if __name__ == '__main__':
                             cv.cvPoint (i * bin_w, histimg.height),
                             cv.cvPoint ((i + 1) * bin_w, histimg.height - val),
                             color, -1, 8, 0)
+        # Make the sweet negative selection box
         if mouse_select_object and mouse_selection.width > 0 and mouse_selection.height > 0:
-            print mouse_selection.x,mouse_selection.y,mouse_selection.width,mouse_selection.height
             a = cv.cvGetSubRect(frame,mouse_selection)
             cv.cvXorS(a,cv.cvScalarAll(255), a)   # Take the negative of the image..
+            del a
 
+        # Carry out the histogram tracking...
+        if track_object != 0:
+          """  cv.cvInRangeS( hsv, cvScalar(0,smin.value,min(vmin.value,vmax.value),0),
+                        cvScalar(180,256,max(vmin.value,vmax.value),0), mask )
+            cvSplit(hsv, hue)
 
+            if track_object < 0:
+                cvSetImageROI( hue, selection )
+                cvSetImageROI( mask, selection )
+                cvCalcHist( [hue], hist, 0, mask );
+                min_val, max_val = cvGetMinMaxHistValue(hist)
+                hbins = hist.bins[0]
+                cvConvertScale( hbins, hbins, 255. / max_val if max_val else 0., 0 )
+                cvResetImageROI( hue )
+                cvResetImageROI( mask )
+                track_window = selection
+                track_object = 1
+
+                cvZero( histimg )
+                bin_w = histimg.width / hdims
+                for i in xrange(hdims):
+                    val = cvRound( cvGetReal1D(hbins,i)*histimg.height/255 )
+                    color = hsv2rgb(i*180./hdims)
+                    cvRectangle( histimg, cvPoint(i*bin_w,histimg.height),
+                                 cvPoint((i+1)*bin_w,histimg.height - val),
+                                 color, -1, 8, 0 )
+
+            cvCalcBackProject( [hue], backproject, hist )
+            cvAnd(backproject, mask, backproject)
+            niter, track_comp, track_box = cvCamShift( backproject, track_window,
+                        cvTermCriteria( CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 10, 1 ))
+            track_window = track_comp.rect
+            
+            if backproject_mode:
+                cvCvtColor( backproject, image, CV_GRAY2BGR )
+            if not image.origin:
+                track_box.angle = -track_box.angle
+            cvEllipseBox( image, track_box, CV_RGB(255,0,0), 3, CV_AA, 0 )
+            """
+        
         # we can now display the images
         highgui.cvShowImage ('Camera', frame)
         highgui.cvShowImage ('Histogram', histimg)
