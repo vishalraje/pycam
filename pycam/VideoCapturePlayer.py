@@ -1,5 +1,4 @@
 import pygame
-import pygame.camera
 from pygame.locals import *
 import numpy
 import exceptions
@@ -19,7 +18,9 @@ class VideoCapturePlayer(object):
     If the function takes significant computation time (>1second)
     The VideoCapturePlayer takes 3 images between each, this ensures 
     an updated picture is used in the next computation.
-    
+     
+    If a new version of pygame is installed - this class uses the pygame.camera module, otherwise 
+    it uses opencv.
     """
     size = width,height = 640, 480
    
@@ -27,12 +28,11 @@ class VideoCapturePlayer(object):
         self.__dict__.update(**argd)
         super(VideoCapturePlayer, self).__init__(**argd)
         
-        pygame.init()
-        pygame.camera.init()
-        
         if forceOpenCv:
-            import os
-            os.environ["PYGAME_CAMERA"] = "opencv"
+            import camera
+        else:
+            import pygame.camera as camera
+        camera.init()
         
         self.processFunction = processFunction
         
@@ -46,9 +46,7 @@ class VideoCapturePlayer(object):
             else:
                 pygame.display.set_mode((0,0),0)
                 self.display = pygame.surface.Surface(self.size)
-        # Opencv camera stuff
-        import camera
-        self.camera = camera.Camera(imageType="pygame")
+        
         
         # gets a list of available cameras.
         self.clist = camera.list_cameras()
@@ -56,10 +54,12 @@ class VideoCapturePlayer(object):
             raise ValueError("Sorry, no cameras detected.")
         
         print("Opening device %s, with video size (%s,%s)" % (self.clist[0],self.size[0],self.size[1]))
+        
         # creates the camera of the specified size and in RGB colorspace
-        #self.camera = pygame.camera.Camera(self.clist[0], self.size, "RGB")
-
-
+        if forceOpenCv:
+            self.camera = camera.Camera(self.clist[0], self.size, "RGB", imageType="pygame")
+        else:
+            self.camera = camera.Camera(self.clist[0], self.size, "RGB")
         # starts the camera
         self.camera.start()
         
