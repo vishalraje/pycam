@@ -79,32 +79,6 @@ def on_mouse( event, x, y, flags, param = [] ):
         mouse_selection.height -= mouse_selection.y
     
 
-
-    """if( !image )
-        return;
-
-    if( image->origin )
-        y = image->height - y;
-
-    if( select_object )
-    {
-        selection.x = min(x,origin.x);
-        selection.y = min(y,origin.y);
-        selection.width = selection.x + CV_IABS(x - origin.x);
-        selection.height = selection.y + CV_IABS(y - origin.y);
-
-        selection.x = max( selection.x, 0 );
-        selection.y = max( selection.y, 0 );
-        selection.width = min( selection.width, image->width );
-        selection.height = min( selection.height, image->height );
-        selection.width -= selection.x;
-        selection.height -= selection.y;
-    }
-
-    
-
-    """
-
 #############################################################################
 # so, here is the main part of the program
 
@@ -131,6 +105,13 @@ if __name__ == '__main__':
     mouse_select_object = False
     global track_object
     track_object = 0
+    
+    global track_comp
+    global track_box
+    
+    track_comp = cv.CvConnectedComp()
+    track_box = cv.CvBox2D()
+            
     highgui.cvSetMouseCallback( "Camera", on_mouse, 0 )
     
     
@@ -184,10 +165,11 @@ if __name__ == '__main__':
     hue = cv.cvCreateImage (frame_size, 8, 1)
     mask = cv.cvCreateImage (frame_size, 8, 1)
     hsv = cv.cvCreateImage (frame_size, 8, 3 )
+    backproject = cv.cvCreateImage( frame_size, 8, 1 )
 
     # create the histogram
     hist = cv.cvCreateHist ([hdims], cv.CV_HIST_ARRAY, hranges, 1)
-
+    obj_hist = cv.cvCreateHist ([hdims], cv.CV_HIST_ARRAY, hranges, 1)
     while 1:
         # do forever
 
@@ -256,44 +238,35 @@ if __name__ == '__main__':
             del a
 
         # Carry out the histogram tracking...
-        if track_object != 0:
-          """  cv.cvInRangeS( hsv, cvScalar(0,smin.value,min(vmin.value,vmax.value),0),
-                        cvScalar(180,256,max(vmin.value,vmax.value),0), mask )
-            cvSplit(hsv, hue)
-
+        if track_object != 0:            
+            cv.cvInRangeS( hsv, cv.cvScalar(0,smin ,min(vmin, vmax), 0), cv.cvScalar(180, 256, max(vmin,vmax), 0), mask )
+            cv.cvSplit(hsv, hue, None, None, None)
+            
             if track_object < 0:
-                cvSetImageROI( hue, selection )
-                cvSetImageROI( mask, selection )
-                cvCalcHist( [hue], hist, 0, mask );
-                min_val, max_val = cvGetMinMaxHistValue(hist)
-                hbins = hist.bins[0]
-                cvConvertScale( hbins, hbins, 255. / max_val if max_val else 0., 0 )
-                cvResetImageROI( hue )
-                cvResetImageROI( mask )
-                track_window = selection
+                # Calculate the histogram for the mouse_selection box
+                hue_roi_rect = cv.cvGetSubRect( hue, mouse_selection )
+                mask_roi_rect = cv.cvGetSubRect( mask, mouse_selection )
+                cv.cvCalcHist (hue_roi_rect, obj_hist, 0, mask_roi_rect)
+                min_val, max_val, min_idx, max_idx = cv.cvGetMinMaxHistValue (obj_hist)
+                
+                track_window = mouse_selection
                 track_object = 1
+                
+            cv.cvCalcBackProject( hue, backproject, obj_hist )
+            cv.cvAnd(backproject, mask, backproject)
 
-                cvZero( histimg )
-                bin_w = histimg.width / hdims
-                for i in xrange(hdims):
-                    val = cvRound( cvGetReal1D(hbins,i)*histimg.height/255 )
-                    color = hsv2rgb(i*180./hdims)
-                    cvRectangle( histimg, cvPoint(i*bin_w,histimg.height),
-                                 cvPoint((i+1)*bin_w,histimg.height - val),
-                                 color, -1, 8, 0 )
-
-            cvCalcBackProject( [hue], backproject, hist )
-            cvAnd(backproject, mask, backproject)
-            niter, track_comp, track_box = cvCamShift( backproject, track_window,
-                        cvTermCriteria( CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 10, 1 ))
+            #niter, track_comp, track_box = 
+            cv.cvCamShift( backproject, track_window,
+                    cv.cvTermCriteria( cv.CV_TERMCRIT_EPS | cv.CV_TERMCRIT_ITER, 10, 1 ), track_comp, track_box)
             track_window = track_comp.rect
             
-            if backproject_mode:
-                cvCvtColor( backproject, image, CV_GRAY2BGR )
-            if not image.origin:
+            #if backproject_mode:
+            #    cvCvtColor( backproject, image, CV_GRAY2BGR )
+            
+            if not frame.origin:
                 track_box.angle = -track_box.angle
-            cvEllipseBox( image, track_box, CV_RGB(255,0,0), 3, CV_AA, 0 )
-            """
+            cv.cvEllipseBox( frame, track_box, cv.CV_RGB(255,0,0), 3, cv.CV_AA, 0 )
+
         
         # we can now display the images
         highgui.cvShowImage ('Camera', frame)
