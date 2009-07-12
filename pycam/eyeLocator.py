@@ -24,6 +24,6 @@ def locateFaceAndEyeProcess(surf):
 
 if __name__ == "__main__":
     eyeDetector = ObjectDetector("eye")
-    vcp = VideoCapturePlayer(processFunction=locateFaceAndEyeProcess)
+    vcp = VideoCapturePlayer(processFunction=locateFaceAndEyeProcess,forceOpenCv=True)
     vcp.main()
     pygame.quit()
