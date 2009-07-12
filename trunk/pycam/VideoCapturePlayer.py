@@ -77,7 +77,7 @@ class VideoCapturePlayer(object):
         then display it.       
         """
         # capture an image
-        self.snapshot = self.camera.get_image(self.snapshot).convert()
+        self.snapshot = self.camera.get_image(self.snapshot)#.convert()
         #self.snapshot = self.camera.get_image(self.snapshot) # if not use this line
    
         if self.processFunction:
@@ -89,7 +89,7 @@ class VideoCapturePlayer(object):
             # we have the time since the process is so damn slow...
             for i in range(5):
                 self.waitForCam()
-                self.snapshot = self.camera.get_image(self.snapshot).convert()
+                self.snapshot = self.camera.get_image(self.snapshot)#.convert()
             
             #try:
             res = self.processFunction(self.snapshot)
@@ -136,6 +136,6 @@ class VideoCapturePlayer(object):
         
 
 if __name__ == "__main__":
-    vcp = VideoCapturePlayer(processFunction=None,forceOpenCv=False)
+    vcp = VideoCapturePlayer(processFunction=None,forceOpenCv=True)
     vcp.main()
     pygame.quit()
