@@ -3,6 +3,14 @@ This Hello World application was created to test swig wrapping
 for python. It does a few simple things like input and output 
 from the command line, and some simple string/math opperations.
 
+It can be compiled with g++:
+g++ "Hello World.cpp" -o helloWorld
+and run with:
+./helloWorld
+
+Or you can wrap it with swig by calling:
+python setup.py build
+
 Brian Thorne 2008
 */
 
