@@ -3,7 +3,7 @@ from pygame.locals import *
 import numpy
 import exceptions
 
-verbose = False
+verbose = True
 
 class VideoCapturePlayer(object):
     """
