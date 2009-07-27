@@ -3,7 +3,7 @@ from pygame.locals import *
 import numpy
 import exceptions
 
-verbose = False
+verbose = True
 
 class VideoCapturePlayer(object):
     """
@@ -35,6 +35,7 @@ class VideoCapturePlayer(object):
         camera.init()
         
         self.processFunction = processFunction
+        self.processRuns = 0
         
         self.show = show
         
@@ -82,18 +83,22 @@ class VideoCapturePlayer(object):
    
         if self.processFunction:
             self.processClock.tick()
-            #if self.processClock.get_fps() < 2:
-            if verbose:
-                print "Running your resource intensive process at %f fps" % self.processClock.get_fps()
-            # flush the camera buffer to get a new image... 
-            # we have the time since the process is so damn slow...
-            for i in range(5):
+            if self.processRuns > 5 and self.processClock.get_fps() < 2:
+                # The function is really slow so take a few frames.
+                if verbose:
+                    print "Running your resource intensive process at %f fps" % self.processClock.get_fps()
+                # flush the camera buffer to get a new image... 
+                # we have the time since the process is slow...
+                for i in range(5):
+                    self.waitForCam()
+                    self.snapshot = self.camera.get_image(self.snapshot)#.convert()
+            else:
                 self.waitForCam()
-                self.snapshot = self.camera.get_image(self.snapshot)#.convert()
-            
+                self.snapshot = self.camera.get_image(self.snapshot)
             #try:
             res = self.processFunction(self.snapshot)
             if isinstance(res,pygame.Surface): self.snapshot = res
+            self.processRuns += 1
                     
                 #except Exception, e:
                 #    print e
@@ -128,12 +133,14 @@ class VideoCapturePlayer(object):
                 self.clock.tick()
                 if self.clock.get_fps():
                     fpslist.append(self.clock.get_fps())
-                    print "fps: ",fpslist[-1]
+                    if verbose:
+                        print "fps: ",fpslist[-1]
         print "Video Capture &  Display complete."
         print "Average Frames Per Second " 
         avg = numpy.average(fpslist)
         print avg
-        
+        if self.processFunction:
+            print "Process ran at %f fps" % self.processClock.get_fps()
 
 if __name__ == "__main__":
     vcp = VideoCapturePlayer(processFunction=None,forceOpenCv=True)
