@@ -3,21 +3,27 @@ from pygame.locals import *
 import numpy
 import exceptions
 
-verbose = False
+import logging
+verbose = True
+# Todo replace with proper pythonic logging
+
+logging.debug("Pygame Version: %s" % pygame.__version__)
 
 class VideoCapturePlayer(object):
     """
     A VideoCapturePlayer object is an encapsulation of 
-    the display of a video stream. A process can be 
-    given (as a function) that is done on every frame
+    the display of a video stream. 
+    
+    A process can be given (as a function) that is run
+    on every frame between capture and display.
     
     For example a filter function that takes and returns a 
     surface can be given. This player will take the webcam image, 
     pass it through the filter then display the result.
     
     If the function takes significant computation time (>1second)
-    The VideoCapturePlayer takes 3 images between each, this ensures 
-    an updated picture is used in the next computation.
+    The VideoCapturePlayer takes 3 images between each, this flushes
+    the buffer, ensuring an updated picture is used in the next computation.
      
     If a new version of pygame is installed - this class uses the pygame.camera module, otherwise 
     it uses opencv.
@@ -27,12 +33,6 @@ class VideoCapturePlayer(object):
     def __init__(self, processFunction = None, forceOpenCv = False, displaySurface=None, show=True, **argd):
         self.__dict__.update(**argd)
         super(VideoCapturePlayer, self).__init__(**argd)
-        
-        if forceOpenCv:
-            import camera
-        else:
-            import pygame.camera as camera
-        camera.init()
         
         self.processFunction = processFunction
         self.processRuns = 0
@@ -49,6 +49,11 @@ class VideoCapturePlayer(object):
                 #pygame.display.set_mode((0,0),0)
                 self.display = pygame.surface.Surface(self.size)
         
+        if forceOpenCv:
+            import camera
+        else:
+            import pygame.camera as camera
+        camera.init()
         
         # gets a list of available cameras.
         self.clist = camera.list_cameras()
@@ -58,12 +63,21 @@ class VideoCapturePlayer(object):
         print("Opening device %s, with video size (%s,%s)" % (self.clist[0],self.size[0],self.size[1]))
         
         # creates the camera of the specified size and in RGB colorspace
+        if not forceOpenCv:
+            try:
+                self.camera = camera.Camera(self.clist[0], self.size, "RGB")
+                # starts the camera
+                self.camera.start()
+            except:
+                # Ignore that pygame camera failed - we will try opencv
+                forceOpenCv = True
+                del camera
+                import camera
+                self.clist = camera.list_cameras()
         if forceOpenCv:
             self.camera = camera.Camera(self.clist[0], self.size, "RGB", imageType="pygame")
-        else:
-            self.camera = camera.Camera(self.clist[0], self.size, "RGB")
-        # starts the camera
-        self.camera.start()
+            self.camera.start()
+            
         
         self.waitForCam()
 
