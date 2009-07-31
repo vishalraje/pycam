@@ -2,19 +2,19 @@
 all : tracker_example
 
 SOURCES		=	tracker_example.c
+
 OBJS 		= 	remove_corneal_reflection.o \
-				ransac_ellipse.o \
-				svd.o \
-				timing.o \
-				cvEyeTracker.o \
-			  	tracker_example.o 
+				    ransac_ellipse.o \
+				    svd.o \
+				    timing.o \
+				    cvEyeTracker.o \
+			  	  tracker_example.o
+			  	  
 HEADDERS 	=	remove_corneal_reflection.h \
-				ransac_ellipse.h \
-				svd.h \
-				timing.h \
-				cvEyeTracker.h
-
-
+				    ransac_ellipse.h \
+				    svd.h \
+				    timing.h \
+				    cvEyeTracker.h
 
 
 CXX			=	g++
@@ -29,13 +29,9 @@ LIBS		=	-lm -ldc1394_control -lraw1394 -lcv -lcvaux -lhighgui
 INCLUDES	=	-I/usr/include/opencv 
 
 
-
-
 tracker_example: tracker_example $(OBJS)
 	$(CXX) $(CXXFLAGS) $(DEFINES) $(LIBDIRS) $(LIBS) \
 		-pg -o tracker_example $(OBJS) 
-
-
 
 tracker_example.o: tracker_example.c $(HEADDERS)
 	$(CXX) $(CXXFLAGS) $(DEFINES) $(INCLUDES) -c tracker_example.c 
@@ -54,8 +50,6 @@ svd.o: svd.c $(HEADDERS)
 
 timing.o: timing.c $(HEADDERS)
 	$(CXX) $(CXXFLAGS)  $(DEFINES)  -c timing.c
-
-
 
 
 clean:
