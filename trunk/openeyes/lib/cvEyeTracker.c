@@ -410,11 +410,13 @@ int cal_calibration_homography(void)
   }
 
   for (i = 0; i < N; i++) {
-      map_matrix[i/3][i%3] = ppv[i][min_d_index];  //the column of v that corresponds to the smallest singular value,
-                                                //which is the solution of the equations
+      map_matrix[i/3][i%3] = ppv[i][min_d_index];   // the column of v that corresponds to the smallest singular value,
+                                                    // which is the solution of the equations
   }
 
-  double T[3][3] = {0}, T1[3][3] = {0};
+  double T[3][3] = {{0}};
+  double T1[3][3] = {{0}};
+  
   INFO("\nT1: \n");
   for (j = 0; j < 3; j++) {
     for (i = 0; i < 3; i++) {
