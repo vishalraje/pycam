@@ -15,9 +15,6 @@ HEADDERS 	=	remove_corneal_reflection.h \
 				cvEyeTracker.h \
 				boxy.h
 
-
-
-
 CXX			=	g++
 CXXFLAGS	=	-g -Wall
 
@@ -30,13 +27,9 @@ LIBS		=	-lm -ldc1394_control -lraw1394 -lcv -lcvaux -lhighgui
 INCLUDES	=	-I/usr/include/opencv -I/usr/include/dc1394
 
 
-
-
 boxy: boxy.c $(OBJS)
 	$(CXX) $(CXXFLAGS) $(DEFINES) $(LIBDIRS) $(LIBS) \
 		-pg -o boxy $(OBJS) 
-
-
 
 boxy.o: boxy.c $(HEADDERS)
 	$(CXX) $(CXXFLAGS) $(DEFINES) $(INCLUDES) -c boxy.c 
@@ -55,8 +48,6 @@ svd.o: svd.c $(HEADDERS)
 
 timing.o: timing.c $(HEADDERS)
 	$(CXX) $(CXXFLAGS)  $(DEFINES)  -c timing.c
-
-
 
 
 clean:
