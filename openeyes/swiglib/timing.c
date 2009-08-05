@@ -28,27 +28,35 @@
  */
 
 
-#ifndef _REMOVE_CORNEAL_REFLECTION_H
-#define _REMOVE_CORNEAL_REFLECTION_H
+#include "timing.h"
 
-#include "cv.h"
+//**** Timing Procedures ******//
 
-#define UINT8 unsigned char
-#ifndef PI
-#define PI 3.141592653589
-#endif
+struct timeval start_time;
+
+void Start_Timer() 
+{
+  gettimeofday( &start_time, NULL );
+}
+
+#define timediff(t1,t2) ((double)(t2.tv_sec - t1.tv_sec) + ((double)(t2.tv_usec - t1.tv_usec)/(double)1000000))
+
+double Time_Elapsed() 
+{
+  struct timeval tv;
+  gettimeofday( &tv, NULL );
+  return timediff(start_time,tv);
+}
 
 
-void remove_corneal_reflection(IplImage *image, IplImage *threshold_image, int sx, int sy, int window_size, 
-     int biggest_crr, int &crx, int &cry, int& crr, int *valid_point_calc);
+void Sleep(double delay) 
+{
+  struct timeval time1,time2;
 
-void locate_corneal_reflection(IplImage *image, IplImage *threshold_image, int sx, int sy, int window_size, 
-     int biggest_crar, int &crx, int &cry, int &crar, int *valid_point_calc);
+  gettimeofday( &time1, NULL );
+  do {
+   gettimeofday( &time2, NULL );
+  } while (timediff(time1,time2)<delay);
 
-int fit_circle_radius_to_corneal_reflection(IplImage *image, int cx, int cy, int crar, int biggest_crar, 
-    double *sin_array, double *cos_array, int array_len, int *valid_point_calc);
+}
 
-void interpolate_corneal_reflection(IplImage *image, int cx, int cy, int crr, double *sin_array, 
-    double *cos_array, int array_len, int *valid_point_calc);
-
-#endif

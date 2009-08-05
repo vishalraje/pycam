@@ -28,7 +28,12 @@
  */
 
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <cstring>
+#include <math.h>
 #include "ransac_ellipse.h"
+#include "svd.h"
 
 stuDPoint start_point = {-1, -1};
 int inliers_num;
@@ -65,6 +70,10 @@ void starburst_pupil_contour_detection(UINT8* pupil_image, int width, int height
   while (edge_thresh > 5 && loop_count <= 10) {
     edge_intensity_diff.clear();
     destroy_edge_point();
+    
+    unsigned int a = edge_point.size();
+    unsigned int b = minimum_cadidate_features;
+    
     while (edge_point.size() < minimum_cadidate_features && edge_thresh > 5) {
       edge_intensity_diff.clear();
       destroy_edge_point();
