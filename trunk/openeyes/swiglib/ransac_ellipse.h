@@ -36,12 +36,6 @@
 #endif
 
 #include <vector>
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <cstring>
-
-#include "svd.h"
 
 using namespace std;
 

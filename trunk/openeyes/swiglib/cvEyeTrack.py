@@ -140,5 +140,4 @@ def eyetracker_get_FRAMEH(*args):
   """eyetracker_get_FRAMEH() -> int"""
   return _cvEyeTrack.eyetracker_get_FRAMEH(*args)
 
-cvar = _cvEyeTrack.cvar
 

@@ -30,14 +30,14 @@
 #ifndef CVEYETRACKER
 #define CVEYETRACKER
 
-//#ifdef _CH_
-//  #pragma package <opencv>
-//#endif
+#ifdef _CH_
+#pragma package <opencv>
+#endif
 
-//#ifndef _EiC
+#ifndef _EiC
 #include "cv.h"
 #include "highgui.h"
-//#endif
+#endif
 
 
 
@@ -74,9 +74,11 @@
 //		int eyetracker_get_FRAMEH(void);
 //
 
-extern int inliers_num;
+
 
 void Draw_Cross(IplImage *image, int centerx, int centery, int x_cross_length, int y_cross_length, CvScalar color);
+
+
 
 
 // Register a calibration point (9 are needed), which is a
@@ -90,8 +92,6 @@ void eyetracker_activate_calibration();
 
 void eyetracker_set_pupil_search_startpoint(int x, int y);
 
-
-
 IplImage eyetracker_save_eye_and_scene_images(void);
 
 IplImage eyetracker_save_image(void);
@@ -104,19 +104,8 @@ IplImage eyetracker_save_ellipse(void);
 // Returns true/false
 int eyetracker_calc_gaze(void);
 
-// ??: This is unnecessary: 
-//
-//  if (start_point.x == -1 && start_point.y == -1)
-//      Grab_Camera_Frames();
-//  }
-// ??: This is unnecessary: (unless we need to store one set of frames 
-//     before we can search/print properly)
-//
-//    if (frame_number%1==0) Update_Gui_Windows(); 
+
 CvPoint eyetracker_get_gaze_target(void);
-
-
-
 
 // Code removed from the main function, when this was rewritten
 // as a lib system. 

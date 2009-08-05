@@ -28,27 +28,16 @@
  */
 
 
-#ifndef _REMOVE_CORNEAL_REFLECTION_H
-#define _REMOVE_CORNEAL_REFLECTION_H
+#ifndef _TIMING_H
+#define _TIMING_H
 
-#include "cv.h"
+#include <time.h>
+#include <sys/time.h>
 
-#define UINT8 unsigned char
-#ifndef PI
-#define PI 3.141592653589
-#endif
+#define timediff(t1,t2) ((double)(t2.tv_sec - t1.tv_sec) + ((double)(t2.tv_usec - t1.tv_usec)/(double)1000000))
 
-
-void remove_corneal_reflection(IplImage *image, IplImage *threshold_image, int sx, int sy, int window_size, 
-     int biggest_crr, int &crx, int &cry, int& crr, int *valid_point_calc);
-
-void locate_corneal_reflection(IplImage *image, IplImage *threshold_image, int sx, int sy, int window_size, 
-     int biggest_crar, int &crx, int &cry, int &crar, int *valid_point_calc);
-
-int fit_circle_radius_to_corneal_reflection(IplImage *image, int cx, int cy, int crar, int biggest_crar, 
-    double *sin_array, double *cos_array, int array_len, int *valid_point_calc);
-
-void interpolate_corneal_reflection(IplImage *image, int cx, int cy, int crr, double *sin_array, 
-    double *cos_array, int array_len, int *valid_point_calc);
+void Start_Timer();
+double Time_Elapsed();
+void Sleep(double delay);
 
 #endif
