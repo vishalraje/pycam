@@ -1,0 +1,20 @@
+import os
+env = Environment()
+
+# Search for the correct location of opencv and libdc1394
+env.ParseConfig( 'pkg-config --cflags --libs --libs-only-L opencv' )
+env.ParseConfig( 'pkg-config --cflags --libs libdc1394' )
+
+
+# This is to ensure that the library is found at runtime
+env.Append( RPATH = env.Literal( os.path.join('\\$$ORIGIN',os.pardir,'lib')))
+
+# This builds and links our program
+env.Program(
+    target='tracker_example_scons',
+    source=['tracker_example.cpp'],
+    LIBS = ['CvEyeTrack',
+            # Seems odd that this next line is needed?
+            'm', 'dc1394_control', 'raw1394', 'cv', 'cvaux', 'highgui',
+           ],
+    )
