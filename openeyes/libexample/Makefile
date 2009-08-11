@@ -55,4 +55,4 @@ clean:
 	rm -f *.o
 	rm -f *~
 	rm -f tracker_example
-	
+	rm -f Eye_eye_*
