@@ -1,0 +1,1 @@
+This visual studio application is to test that opencv is working and set up correctly.
