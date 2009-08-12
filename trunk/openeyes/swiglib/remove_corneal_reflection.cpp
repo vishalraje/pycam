@@ -28,16 +28,13 @@
  */
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
 #include "remove_corneal_reflection.h"
 
 
-void remove_corneal_reflection(IplImage *image, IplImage *threshold_image, int sx, int sy, int window_size, int 
+void remove_corneal_reflection(IplImage *image, IplImage *threshold_image, int sx, int sy, int window_size, int
 biggest_crr, int& crx, int& cry, int& crr, int *valid_point_calc)
 {
-  int crar = -1;	//corneal reflection approximate radius
+  int crar = -1;        //corneal reflection approximate radius
   crx = cry = crar = -1;
 
   float angle_delta = 1*PI/180;
@@ -62,12 +59,12 @@ biggest_crr, int& crx, int& cry, int& crr, int *valid_point_calc)
   free(cos_array);
 }
 
-void locate_corneal_reflection(IplImage *image, IplImage *threshold_image, int sx, int sy, int window_size, int 
+void locate_corneal_reflection(IplImage *image, IplImage *threshold_image, int sx, int sy, int window_size, int
 biggest_crar, int &crx, int &cry, int &crar, int *valid_point_calc)
 {
   if (window_size%2 == 0) {
     printf("Error! window_size should be odd!\n");
-	*valid_point_calc = 0;
+        *valid_point_calc = 0;
   }
 
   int r = (window_size-1)/2;
@@ -104,7 +101,7 @@ biggest_crar, int &crx, int &cry, int &crar, int *valid_point_calc)
     }
     if (sum_area-max_area > 0) {
       scores[threshold-1] = max_area / (sum_area-max_area);
-      //printf("max_area: %d, max_contour: %d, sum_area: %d; scores[%d]: %lf\n", 
+      //printf("max_area: %d, max_contour: %d, sum_area: %d; scores[%d]: %lf\n",
       //        max_area, max_contour->total, sum_area, threshold-1, scores[threshold-1]);      
     }
     else
@@ -132,7 +129,7 @@ biggest_crar, int &crx, int &cry, int &crar, int *valid_point_calc)
     printf("%6.2lf", scores[i]);
   }
   printf("\n");*/
-    
+   
   free(scores);
   cvReleaseMemStorage(&storage);
   cvResetImageROI(image);
@@ -140,7 +137,7 @@ biggest_crar, int &crx, int &cry, int &crar, int *valid_point_calc)
 
   if (crar > biggest_crar) {
     printf("(corneal) size wrong! crx:%d, cry:%d, crar:%d (should be less than %d)\n", crx, cry, crar, biggest_crar);
-	*valid_point_calc = 0;
+        *valid_point_calc = 0;
     cry = crx = -1;
     crar = -1;
   }
@@ -150,7 +147,7 @@ biggest_crar, int &crx, int &cry, int &crar, int *valid_point_calc)
     crx += startx;
     cry += starty;
   }
-        
+       
 }
 
 int fit_circle_radius_to_corneal_reflection(IplImage *image, int crx, int cry, int crar, int biggest_crar, double *sin_array, double *cos_array, int array_len, int *valid_point_calc)
@@ -159,7 +156,7 @@ int fit_circle_radius_to_corneal_reflection(IplImage *image, int crx, int cry, i
     return -1;
 
   double *ratio = (double*)malloc((biggest_crar-crar+1)*sizeof(double));
-  int i, r, r_delta=1; 
+  int i, r, r_delta=1;
   int x, y, x2, y2;
   double sum, sum2;
   for (r = crar; r <= biggest_crar; r++) {
@@ -182,16 +179,16 @@ int fit_circle_radius_to_corneal_reflection(IplImage *image, int crx, int cry, i
         free(ratio);
         return r-1;
       }
-    } 
+    }
   }
-  
+ 
   free(ratio);
   printf("ATTN! fit_circle_radius_to_corneal_reflection() do not change the radius\n");
   *valid_point_calc = 0;
   return crar;
 }
 
-void interpolate_corneal_reflection(IplImage *image, int crx, int cry, int crr, double *sin_array, double *cos_array, 
+void interpolate_corneal_reflection(IplImage *image, int crx, int cry, int crr, double *sin_array, double *cos_array,
 int array_len, int *valid_point_calc)
 {
   if (crx == -1 || cry == -1 || crr == -1)
@@ -199,9 +196,10 @@ int array_len, int *valid_point_calc)
 
   if (crx-crr < 0 || crx+crr >= image->width || cry-crr < 0 || cry+crr >= image->height) {
     printf("Error! Corneal reflection is too near the image border\n");
-	*valid_point_calc = 0;
+        *valid_point_calc = 0;
     return;
   }
+
 
   int i, r, r2,  x, y;
   UINT8 *perimeter_pixel = (UINT8*)malloc(array_len*sizeof(int));
@@ -227,5 +225,6 @@ int array_len, int *valid_point_calc)
   }
   free(perimeter_pixel);
 }
+
 
 

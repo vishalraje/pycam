@@ -31,6 +31,10 @@
 #ifndef _REMOVE_CORNEAL_REFLECTION_H
 #define _REMOVE_CORNEAL_REFLECTION_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
 #include "cv.h"
 
 #define UINT8 unsigned char
@@ -52,3 +56,4 @@ void interpolate_corneal_reflection(IplImage *image, int cx, int cy, int crr, do
     double *cos_array, int array_len, int *valid_point_calc);
 
 #endif
+

@@ -1,8 +1,8 @@
-rm *.so
-rm -rfd build
-rm *_wrap.c*
-rm *~
-rm *_wrap.cpp
-rm *.pyc
-rm *.o
+rm -f *.so
+rm -f -rfd build
+rm -f *_wrap.c*
+rm -f *~
+rm -f *_wrap.cpp
+rm -f *.pyc
+rm -f *.o
 

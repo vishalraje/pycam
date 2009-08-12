@@ -49,9 +49,9 @@
 //		void eyetracker_activate_calibration();
 //		void eyetracker_set_pupil_search_startpoint(int x, int y);
 //
-//		IplImage eyetracker_save_eye_and_scene_images(void);
-//		IplImage eyetracker_save_image(void);
-//		IplImage eyetracker_save_ellipse(void);
+//		void eyetracker_save_eye_and_scene_images(void);
+//		void eyetracker_save_image(void);
+//		void eyetracker_save_ellipse(void);
 //
 //		int eyetracker_calc_gaze(void);
 //		CvPoint eyetracker_get_gaze_target(void);
@@ -79,8 +79,6 @@
 void Draw_Cross(IplImage *image, int centerx, int centery, int x_cross_length, int y_cross_length, CvScalar color);
 
 
-
-
 // Register a calibration point (9 are needed), which is a
 // point on the scene that the user is looking at, at this 
 // instant.
@@ -92,11 +90,12 @@ void eyetracker_activate_calibration();
 
 void eyetracker_set_pupil_search_startpoint(int x, int y);
 
-IplImage eyetracker_save_eye_and_scene_images(void);
 
-IplImage eyetracker_save_image(void);
+void eyetracker_save_eye_and_scene_images(void);
 
-IplImage eyetracker_save_ellipse(void);
+void eyetracker_save_image(void);
+
+void eyetracker_save_ellipse(void);
 
 
 
