@@ -53,7 +53,7 @@ vector <int> edge_intensity_diff;
 // pupil_edge_threshold: best guess for the pupil contour threshold 
 // N: number of rays 
 // minimum_candidate_features: must return this many features or error
-void starburst_pupil_contour_detection(UINT8* pupil_image, int width, int height, int edge_thresh, int N, int minimum_cadidate_features, int *valid_point_calc)
+void starburst_pupil_contour_detection(UINT8* pupil_image, int width, int height, int edge_thresh, int N, unsigned int minimum_cadidate_features, int *valid_point_calc)
 {
   int dis = 7;
   double angle_spread = 100*PI/180;
@@ -71,10 +71,9 @@ void starburst_pupil_contour_detection(UINT8* pupil_image, int width, int height
     edge_intensity_diff.clear();
     destroy_edge_point();
     
-    unsigned int a = edge_point.size();
-    unsigned int b = minimum_cadidate_features;
-    
-    while (edge_point.size() < minimum_cadidate_features && edge_thresh > 5) {
+    unsigned int edge_point_size = edge_point.size();
+        
+    while (edge_point_size < minimum_cadidate_features && edge_thresh > 5) {
       edge_intensity_diff.clear();
       destroy_edge_point();
       locate_edge_points(pupil_image, width, height, cx, cy, dis, angle_step, 0, 2*PI, edge_thresh);
@@ -156,7 +155,7 @@ void locate_edge_points(UINT8* image, int width, int height, double cx, double c
 stuDPoint get_edge_mean()
 {
   stuDPoint *edge;
-  int i;
+  unsigned int i;
   double sumx=0, sumy=0;
   stuDPoint edge_mean;
   for (i = 0; i < edge_point.size(); i++) {
