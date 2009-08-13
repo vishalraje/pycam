@@ -28,8 +28,10 @@ class VideoCapturePlayer(object):
     If a new version of pygame is installed - this class uses the pygame.camera module, otherwise 
     it uses opencv.
     """
-    size = width,height = 640, 480
-   
+    #size = width,height = 640, 480
+    # For some reason this is the only resolution windows is accepting with my same camera...
+    size = width, height = 160, 120
+	
     def __init__(self, processFunction = None, forceOpenCv = False, displaySurface=None, show=True, **argd):
         self.__dict__.update(**argd)
         super(VideoCapturePlayer, self).__init__(**argd)
@@ -124,9 +126,11 @@ class VideoCapturePlayer(object):
             pygame.display.flip()
    
     def waitForCam(self):
-       # Wait until camera is ready to take image
-        while not self.camera.query_image():
-            pass
+        # Wait until camera is ready to take image
+	    # The windows pygame camera class doesn't seem to have this...
+        if hasattr(self.camera, "query_image"):
+            while not self.camera.query_image():
+                pass
     
     def main(self):
         if verbose:
@@ -143,7 +147,7 @@ class VideoCapturePlayer(object):
             # see if the camera has an image ready.  note that while this works
             # on most cameras, some will never return true.
             # note seems to work on my camera at hitlab - Brian
-            if self.camera.query_image():
+            if not hasattr(self.camera, "query_image") or self.camera.query_image():
                 self.get_and_flip()
                 self.clock.tick()
                 if self.clock.get_fps():
@@ -158,6 +162,6 @@ class VideoCapturePlayer(object):
             print "Process ran at %f fps" % self.processClock.get_fps()
 
 if __name__ == "__main__":
-    vcp = VideoCapturePlayer(processFunction=None,forceOpenCv=True)
+    vcp = VideoCapturePlayer(processFunction=None,forceOpenCv=False)
     vcp.main()
     pygame.quit()
