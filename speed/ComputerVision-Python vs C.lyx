@@ -1,0 +1,491 @@
+#LyX 1.6.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass paper
+\use_default_options true
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Computer Vision in Python
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Comparing Python and C for Computer Vision?
+\end_layout
+
+\begin_layout Plain Layout
+Developing Computer Vision Programs?
+\end_layout
+
+\begin_layout Plain Layout
+Cprofiling gprof
+\end_layout
+
+\begin_layout Plain Layout
+http://developer.apple.com/tools/sharkoptimize.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Author
+Brian Thorne, Raphael Grasset, Richard Green
+\end_layout
+
+\begin_layout Abstract
+An introduction to and argument for computer vision in Python, from the
+ general concept to its implementation with some current open-source libraries
+ (opencv, numpy/scipy, pygame).
+ 
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+The purpose of this paper is an introduction to computer vision (CV) and
+ image processing using the multipurpose programming language Python.
+ At present the bulk of computer vision applications are programmed in C
+ or C++.
+ There a significant benefits to developer time if Python is a viable alternativ
+e.
+ I aim to show what is possible with current libraries, demonstrate their
+ usability, explore their limitations, compare performance and cover elements
+ of best coding practice.
+\end_layout
+
+\begin_layout Standard
+Firstly, I will briefly present the basics of computer vision; such as video
+ grabbing, image processing and computer vision algorithms.
+ I will illustrate with the Python bindings to the OpenCV library and show
+ different examples such as displaying a video image, some filtering algorithms
+ (dilation, gaussian blur), and how to implement facial recognition.
+ I will go on to describe how these and other computer vision related tasks
+ can be achieved with other Python tools such as scipy and pygame.
+ I will show how these three libraries can be used in conjunction to perform
+ video capturing, image processing and user interfacing.
+ 
+\end_layout
+
+\begin_layout Standard
+Finally, I will introduce my basic Python computer vision framework
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Calling it a computer vision framework is really overkill - its just these
+ few examples of computer vision with some shared code.
+\end_layout
+
+\end_inset
+
+, which is aimed at inexperienced users, and demonstrate it running on a
+ windows machine, a mac osx machine, a linux machine and on the XO laptop,
+ the inexpensive low-powered sub-notebook distributed as part of the One
+ Laptop Per Child (OLPC) initiative.
+\end_layout
+
+\begin_layout Section
+Background
+\end_layout
+
+\begin_layout Subsection
+Python
+\end_layout
+
+\begin_layout Standard
+Python is a general purpose programming language.
+ It is highley regarded due in no small part for its fast development time.
+\end_layout
+
+\begin_layout Subsection
+Opencv
+\end_layout
+
+\begin_layout Standard
+Intel's open source computer vision libraries...
+ History, capabilities.
+ C library.
+ Python bindings.
+ IPP.
+\end_layout
+
+\begin_layout Subsection
+Numpy
+\end_layout
+
+\begin_layout Standard
+Numpy gives N-dimensional arrays to python.
+ Oh and is fast.
+\end_layout
+
+\begin_layout Subsection
+Scipy
+\end_layout
+
+\begin_layout Standard
+Scipy is a set of libraries and tools for scientific and mathematical work
+ build ontop of the numpy data type.
+\end_layout
+
+\begin_layout Subsection
+Pygame
+\end_layout
+
+\begin_layout Standard
+Pygame is a set of Python modules designed for writing fully featured games
+ and multimedia programs in the python language.
+ Recently a camera module was added along with some basic image processing
+ functions.
+\end_layout
+
+\begin_layout Section
+Method
+\end_layout
+
+\begin_layout Subsection
+Image Aquisition
+\end_layout
+
+\begin_layout Standard
+The first thing to think about in computer vision programs is where the
+ image data comes from.
+ In this report only live data from a webcam is considered.
+ There main difference in using a live system is the time available for
+ processing is very constrained to allow a framarate sufficient for live
+ viewing.
+ Processing on static images or recorded video data doesn't have this constraint.
+\end_layout
+
+\begin_layout Subsubsection
+Aquiring and displaying an image in C with OpenCV
+\end_layout
+
+\begin_layout Standard
+This following snippet of code opens up a new camera capture device, and
+ takes one frame, it creates a new window and displays it
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+For brevity these code snippets do not carry out error checking.
+ It is assumed that a camera was found succesfully and that a frame was
+ available and returned.
+ The C++ code VideoCapturePlayer does carry out this error checking.
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#include "cv.h"
+\end_layout
+
+\begin_layout Plain Layout
+
+#include "highgui.h"
+\end_layout
+
+\begin_layout Plain Layout
+
+int main(){
+\end_layout
+
+\begin_layout Plain Layout
+
+  IplImage  *frame;
+\end_layout
+
+\begin_layout Plain Layout
+
+  CvCapture *capture;
+\end_layout
+
+\begin_layout Plain Layout
+
+  capture = cvCreateCameraCapture(0);
+\end_layout
+
+\begin_layout Plain Layout
+
+  cvNamedWindow( "Snapshot", 0 );
+\end_layout
+
+\begin_layout Plain Layout
+
+  frame = cvQueryFrame( capture );
+\end_layout
+
+\begin_layout Plain Layout
+
+  cvShowImage( "Snapshot", frame );
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Using this as a template it is straight forward to wrap the capture and
+ display in a loop, this forms the basis of the C++ class VideoCapturePlayer
+ included in the appendix.
+ This C++ class is used in the other examples to keep the code duplication
+ and variation to a minimum.
+\end_layout
+
+\begin_layout Subsubsection
+Acquiring and displaying an image in Python with OpenCV
+\end_layout
+
+\begin_layout Standard
+The same basic task of accessing a webcam and displaying one image in python.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+from opencv import highgui as hg
+\end_layout
+
+\begin_layout Plain Layout
+
+capture = hg.cvCreateCameraCapture(0)
+\end_layout
+
+\begin_layout Plain Layout
+
+hg.cvNamedWindow("Snapshot")
+\end_layout
+
+\begin_layout Plain Layout
+
+frame = hg.cvQueryFrame(capture)
+\end_layout
+
+\begin_layout Plain Layout
+
+hg.cvShowImage("Snapshot", frame)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Results
+\end_layout
+
+\begin_layout Standard
+Using OpenCV from Python examples
+\end_layout
+
+\begin_layout Standard
+Image Capture - display and saving of an image from a webcam.
+\end_layout
+
+\begin_layout Standard
+Video Acquisition - 
+\end_layout
+
+\begin_layout Standard
+Static Image Processing - for example a median filter, blur, sharpening,
+ face detection etc.
+\end_layout
+
+\begin_layout Standard
+Using other Python tools in conjunction
+\end_layout
+
+\begin_layout Standard
+NumPy - very fast raw data crunching for Python.
+ Much easier to use than matrices in C, obviously not going to be as quick.
+ 
+\end_layout
+
+\begin_layout Standard
+SciPy - toolbox of scientific tools for Python based on using NumPy data
+ arrays.
+ Has filters and convolution etc much like matlab.
+ (Should be much simpler higher level code, without any significant performance
+ loss.)
+\end_layout
+
+\begin_layout Standard
+Pygame - a game making module for Python, aimed at new programmers.
+ I will demonstrate how simple it is to get started in Computer Vision.
+ http://pygame.org
+\end_layout
+
+\begin_layout Standard
+Pycam - my framework tying OpenCV to Pygame and NumPy.
+ http://pycam.googlecode.com
+\end_layout
+
+\begin_layout Standard
+Performance Considerations, Comparisons and Optimisations
+\end_layout
+
+\begin_layout Standard
+Detailed statistical tests and results to see how much slower low level
+ filters implemented in Python using NumPy performs doing image processing
+ tests.
+ Will choose and implement at a low level a number of filters and compare
+ the implementation and performance in C and Python with just OpenCV and
+ with SciPy/NumPy.
+\end_layout
+
+\begin_layout Standard
+The performance of Pygame will be briefly touched on, although it is not
+ a serious research platform so it isn't as crucial that it is fast.
+\end_layout
+
+\begin_layout Section
+Conclusions
+\end_layout
+
+\begin_layout Standard
+Python will be slow, but for many applications probably fast enough not
+ to notice.
+ The benefits for quick prototyping of new algorithms and using those prototypes
+ in the final product is a serious draw card...
+\end_layout
+
+\begin_layout Standard
+Limitations (other than speed), hardware, Firewire, support, libraries and
+ functionality?
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-1"
+
+\end_inset
+
+Python, By Guido Van Rossum.
+ Retrieved from 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://python.org"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-1"
+
+\end_inset
+
+NumPy, By Enthought.
+ Retrieved from 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://numpy.scipy.org"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-1"
+
+\end_inset
+
+SciPy, By Enthought.
+ Retrieved from 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://www.scipy.org"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-2"
+
+\end_inset
+
+The OpenCV Library.
+ Retrieved from 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://opencv.willowgarage.com/wiki/"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,16 @@
+This folder is for making a few performance comparisons in C and Python.
+
+
+
+OSX isn't behaving quite right for me, I needed to add some of this to my ~.bash_profile
+
+OPENCV_ROOT=/usr/local/
+export OPENCV_ROOT
+
+locate opencv.pc
+
+PKG_CONFIG_PATH=/usr/lib/pkgconfig/
+export PKG_CONFIG_PATH
+
+g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o diff diff.c
+
