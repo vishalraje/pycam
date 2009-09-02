@@ -11,6 +11,8 @@ g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCa
 
 #include "videoCapturePlayer.h"
 
+#include <stdio.h>  // todo remove printf
+
 #define WINDOW_TITLE "Video Aquisition" 
 
 using namespace std;
@@ -31,6 +33,7 @@ VideoCapturePlayer::~VideoCapturePlayer()
 
 void VideoCapturePlayer::init()
 {
+    int64 t_begin = cvGetTickCount(),t_end;
     /* Try load a webcam */
     capture = cvCreateCameraCapture(device);
     
@@ -48,6 +51,8 @@ void VideoCapturePlayer::init()
         /* open the display window */
         cvNamedWindow( WINDOW_TITLE, CV_WINDOW_AUTOSIZE );
     }
+    t_end = cvGetTickCount();
+    printf( "t_begin=%.2f, t_end=%.2f\nDifference=%.2f\n", (double)t_begin,(double)t_end, (double)t_end-t_begin);
 
     
 }
@@ -104,7 +109,7 @@ CvMat * doNothing(CvMat *x)
 
 int main( int argc, char** argv )
 {
-        
+    cout << "starting VideoCapturePlayer demo" << endl;
     VideoCapturePlayer vcp = VideoCapturePlayer(&doNothing);
     //VideoCapturePlayer vcp = VideoCapturePlayer();
     vcp.init();
