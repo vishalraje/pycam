@@ -10,16 +10,6 @@ Pass a video file as first arg, or it will try webcam.
 
 #define WINDOW_TITLE "Video Aquisition" 
 
-class VideoCapturePlayer
-{
-public:
-    /* A video capture player takes a pointer to a function 
-     that may do something with an image, returning the possibly altered image 
-     */
-    VideoCapturePlayer(); /* processFunction(cvMat *), */ 
-    
-}
-
 int main( int argc, char** argv )
 {
     IplImage  *frame;
@@ -50,7 +40,7 @@ int main( int argc, char** argv )
     /* open the display window */
     cvNamedWindow( WINDOW_TITLE, CV_WINDOW_AUTOSIZE );
     
-    while( key != 'q' ) {
+    while( (char) key != 'q' ) {
         
         /* get a frame */
         frame = cvQueryFrame( capture );
@@ -62,7 +52,7 @@ int main( int argc, char** argv )
         cvShowImage( WINDOW_TITLE, frame );
 
         /* quit if user press 'q' */
-        key = cvWaitKey( 1000 / fps );
+        key = cvWaitKey( 5 );
     }
    
     /* free memory */

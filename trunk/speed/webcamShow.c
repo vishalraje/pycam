@@ -18,4 +18,8 @@ int main()
     cvNamedWindow( "Snapshot", 0 );
     frame = cvQueryFrame( capture );
     cvShowImage( "Snapshot", frame );
+    
+    cvReleaseCapture( &capture );
+    cvWaitKey(10000);   // Wait for 10 seconds, or till key is pressed
+    cvDestroyWindow( "Snapshot" );
 }

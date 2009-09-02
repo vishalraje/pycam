@@ -41,6 +41,8 @@ private:
     CvMat *mat_frame;
     
     int key;
-    int fps;
+    int num_frames;
+    int64 t_start,t_end;
+    float fps;
         
 };
