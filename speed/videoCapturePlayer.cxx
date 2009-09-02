@@ -19,7 +19,7 @@ using namespace std;
 
 
 VideoCapturePlayer::VideoCapturePlayer( CvMat *( *processFunction)(CvMat *), int device, bool show ) 
-:show(show), device(device)
+:show(show), device(device), num_frames(0)
 {
     processFunc = processFunction;
 }
@@ -33,7 +33,8 @@ VideoCapturePlayer::~VideoCapturePlayer()
 
 void VideoCapturePlayer::init()
 {
-    int64 t_begin = cvGetTickCount(),t_end;
+    int64 t_begin = cvGetTickCount(),t_setup;
+    
     /* Try load a webcam */
     capture = cvCreateCameraCapture(device);
     
@@ -43,7 +44,7 @@ void VideoCapturePlayer::init()
     }
     
     /* get fps, needed to set the delay */
-    fps = ( int )cvGetCaptureProperty( capture, CV_CAP_PROP_FPS );
+    //fps = ( int )cvGetCaptureProperty( capture, CV_CAP_PROP_FPS );
     //fps /= 2;
     
     
@@ -51,16 +52,17 @@ void VideoCapturePlayer::init()
         /* open the display window */
         cvNamedWindow( WINDOW_TITLE, CV_WINDOW_AUTOSIZE );
     }
-    t_end = cvGetTickCount();
-    printf( "t_begin=%.2f, t_end=%.2f\nDifference=%.2f\n", (double)t_begin,(double)t_end, (double)t_end-t_begin);
+    t_setup = cvGetTickCount();
+    cout << "Setup time=" << (double)(t_setup-t_begin) << endl;
 
     
 }
 
 void VideoCapturePlayer::main()
 {
-    while( key != 'q' ) {
-        
+    t_start = cvGetTickCount();
+    while( (char)key != 'q' )
+    {
         /* get a frame - image should not be released or modified*/
         frame = cvQueryFrame( capture );
         
@@ -69,8 +71,9 @@ void VideoCapturePlayer::main()
             CvMat temp_mat;
             mat_frame = cvGetMat( frame, &temp_mat);
         }
+        
         /* always check */
-        if( !frame ) break;
+        if( !frame ){ cout << "No frame!" << endl; break;}
         
         if (processFunc)
         {
@@ -82,18 +85,27 @@ void VideoCapturePlayer::main()
         {
             cvShowImage( WINDOW_TITLE, mat_frame );
         }
-        
+        ++num_frames;
         /* quit if user press 'q' */
-        key = cvWaitKey( 1 /*1000 / fps*/ );
+        key = cvWaitKey( 5 );
     }
-
+    t_end = cvGetTickCount();
+    float tickFreq = cvGetTickFrequency();
+    //cout << "Frames captured: " << num_frames << endl;
+    //cout << "Running ticks:" << (double)(t_end-t_start) << endl;
+    //cout << "tick freq: " << tickFreq << endl;
+    float elapsed_time_s = (t_end-t_start)/(1000000 * tickFreq);
+    //cout << "Elapsed Time(s): " << elapsed_time_s << endl;
+    fps = num_frames/elapsed_time_s;
+    cout << "FPS: " << fps << endl;
 }
 
 
 
 /**
- This is a template for a function that can be fed into VideoCapturePlayer
- It must take a CvMat, and return a CvMat
+ * This is a template for a function that can be fed into VideoCapturePlayer
+ * It must take a CvMat, and return a CvMat.
+ * It draws a rectangle on the screen.
  */
 CvMat * doNothing(CvMat *x)
 {
@@ -105,11 +117,12 @@ CvMat * doNothing(CvMat *x)
     cvRectangle( x, pt1, pt2, CV_RGB(30,0,200) );
     //*/
     return x;
-} 
+}
 
 int main( int argc, char** argv )
 {
-    cout << "starting VideoCapturePlayer demo" << endl;
+    cout << "Starting VideoCapturePlayer demo" << endl;
+    cout << "Press 'q' to exit the program" << endl;
     VideoCapturePlayer vcp = VideoCapturePlayer(&doNothing);
     //VideoCapturePlayer vcp = VideoCapturePlayer();
     vcp.init();

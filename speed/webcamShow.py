@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
  This example has no error checking, it should not be used!
 
@@ -12,3 +13,5 @@ capture = hg.cvCreateCameraCapture(0)
 hg.cvNamedWindow( "Snapshot")
 frame = hg.cvQueryFrame( capture )
 hg.cvShowImage( "Snapshot", frame )
+
+hg.cvWaitKey(10000) # Wait for timeout or input

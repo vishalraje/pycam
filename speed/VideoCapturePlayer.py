@@ -1,7 +1,26 @@
+#!/usr/bin/env python
 from __future__ import division
 from opencv import cv, highgui as hg
 import time
 import logging
+
+verbosity = logging.DEBUG
+profiling = False
+
+logging.basicConfig(filename=None,level=verbosity,)
+
+# Todo put in misc file
+def doNothing(x):
+    """
+    This is a template for a function that can be fed into VideoCapturePlayer
+    It must take a CvMat, and return a CvMat.
+    It draws a rectangle on the screen."""
+    pt1, pt2 = cv.CvPoint(), cv.CvPoint()
+    pt1.x = pt1.y = 200
+    pt2.x = pt2.y = 250
+    
+    cv.cvRectangle( x, pt1, pt2, cv.CV_RGB(30,0,200) )
+    return x
 
 
 class VideoCapturePlayer(object):
@@ -16,6 +35,9 @@ class VideoCapturePlayer(object):
     cvMat can be given. This player will take the webcam image, 
     pass it through the filter then display the result.
     
+    >>> vcp = VideoCapturePlayer()
+    >>> vcp.main()  # should start capturing and showing the webcam
+    
     """
     #size = width,height = 640, 480
    
@@ -24,10 +46,8 @@ class VideoCapturePlayer(object):
         super(VideoCapturePlayer, self).__init__(**argd)
         
         self.processFunction = processFunction
-        self.processRuns = 0
         self.title = title
         self.show = show
-        self.times = []
 
         if self.show is True:
             self.display = hg.cvNamedWindow(self.title)
@@ -40,65 +60,87 @@ class VideoCapturePlayer(object):
             raise SystemExit
         
         # Take a frame to get props and use in testing
-        self.frame = hg.cvQueryFrame( self.camera )
-        
+        self.snapshot = hg.cvQueryFrame( self.camera )
+        for i in xrange(100):
+            if self.snapshot is not None: break
+            self.snapshot = hg.cvQueryFrame( self.camera )
 
-    def process(self):
+    def process(self, take_new_image=True):
         """We will take a snapshot, optionally do some arbitrary process (eg in numpy/scipy)
-        then display it.       
+        then display it. If a frame is given use that instead of taking a new image.
         """
-
-            
+ 
         try:
-            # capture an image
-            self.snapshot = hg.cvQueryFrame( self.camera)
+            if take_new_image:
+                # capture an image
+                self.snapshot = hg.cvQueryFrame( self.camera)
        
-            if self.processFunction:
+            if self.processFunction is not None:
                 res = self.processFunction(self.snapshot)
-                assert isinstance(res,CvMat)
+                assert isinstance(res,cv.CvMat)
                 self.snapshot = res
-                self.processRuns += 1
                        
             if self.show:
                 hg.cvShowImage( self.title, self.snapshot )
-        finally:
-            hg.cvDestroyWindow(title)
-    
+        except Exception, e:
+            # If something goes wrong close the window
+            logging.error("Error in processing image: %s" % e)
+            hg.cvDestroyWindow(self.title)
 
-        #avg = numpy.average(fpslist)
 
     def main(self):
-        """Add some timing and event handling code here
-
-        Need two sets of timing code - one for the process itself and one for the system.
         """
-        logging.debug("Starting main loop now")
-        for i in xrange(1000):
-            # save the time since last call
-            now = time.clock()
-            if has_attr(self,"last_time"):
-                self.times.append(now - self.last_time)
-
-            self.last_time = now
-
+        Run and time the main loop.
+        """
+        logging.info("Starting main video capture loop now, press 'q' to quit")
+        key = hg.cvWaitKey(1)
+        
+        num_frames = 0
+        start_time = time.time()
+        
+        while(key is not "q"):
+            num_frames +=1
             self.process()
+            key = hg.cvWaitKey(5)
+            
+        total_time = float(time.time()) - float(start_time)
+        
         logging.debug("Main loop complete")
-        logging.info("Average time per Frame: %i" % sum(self.times)/len(self.times) )
+        logging.debug("Total time took %e" % total_time)
+        
+        logging.info("Average time per frame: %e" % (total_time/num_frames) )
+        logging.info("Average frames per second: %f" % (num_frames/total_time) )
 
-def time_process(func):
-    """
-    This will just use a single image and repeatitively do the process.
-    """
-    import timeit
-    setup_code = """from __main__ import VideoCapturePlayer
-    vcp = VideoCapturePlayer(processFunction=None)"""
-    test_code = """vcp.processFunction(vcp.frame)"""
-    t = timeit.Timer(test_code, setup_code)
-    print("Running tests now")
-    print t.repeat()
-    print("Tests complete")
+
 
 if __name__ == "__main__":
-    vcp = VideoCapturePlayer(processFunction=None)
-    vcp.main()
-    #time_process()
+    logging.info("Starting the example VideoCapturePlayer")
+    
+    vcp = VideoCapturePlayer(processFunction=doNothing)
+    
+    if profiling:
+        import cProfile
+        cProfile.run('vcp.main()', 'python_profile_data')
+        del vcp
+        import pstats
+        p = pstats.Stats('python_profile_data')
+        process_stats = p.strip_dirs().sort_stats('cum').print_stats("process",1)
+        print("Ideally the 'percall' value is close to our estimate of time per frame")
+        
+    else:
+        vcp.main()
+
+
+def time_process():
+    """
+    This will just use a single image and repeatitively do the process.
+    The camera has to be free for this to work
+    """
+    import timeit
+    setup_code = """from VideoCapturePlayer import VideoCapturePlayer
+vcp = VideoCapturePlayer(processFunction=None,show=False)"""
+    test_code = "vcp.process(take_new_image=False)"
+    t = timeit.Timer(test_code, setup_code)
+    print("Running timeit on capture/display now")
+    print t.repeat()
+    print("Tests complete")
