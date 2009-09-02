@@ -181,7 +181,7 @@ Pygame is a set of Python modules designed for writing fully featured games
 \end_layout
 
 \begin_layout Section
-Method
+Theory of operation
 \end_layout
 
 \begin_layout Subsection
@@ -191,10 +191,9 @@ Image Aquisition
 \begin_layout Standard
 The first thing to think about in computer vision programs is where the
  image data comes from.
- In this report only live data from a webcam is considered.
- There main difference in using a live system is the time available for
- processing is very constrained to allow a framarate sufficient for live
- viewing.
+ In this report only live data from a webcam is under consideration.
+ The main difference in using a live system is the time available for processing
+ is very constrained to allow a framarate sufficient for live viewing.
  Processing on static images or recorded video data doesn't have this constraint.
 \end_layout
 
@@ -331,6 +330,159 @@ hg.cvShowImage("Snapshot", frame)
 
 \end_layout
 
+\begin_layout Standard
+As with C++, an object orrientated version of this acquisition loop with
+ error checking is used in further tests.
+ The VideoCapturePlayer object optionally takes a pointer to a function.
+ The function takes the raw image, and returns a possibly modified image.
+\end_layout
+
+\begin_layout Subsection
+Image Blur
+\end_layout
+
+\begin_layout Standard
+One of the simplest operations is bluring an image.
+ This can be achieved by adding gaussian blur.
+ Mathematically this is achieved by convolving the image with a gaussian
+ filter.
+ The filter can be applied in two ways; applying a 1-dimensional filter
+ twice, once in each direction; or secondly the image can be convolved with
+ a 2-dimensional gaussian filter created by the product of two 1-dimensional
+ filters.
+ The gaussian function for obtaining the filter is in one dimension: 
+\begin_inset Formula $G\left(x\right)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{x^{2}}{2\sigma^{2}}}$
+\end_inset
+
+ And in two dimensions: 
+\begin_inset Formula $G\left(x,y\right)=\frac{1}{\sqrt{2\pi}\sigma^{2}}e^{-\frac{x^{2}+y^{2}}{2\sigma^{2}}}$
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-5"
+
+\end_inset
+
+.
+ OpenCV includes a gaussian filter that can be applied to an image by calling
+ the 
+\emph on
+cvSmooth
+\emph default
+ function and passing the desired window size.
+\end_layout
+
+\begin_layout Subsubsection
+C++
+\end_layout
+
+\begin_layout Standard
+Blah blah
+\end_layout
+
+\begin_layout Subsubsection
+Python
+\end_layout
+
+\begin_layout Standard
+With OpenCV:
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+todo test these on multiplatforms, use the VidCapPlayer class as mentioned
+ above.
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+from opencv import cv
+\end_layout
+
+\begin_layout Plain Layout
+
+from opencv import highgui as hg
+\end_layout
+
+\begin_layout Plain Layout
+
+title = "Filtered Image"
+\end_layout
+
+\begin_layout Plain Layout
+
+a = hg.cvLoadImage('image.jpg')
+\end_layout
+
+\begin_layout Plain Layout
+
+b = cv.cvCreateMat(a.rows, a.cols, a.type) 
+\end_layout
+
+\begin_layout Plain Layout
+
+filterSize = 3  # Must be odd 
+\end_layout
+
+\begin_layout Plain Layout
+
+cv.cvSmooth(a, b, cv.CV_GAUSSIAN, filterSize)   # Carry out the filter operation
+\end_layout
+
+\begin_layout Plain Layout
+
+hg.cvNamedWindow(title) 
+\end_layout
+
+\begin_layout Plain Layout
+
+hg.cvShowImage(title, b)               # Show the resulting image 
+\end_layout
+
+\begin_layout Plain Layout
+
+hg.cvWaitKey() hg.cvDestroyWindow(title)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+With scipy:
+\end_layout
+
+\begin_layout Subsection
+Background subtractions
+\end_layout
+
+\begin_layout Standard
+Double 
+\end_layout
+
+\begin_layout Standard
+Richard Greens paper
+\end_layout
+
+\begin_layout Subsection
+Face Detection
+\end_layout
+
+\begin_layout Standard
+Haar-Cascades....
+ blah blah
+\end_layout
+
 \begin_layout Section
 Results
 \end_layout
@@ -415,6 +567,10 @@ Limitations (other than speed), hardware, Firewire, support, libraries and
  functionality?
 \end_layout
 
+\begin_layout Section*
+Software Links
+\end_layout
+
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
@@ -436,7 +592,7 @@ target "http://python.org"
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-key "key-1"
+key "key-2"
 
 \end_inset
 
@@ -454,7 +610,7 @@ target "http://numpy.scipy.org"
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-key "key-1"
+key "key-3"
 
 \end_inset
 
@@ -472,7 +628,7 @@ target "http://www.scipy.org"
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-key "key-2"
+key "key-4"
 
 \end_inset
 
@@ -485,6 +641,20 @@ target "http://opencv.willowgarage.com/wiki/"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-5"
+
+\end_inset
+
+Shapiro, L.
+ G.
+ & Stockman, G.
+ C: "Computer Vision", page 137, 150.
+ Prentence Hall, 2001
 \end_layout
 
 \end_body
