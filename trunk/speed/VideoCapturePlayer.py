@@ -9,18 +9,7 @@ profiling = False
 
 logging.basicConfig(filename=None,level=verbosity,)
 
-# Todo put in misc file
-def doNothing(x):
-    """
-    This is a template for a function that can be fed into VideoCapturePlayer
-    It must take a CvMat, and return a CvMat.
-    It draws a rectangle on the screen."""
-    pt1, pt2 = cv.CvPoint(), cv.CvPoint()
-    pt1.x = pt1.y = 200
-    pt2.x = pt2.y = 250
-    
-    cv.cvRectangle( x, pt1, pt2, cv.CV_RGB(30,0,200) )
-    return x
+
 
 
 class VideoCapturePlayer(object):
@@ -35,11 +24,22 @@ class VideoCapturePlayer(object):
     cvMat can be given. This player will take the webcam image, 
     pass it through the filter then display the result.
     
-    >>> vcp = VideoCapturePlayer()
+    >>> vcp = VideoCapturePlayer()  # Open the webcam.
     >>> vcp.main()  # should start capturing and showing the webcam
     
+    And defining and giving a process function to the player:
+    
+    >>> def drawBox(x):
+    ....    pt1, pt2 = cv.CvPoint(), cv.CvPoint()
+    ....    pt1.x = pt1.y = 200
+    ....    pt2.x = pt2.y = 250
+    ....    cv.cvRectangle( x, pt1, pt2, cv.CV_RGB(30,0,200) )
+    ....    return x
+    >>> vcp = VideoCapturePlayer(processFunction=drawBox)
+    >>> vcp.main()
+    
     """
-    #size = width,height = 640, 480
+
    
     def __init__(self, processFunction = None, title = "Video Capture Player", show=True, **argd):
         self.__dict__.update(**argd)
@@ -72,20 +72,23 @@ class VideoCapturePlayer(object):
  
         try:
             if take_new_image:
-                # capture an image
+                logging.debug("capturing an image")
                 self.snapshot = hg.cvQueryFrame( self.camera)
        
             if self.processFunction is not None:
+                logging.debug("Sending image to process function")
                 res = self.processFunction(self.snapshot)
-                assert isinstance(res,cv.CvMat)
+                logging.debug("Received result from processing function")
+                assert isinstance(res,cv.CvMat), "Not CvMat"
                 self.snapshot = res
                        
             if self.show:
                 hg.cvShowImage( self.title, self.snapshot )
         except Exception, e:
-            # If something goes wrong close the window
+            # If something goes wrong make sure we close the window
             logging.error("Error in processing image: %s" % e)
             hg.cvDestroyWindow(self.title)
+            raise SystemExit
 
 
     def main(self):
@@ -112,11 +115,25 @@ class VideoCapturePlayer(object):
         logging.info("Average frames per second: %f" % (num_frames/total_time) )
 
 
+# Todo put in misc file
+def drawBox(x):
+    """
+    This is a template for a function that can be fed into VideoCapturePlayer
+    It must take a CvMat, and return a CvMat.
+    It draws a rectangle on the screen."""
+    pt1, pt2 = cv.CvPoint(), cv.CvPoint()
+    pt1.x = pt1.y = 200
+    pt2.x = pt2.y = 250
+    
+    cv.cvRectangle( x, pt1, pt2, cv.CV_RGB(30,0,200) )
+    return x
+
 
 if __name__ == "__main__":
     logging.info("Starting the example VideoCapturePlayer")
     
-    vcp = VideoCapturePlayer(processFunction=doNothing)
+    #vcp = VideoCapturePlayer(processFunction=drawBox)
+    vcp = VideoCapturePlayer()
     
     if profiling:
         import cProfile
