@@ -2,8 +2,11 @@
 \lyxformat 345
 \begin_document
 \begin_header
-\textclass paper
+\textclass IEEEtran
 \use_default_options true
+\begin_modules
+theorems-ams
+\end_modules
 \language english
 \inputencoding auto
 \font_roman default
@@ -43,7 +46,7 @@
 \begin_body
 
 \begin_layout Title
-Computer Vision in Python
+Comparing Python and C for Computer Vision
 \begin_inset Note Note
 status open
 
@@ -73,9 +76,10 @@ Brian Thorne, Raphael Grasset, Richard Green
 \end_layout
 
 \begin_layout Abstract
-An introduction to and argument for computer vision in Python, from the
- general concept to its implementation with some current open-source libraries
- (opencv, numpy/scipy, pygame).
+An introduction to and argument for computer vision in Python inplace of
+ the C programming language.
+ From the general concept to its implementation with some current open-source
+ libraries (opencv, numpy/scipy, pygame).
  
 \end_layout
 
@@ -102,28 +106,9 @@ Firstly, I will briefly present the basics of computer vision; such as video
  different examples such as displaying a video image, some filtering algorithms
  (dilation, gaussian blur), and how to implement facial recognition.
  I will go on to describe how these and other computer vision related tasks
- can be achieved with other Python tools such as scipy and pygame.
- I will show how these three libraries can be used in conjunction to perform
- video capturing, image processing and user interfacing.
- 
-\end_layout
-
-\begin_layout Standard
-Finally, I will introduce my basic Python computer vision framework
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Calling it a computer vision framework is really overkill - its just these
- few examples of computer vision with some shared code.
-\end_layout
-
-\end_inset
-
-, which is aimed at inexperienced users, and demonstrate it running on a
- windows machine, a mac osx machine, a linux machine and on the XO laptop,
- the inexpensive low-powered sub-notebook distributed as part of the One
- Laptop Per Child (OLPC) initiative.
+ can be achieved with other Python tools such as scipy.
+ I will show how these libraries can be used in conjunction to perform video
+ capturing, image processing and video feedback.
 \end_layout
 
 \begin_layout Section
@@ -135,12 +120,12 @@ Python
 \end_layout
 
 \begin_layout Standard
-Python is a general purpose programming language.
+Python is a general purpose dynamic programming language.
  It is highley regarded due in no small part for its fast development time.
 \end_layout
 
 \begin_layout Subsection
-Opencv
+OpenCV
 \end_layout
 
 \begin_layout Standard
@@ -152,32 +137,25 @@ Intel's open source computer vision libraries...
 \end_layout
 
 \begin_layout Subsection
-Numpy
+NumPy
 \end_layout
 
 \begin_layout Standard
 Numpy gives N-dimensional arrays to python.
- Oh and is fast.
+ Has very fast raw data crunching, iterating.
+ Much easier to use than multidimensinal matrices in C.
 \end_layout
 
 \begin_layout Subsection
-Scipy
+SciPy
 \end_layout
 
 \begin_layout Standard
-Scipy is a set of libraries and tools for scientific and mathematical work
- build ontop of the numpy data type.
-\end_layout
-
-\begin_layout Subsection
-Pygame
-\end_layout
-
-\begin_layout Standard
-Pygame is a set of Python modules designed for writing fully featured games
- and multimedia programs in the python language.
- Recently a camera module was added along with some basic image processing
- functions.
+SciPy is a set of libraries and tools for scientific and mathematical work
+ build ontop of NumPy.
+ Has filters and convolution etc much like matlab.
+ Should be much simpler higher level code, without any significant performance
+ loss.
 \end_layout
 
 \begin_layout Section
@@ -202,8 +180,15 @@ Aquiring and displaying an image in C with OpenCV
 \end_layout
 
 \begin_layout Standard
-This following snippet of code opens up a new camera capture device, and
- takes one frame, it creates a new window and displays it
+Algorithm 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:C-Image-capture"
+
+\end_inset
+
+ opens up a new camera capture device, and takes one frame, it creates a
+ new window and displays it
 \begin_inset Foot
 status collapsed
 
@@ -217,61 +202,85 @@ For brevity these code snippets do not carry out error checking.
 \end_inset
 
 .
+ Using this as a template it is straight forward to wrap the capture and
+ display in a loop, this forms the basis of the C++ class VideoCapturePlayer
+ included in the appendix
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+RAPH...
+ So what is the deal with code.
+ VideoCapturePlayer in C Plus Plus and in Python are many times longer than
+ the rest of the code snippets.
+ Are the algorithms okay as floating elements?
+\end_layout
+
+\end_inset
+
+.
+ This C++ class is used in the other examples to keep the code duplication
+ and variation to a minimum.
 \end_layout
 
 \begin_layout Standard
-\begin_inset listings
-inline false
-status open
+\begin_inset Float algorithm
+wide false
+sideways false
+status collapsed
 
-\begin_layout Plain Layout
-
+\begin_layout LyX-Code
 #include "cv.h"
 \end_layout
 
-\begin_layout Plain Layout
-
+\begin_layout LyX-Code
 #include "highgui.h"
 \end_layout
 
-\begin_layout Plain Layout
-
+\begin_layout LyX-Code
 int main(){
 \end_layout
 
-\begin_layout Plain Layout
-
+\begin_layout LyX-Code
   IplImage  *frame;
 \end_layout
 
-\begin_layout Plain Layout
-
+\begin_layout LyX-Code
   CvCapture *capture;
 \end_layout
 
-\begin_layout Plain Layout
-
+\begin_layout LyX-Code
   capture = cvCreateCameraCapture(0);
 \end_layout
 
-\begin_layout Plain Layout
-
+\begin_layout LyX-Code
   cvNamedWindow( "Snapshot", 0 );
 \end_layout
 
-\begin_layout Plain Layout
-
+\begin_layout LyX-Code
   frame = cvQueryFrame( capture );
 \end_layout
 
-\begin_layout Plain Layout
-
+\begin_layout LyX-Code
   cvShowImage( "Snapshot", frame );
 \end_layout
 
-\begin_layout Plain Layout
-
+\begin_layout LyX-Code
 }
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:C-Image-capture"
+
+\end_inset
+
+Image capture in C.
+ 
 \end_layout
 
 \end_inset
@@ -279,12 +288,9 @@ int main(){
 
 \end_layout
 
-\begin_layout Standard
-Using this as a template it is straight forward to wrap the capture and
- display in a loop, this forms the basis of the C++ class VideoCapturePlayer
- included in the appendix.
- This C++ class is used in the other examples to keep the code duplication
- and variation to a minimum.
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -292,178 +298,64 @@ Acquiring and displaying an image in Python with OpenCV
 \end_layout
 
 \begin_layout Standard
-The same basic task of accessing a webcam and displaying one image in python.
+Algorithm 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:Python-Image-capture"
+
+\end_inset
+
+ does the same basic task of accessing a webcam and displaying one image
+ in Python.
+ As with C++, an object orrientated version of this acquisition loop with
+ error checking is used in further tests.
+ The VideoCapturePlayer object optionally takes a pointer to a function.
+ The function takes the raw image, does some process on it, and returns
+ a possibly modified image.
 \end_layout
 
 \begin_layout Standard
-\begin_inset listings
-inline false
-status open
+\begin_inset Float algorithm
+wide false
+sideways false
+status collapsed
 
-\begin_layout Plain Layout
-
+\begin_layout LyX-Code
 from opencv import highgui as hg
 \end_layout
 
-\begin_layout Plain Layout
-
+\begin_layout LyX-Code
 capture = hg.cvCreateCameraCapture(0)
 \end_layout
 
-\begin_layout Plain Layout
-
+\begin_layout LyX-Code
 hg.cvNamedWindow("Snapshot")
 \end_layout
 
-\begin_layout Plain Layout
-
+\begin_layout LyX-Code
 frame = hg.cvQueryFrame(capture)
 \end_layout
 
-\begin_layout Plain Layout
-
+\begin_layout LyX-Code
 hg.cvShowImage("Snapshot", frame)
 \end_layout
 
-\end_inset
+\begin_layout Plain Layout
+\begin_inset Caption
 
-
-\end_layout
-
-\begin_layout Standard
-As with C++, an object orrientated version of this acquisition loop with
- error checking is used in further tests.
- The VideoCapturePlayer object optionally takes a pointer to a function.
- The function takes the raw image, and returns a possibly modified image.
-\end_layout
-
-\begin_layout Subsection
-Image Blur
-\end_layout
-
-\begin_layout Standard
-One of the simplest operations is bluring an image.
- This can be achieved by adding gaussian blur.
- Mathematically this is achieved by convolving the image with a gaussian
- filter.
- The filter can be applied in two ways; applying a 1-dimensional filter
- twice, once in each direction; or secondly the image can be convolved with
- a 2-dimensional gaussian filter created by the product of two 1-dimensional
- filters.
- The gaussian function for obtaining the filter is in one dimension: 
-\begin_inset Formula $G\left(x\right)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{x^{2}}{2\sigma^{2}}}$
-\end_inset
-
- And in two dimensions: 
-\begin_inset Formula $G\left(x,y\right)=\frac{1}{\sqrt{2\pi}\sigma^{2}}e^{-\frac{x^{2}+y^{2}}{2\sigma^{2}}}$
-\end_inset
-
-
-\begin_inset CommandInset citation
-LatexCommand cite
-key "key-5"
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:Python-Image-capture"
 
 \end_inset
 
-.
- OpenCV includes a gaussian filter that can be applied to an image by calling
- the 
-\emph on
-cvSmooth
-\emph default
- function and passing the desired window size.
+Image capture and display in Python
 \end_layout
 
-\begin_layout Subsubsection
-C++
-\end_layout
+\end_inset
 
-\begin_layout Standard
-Calling the OpenCV function cvSmooth to carry out gaussian blur with a filter
- size of 43.
-\end_layout
 
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-#include <iostream> 
-\end_layout
-
-\begin_layout Plain Layout
-
-#include "videoCapturePlayer.h"
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-CvMat * gaussianBlur(CvMat *x){// Filter with gaussian smoothing
-\end_layout
-
-\begin_layout Plain Layout
-
-    int filterSize = 43;
-\end_layout
-
-\begin_layout Plain Layout
-
-    cvSmooth(x, x, CV_GAUSSIAN, filterSize);
-\end_layout
-
-\begin_layout Plain Layout
-
-    return x;
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-int main( int argc, char** argv ){
-\end_layout
-
-\begin_layout Plain Layout
-
-    std::cout << "Starting Gassian Blur C++ demo" << std::endl;
-\end_layout
-
-\begin_layout Plain Layout
-
-    std::cout << "Press 'q' to exit the program" << std::endl;
-\end_layout
-
-\begin_layout Plain Layout
-
-    VideoCapturePlayer vcp = VideoCapturePlayer(&gaussianBlur);
-\end_layout
-
-\begin_layout Plain Layout
-
-    vcp.init(); vcp.main();
-\end_layout
-
-\begin_layout Plain Layout
-
-    return 0;
-\end_layout
-
-\begin_layout Plain Layout
-
-}
 \end_layout
 
 \end_inset
@@ -472,257 +364,33 @@ int main( int argc, char** argv ){
 \end_layout
 
 \begin_layout Subsubsection
-Python
+Comparison
 \end_layout
 
 \begin_layout Standard
-In python taking advantage of VideoCapturePlayer, the python class mentioned
- above, and using OpenCV to do the convolution for us.
- 
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-from VideoCapturePlayer import VideoCapturePlayer as VCP
-\end_layout
-
-\begin_layout Plain Layout
-
-from opencv import cv
-\end_layout
-
-\begin_layout Plain Layout
-
-def gaussianBlur(image):
-\end_layout
-
-\begin_layout Plain Layout
-
-    """Blur an image"""     
-\end_layout
-
-\begin_layout Plain Layout
-
-    result = cv.cvCreateMat(image.rows, image.cols, image.type)
-\end_layout
-
-\begin_layout Plain Layout
-
-    filterSize = 43
-\end_layout
-
-\begin_layout Plain Layout
-
-    cv.cvSmooth(image, result, cv.CV_GAUSSIAN, filterSize)   # Carry out the
- filter operation
-\end_layout
-
-\begin_layout Plain Layout
-
-    return result
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-if __name__ == "__main__":
-\end_layout
-
-\begin_layout Plain Layout
-
-    title = "Guassian Filtered Output"
-\end_layout
-
-\begin_layout Plain Layout
-
-    VCP(gaussianBlur, title).main()
-\end_layout
+Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:IO-bound-Webcam"
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-This produces a blurred image.
- 
-\begin_inset Graphics
-	filename report_data/blur_opencv.png
-	lyxscale 20
-	width 80col%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Secondly using the VideoCapturePlayer again but this time using scipy to
- do the convolution.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-from numpy import array, uint8
-\end_layout
-
-\begin_layout Plain Layout
-
-from scipy import signal, ndimage 
-\end_layout
-
-\begin_layout Plain Layout
-
-from VideoCapturePlayer import VideoCapturePlayer as VCP 
-\end_layout
-
-\begin_layout Plain Layout
-
-from misc import scipyFromOpenCV
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-@scipyFromOpenCV 
-\end_layout
-
-\begin_layout Plain Layout
-
-def gaussianBlur(np_image):
-\end_layout
-
-\begin_layout Plain Layout
-
-    """Blur an image with scipy"""
-\end_layout
-
-\begin_layout Plain Layout
-
-    filterSize = 13     #139 gives a very strong blur, but takes a while
-\end_layout
-
-\begin_layout Plain Layout
-
-    result = ndimage.filters.gaussian_filter(np_image, (filterSize, filterSize,
- 1))
-\end_layout
-
-\begin_layout Plain Layout
-
-    return result
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-if __name__ == "__main__":
-\end_layout
-
-\begin_layout Plain Layout
-
-    title = "Guassian Filtered Output"
-\end_layout
-
-\begin_layout Plain Layout
-
-    VCP(gaussianBlur,title=title).main()
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Graphics
-	filename report_data/blur_scipy.png
-	lyxscale 20
-	width 80col%
-
-\end_inset
-
-Note that due to XXXXXXX these functions are not computing the exact same
- thing.
- A filter window of 43 in OpenCV produces about the same amount of blur
- as a filter size of 13 in Scipy.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-THESE FUNCTIONS ARE NOT EQUIVALENT, THE BLUR IS DIFFERANT FOR SAME FILTER
- SIZE
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-Background subtractions
-\end_layout
-
-\begin_layout Standard
-Double 
-\end_layout
-
-\begin_layout Standard
-Richard Greens paper
-\end_layout
-
-\begin_layout Subsection
-Face Detection
-\end_layout
-
-\begin_layout Standard
-Haar-Cascades....
- blah blah
-\end_layout
-
-\begin_layout Section
-Results
-\end_layout
-
-\begin_layout Standard
-Using OpenCV from Python examples
-\end_layout
-
-\begin_layout Subsubsection
-Image Capture
-\end_layout
-
-\begin_layout Standard
-Results for taking an image from a webcam, drawing a box ontop of the image
- and displaying all with OpenCV.
+ shows results for taking an image from a webcam, drawing a box ontop of
+ the image and displaying all with OpenCV.
  The average frames per second are taken over 3 runs each averaging over
  a 2 minute period.
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
 \begin_inset Tabular
-<lyxtabular version="3" rows="3" columns="7">
+<lyxtabular version="3" rows="3" columns="6">
 <features>
-<column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -735,15 +403,6 @@ Results for taking an image from a webcam, drawing a box ontop of the image
 
 \begin_layout Plain Layout
 Language
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
 \end_layout
 
 \end_inset
@@ -808,15 +467,6 @@ Python
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 15.0073
 \end_layout
 
@@ -865,15 +515,6 @@ Python
 
 \begin_layout Plain Layout
 CPlusPlus
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
 \end_layout
 
 \end_inset
@@ -931,12 +572,71 @@ CPlusPlus
 
 \end_layout
 
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:IO-bound-Webcam"
+
+\end_inset
+
+Simple IO bound test - Webcam streaming comparison of Python and CPlusPlus.
+ Results shown are frames per second.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 Oddly Python was faster....
+ minor but still faster...
+ interesting...
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename report_data/image_capture_graph.png
-	lyxscale 20
+	lyxscale 50
 	width 80col%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Comparison of Python and C performance using OpenCV for webcam capture,
+ drawing on the image, and displaying.
+\end_layout
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -944,16 +644,528 @@ Oddly Python was faster....
 \end_layout
 
 \begin_layout Subsection
-median filter, blur, sharpening, face detection etc.
-\end_layout
-
-\begin_layout Subsubsection
 Image Blur
 \end_layout
 
 \begin_layout Standard
+One of the simplest operations is bluring an image.
+ This can be achieved by adding gaussian blur.
+ Mathematically this is achieved by convolving the image with a gaussian
+ filter.
+ The filter can be applied in two ways; applying a 1-dimensional filter
+ twice, once in each direction; or secondly the image can be convolved with
+ a 2-dimensional gaussian filter created by the product of two 1-dimensional
+ filters.
+ The gaussian function for obtaining the filter is in one dimension: 
+\begin_inset Formula \begin{equation}
+G\left(x\right)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{x^{2}}{2\sigma^{2}}}\label{eq:1D Gaussian Filter}\end{equation}
+
+\end_inset
+
+ And in two dimensions: 
+\begin_inset Formula \begin{equation}
+G\left(x,y\right)=\frac{1}{\sqrt{2\pi}\sigma^{2}}e^{-\frac{x^{2}+y^{2}}{2\sigma^{2}}}\label{eq:2D Gaussian Filter}\end{equation}
+
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-5"
+
+\end_inset
+
+.
+ OpenCV includes a gaussian filter that can be applied to an image by calling
+ the 
+\emph on
+cvSmooth
+\emph default
+ function and passing the desired window size.
+ SciPy has a multi-dimensional Gaussian filter that acts on a NumPy array.
+\end_layout
+
+\begin_layout Subsubsection
+C++
+\end_layout
+
+\begin_layout Standard
+Calling the OpenCV function cvSmooth to carry out gaussian blur with a filter
+ size of 43.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide true
+sideways false
+status collapsed
+
+\begin_layout LyX-Code
+#include <iostream> 
+\end_layout
+
+\begin_layout LyX-Code
+#include "videoCapturePlayer.h"
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+CvMat * gaussianBlur(CvMat *x){
+\end_layout
+
+\begin_layout LyX-Code
+// Filter with gaussian smoothing
+\end_layout
+
+\begin_layout LyX-Code
+    int filterSize = 43;
+\end_layout
+
+\begin_layout LyX-Code
+    cvSmooth(x, x, CV_GAUSSIAN, filterSize);
+\end_layout
+
+\begin_layout LyX-Code
+    return x;
+\end_layout
+
+\begin_layout LyX-Code
+}
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+int main( int argc, char** argv ){
+\end_layout
+
+\begin_layout LyX-Code
+    VideoCapturePlayer vcp = VideoCapturePlayer(&gaussianBlur);
+\end_layout
+
+\begin_layout LyX-Code
+    vcp.init(); vcp.main();
+\end_layout
+
+\begin_layout LyX-Code
+    return 0;
+\end_layout
+
+\begin_layout LyX-Code
+}
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:Gaussian-C"
+
+\end_inset
+
+Applying Gaussian Blur to webcam stream from C Plus Plus
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Python
+\end_layout
+
+\begin_layout Standard
+In python taking advantage of VideoCapturePlayer, the Python class mentioned
+ above, and using OpenCV to do the convolution for us.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide true
+sideways false
+status collapsed
+
+\begin_layout LyX-Code
+from VideoCapturePlayer import VideoCapturePlayer as VCP
+\end_layout
+
+\begin_layout LyX-Code
+from opencv import cv
+\end_layout
+
+\begin_layout LyX-Code
+def gaussianBlur(image):
+\end_layout
+
+\begin_layout LyX-Code
+    """Blur an image"""     
+\end_layout
+
+\begin_layout LyX-Code
+    result = cv.cvCreateMat(image.rows, image.cols, image.type)
+\end_layout
+
+\begin_layout LyX-Code
+    filterSize = 43
+\end_layout
+
+\begin_layout LyX-Code
+    cv.cvSmooth(image, result, cv.CV_GAUSSIAN, filterSize) # Carry out the
+ filter operation
+\end_layout
+
+\begin_layout LyX-Code
+    return result
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+if __name__ == "__main__":
+\end_layout
+
+\begin_layout LyX-Code
+    title = "Guassian Filtered Output"
+\end_layout
+
+\begin_layout LyX-Code
+    VCP(gaussianBlur, title).main()
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:Gaussian-Python-OpenCV"
+
+\end_inset
+
+Gaussian Bluring in Python using OpenCV
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This produces a blurred image as desired.
+ 
+\end_layout
+
+\begin_layout Standard
+Secondly using the VideoCapturePlayer again but this time using scipy to
+ do the convolution.
+ To continue using the OpenCV cameara capture, a conversion must be done
+ into NumPy arrays; this is achieved here by creating and using a Python
+ decorator 
+\noun on
+scipyFromOpenCV
+\noun default
+.
+ Also the filter parameters need converted to be compatible with OpenCV's
+ cvSmooth defaults 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-6"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide true
+sideways false
+status collapsed
+
+\begin_layout LyX-Code
+from numpy import array, uint8
+\end_layout
+
+\begin_layout LyX-Code
+from scipy import signal, ndimage 
+\end_layout
+
+\begin_layout LyX-Code
+from VideoCapturePlayer import VideoCapturePlayer as VCP 
+\end_layout
+
+\begin_layout LyX-Code
+from misc import scipyFromOpenCV
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+def opencvFilt2sigma(size):
+\end_layout
+
+\begin_layout LyX-Code
+    """OpenCV defaults to making sigma up with this formula"""
+\end_layout
+
+\begin_layout LyX-Code
+    return (( size/2 ) - 1)*0.30 + 0.80
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+@scipyFromOpenCV
+\end_layout
+
+\begin_layout LyX-Code
+def gaussianBlur(np_image):
+\end_layout
+
+\begin_layout LyX-Code
+    """Blur an image with scipy"""
+\end_layout
+
+\begin_layout LyX-Code
+    filterSize = opencvFilt2sigma(43)
+\end_layout
+
+\begin_layout LyX-Code
+    result = ndimage.filters.gaussian_filter(np_image, (filterSize, filterSize,
+ 1))
+\end_layout
+
+\begin_layout LyX-Code
+    return result
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+if __name__ == "__main__":
+\end_layout
+
+\begin_layout LyX-Code
+    title = "Guassian Filtered Output"
+\end_layout
+
+\begin_layout LyX-Code
+    VCP(gaussianBlur,title=title).main()
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:Gaussian-Python-SciPy"
+
+\end_inset
+
+Gaussian Blurring in Python using SciPy
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Comparison
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename report_data/blur_c.png
+	lyxscale 20
+	width 25col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+C Plus Plus
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename report_data/blur_opencv.png
+	lyxscale 20
+	width 25col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Python OpenCV
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename report_data/blur_scipy.png
+	lyxscale 20
+	width 25col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Python SciPy
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Gaussian-Output-Images"
+
+\end_inset
+
+Output Images from Gaussian Blur Examples
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Oddly Python was faster again....
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
 \begin_inset Tabular
-<lyxtabular version="3" rows="3" columns="6">
+<lyxtabular version="3" rows="4" columns="6">
 <features>
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -966,7 +1178,7 @@ Image Blur
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Language
 \end_layout
 
 \end_inset
@@ -975,7 +1187,7 @@ Image Blur
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Run 1
 \end_layout
 
 \end_inset
@@ -984,7 +1196,7 @@ Image Blur
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Run 2
 \end_layout
 
 \end_inset
@@ -993,7 +1205,7 @@ Image Blur
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Run 3
 \end_layout
 
 \end_inset
@@ -1002,7 +1214,7 @@ Image Blur
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Mean
 \end_layout
 
 \end_inset
@@ -1011,7 +1223,7 @@ Image Blur
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Std Dev
 \end_layout
 
 \end_inset
@@ -1022,7 +1234,7 @@ Image Blur
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Python
 \end_layout
 
 \end_inset
@@ -1031,7 +1243,7 @@ Image Blur
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+14.968987
 \end_layout
 
 \end_inset
@@ -1040,7 +1252,7 @@ Image Blur
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+14.953608
 \end_layout
 
 \end_inset
@@ -1049,7 +1261,7 @@ Image Blur
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+14.970845
 \end_layout
 
 \end_inset
@@ -1058,7 +1270,7 @@ Image Blur
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+14.964480 
 \end_layout
 
 \end_inset
@@ -1067,7 +1279,63 @@ Image Blur
 \begin_inset Text
 
 \begin_layout Plain Layout
+9.95E-03 
+\end_layout
 
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+CPlusPlus
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4.08165
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4.04797
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4.04227
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4.057297 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2.13E-02 
 \end_layout
 
 \end_inset
@@ -1078,7 +1346,7 @@ Image Blur
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Scipy
 \end_layout
 
 \end_inset
@@ -1087,7 +1355,7 @@ Image Blur
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+4.107837
 \end_layout
 
 \end_inset
@@ -1096,7 +1364,7 @@ Image Blur
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+4.159811
 \end_layout
 
 \end_inset
@@ -1105,7 +1373,7 @@ Image Blur
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+4.135005
 \end_layout
 
 \end_inset
@@ -1136,51 +1404,204 @@ Image Blur
 
 \end_layout
 
-\begin_layout Standard
-Using other Python tools in conjunction
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Gaussian-Results"
+
+\end_inset
+
+CPU bound test results - Gaussian Blur filtering on webcam stream.
+ (In fps)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-NumPy - very fast raw data crunching for Python.
- Much easier to use than matrices in C, obviously not going to be as quick.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename report_data/gaussian_blur.png
+	lyxscale 50
+	width 80col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+OpenCV performance carrying out Gaussian Blur
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Background subtractions
+\end_layout
+
+\begin_layout Standard
+Double Diff, Graph Cut maybe....
+\end_layout
+
+\begin_layout Standard
+reference Richard Greens paper
+\end_layout
+
+\begin_layout Subsection
+Face Detection
+\end_layout
+
+\begin_layout Standard
+Haar-Cascades....
+ except from my objectDetect class....
+ explain stuff here...
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide true
+sideways false
+status collapsed
+
+\begin_layout LyX-Code
+def detectObject(self,img):
+\end_layout
+
+\begin_layout LyX-Code
+    """This should be pure opencv and reasonably quick."""
+\end_layout
+
+\begin_layout LyX-Code
+    gray = cvCreateImage( cvSize(img.width,img.height), 8, 1 )
+\end_layout
+
+\begin_layout LyX-Code
+    small_img = cvCreateImage( cvSize( cvRound (img.width/self.image_scale),
  
 \end_layout
 
-\begin_layout Standard
-SciPy - toolbox of scientific tools for Python based on using NumPy data
- arrays.
- Has filters and convolution etc much like matlab.
- (Should be much simpler higher level code, without any significant performance
- loss.)
+\begin_layout LyX-Code
+                              cvRound (img.height/self.image_scale)), 8, 1
+ )
+\end_layout
+
+\begin_layout LyX-Code
+    cvCvtColor( img, gray, CV_BGR2GRAY )
+\end_layout
+
+\begin_layout LyX-Code
+    cvResize( gray, small_img, CV_INTER_LINEAR )
+\end_layout
+
+\begin_layout LyX-Code
+    cvEqualizeHist( small_img, small_img )
+\end_layout
+
+\begin_layout LyX-Code
+    cvClearMemStorage( self.storage )
+\end_layout
+
+\begin_layout LyX-Code
+    if( self.cascade ):
+\end_layout
+
+\begin_layout LyX-Code
+        t = cvGetTickCount()
+\end_layout
+
+\begin_layout LyX-Code
+        objects = cvHaarDetectObjects( small_img, self.cascade, self.storage,
+\end_layout
+
+\begin_layout LyX-Code
+                   self.haar_scale, self.min_neighbors, self.haar_flags, self.min_si
+ze )
+\end_layout
+
+\begin_layout LyX-Code
+        t = cvGetTickCount() - t
+\end_layout
+
+\begin_layout LyX-Code
+        if verbose:
+\end_layout
+
+\begin_layout LyX-Code
+            print "%i objects found, detection time = %gms" % (objects.total,t/(c
+vGetTickFrequency()*1000.))
+\end_layout
+
+\begin_layout LyX-Code
+        return objects
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Using the OpenCV Haar Detect Objects Function
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Harris Corner Detect, Ransac...
+ 
+\end_layout
+
+\begin_layout Section
+Related Works
 \end_layout
 
 \begin_layout Standard
-Pygame - a game making module for Python, aimed at new programmers.
- I will demonstrate how simple it is to get started in Computer Vision.
- http://pygame.org
-\end_layout
-
-\begin_layout Standard
-Pycam - my framework tying OpenCV to Pygame and NumPy.
- http://pycam.googlecode.com
-\end_layout
-
-\begin_layout Standard
-Performance Considerations, Comparisons and Optimisations
-\end_layout
-
-\begin_layout Standard
-Detailed statistical tests and results to see how much slower low level
- filters implemented in Python using NumPy performs doing image processing
- tests.
- Will choose and implement at a low level a number of filters and compare
- the implementation and performance in C and Python with just OpenCV and
- with SciPy/NumPy.
-\end_layout
-
-\begin_layout Standard
-The performance of Pygame will be briefly touched on, although it is not
- a serious research platform so it isn't as crucial that it is fast.
+Part 2 should be "related works" as referencing people comparing: different
+ version of CV library in different languages, in different platforms, maybe
+ also people using OpenCV+IPL, people having implementing other CV library
+ in Python, etc.
 \end_layout
 
 \begin_layout Section
@@ -1188,8 +1609,8 @@ Conclusions
 \end_layout
 
 \begin_layout Standard
-Python will be slow, but for many applications probably fast enough not
- to notice.
+Initial thoughts are that Python will be slow, but for many applications
+ probably fast enough not to notice.
  The benefits for quick prototyping of new algorithms and using those prototypes
  in the final product is a serious draw card...
 \end_layout
@@ -1199,8 +1620,28 @@ Limitations (other than speed), hardware, Firewire, support, libraries and
  functionality?
 \end_layout
 
+\begin_layout Section
+Appendix
+\end_layout
+
+\begin_layout Subsection
+Code Listings
+\end_layout
+
 \begin_layout Section*
 Software Links
+\end_layout
+
+\begin_layout Itemize
+Pygame - a game making module for Python, aimed at new programmers.
+ I will demonstrate how simple it is to get started in Computer Vision.
+ http://pygame.org
+\end_layout
+
+\begin_layout Itemize
+Pycam - All code from this project, my framework linking OpenCV to Pygame
+ and NumPy.
+ http://pycam.googlecode.com
 \end_layout
 
 \begin_layout Bibliography
@@ -1287,6 +1728,25 @@ Shapiro, L.
  & Stockman, G.
  C: "Computer Vision", page 137, 150.
  Prentence Hall, 2001
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-6"
+
+\end_inset
+
+Gary Bradski, Adrian Kaehler: 
+\begin_inset Quotes eld
+\end_inset
+
+Learning OpenCV: computer vision with the OpenCV library
+\begin_inset Quotes erd
+\end_inset
+
+, page 112.
+ 
 \end_layout
 
 \end_body
