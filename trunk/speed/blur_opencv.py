@@ -6,18 +6,16 @@ Brian Thorne 2009
 """
 
 from VideoCapturePlayer import VideoCapturePlayer as VCP
-
 from opencv import cv
 
-
-def gaussianBlur(image):
-    """Blur an image"""
-    result = cv.cvCreateMat(image.rows, image.cols, image.type)
-    filterSize = 43 #139 gives a very strong blur, but takes a while
-    cv.cvSmooth(image, result, cv.CV_GAUSSIAN, filterSize)   # Carry out the filter operation
-    return result
+def gaussianBlur(image, filterSize=43):
+    """Blur an image with a particular strength filter.
+    Default is 43, 139 gives a very strong blur, but takes a while"""
+    
+    # Carry out the filter operation
+    cv.cvSmooth(image, image, cv.CV_GAUSSIAN, filterSize)
+    return image
 
 if __name__ == "__main__":
     title = "Guassian Filtered Output"
-    vcp = VCP(gaussianBlur, title)
-    vcp.main()
+    VCP(gaussianBlur, title).main()

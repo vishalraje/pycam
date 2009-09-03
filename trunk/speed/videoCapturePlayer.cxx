@@ -1,13 +1,10 @@
 /*
-Should be able to compile with:
+Should be able to compile by uncommenting the main function at the bottom and using:
 g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
 */
 
 #include <string>
 #include <iostream>
-
-#include "cv.h"
-#include "highgui.h"
 
 #include "videoCapturePlayer.h"
 
@@ -100,7 +97,7 @@ void VideoCapturePlayer::main()
     cout << "FPS: " << fps << endl;
 }
 
-
+//  Example Usage Follows
 
 /**
  * This is a template for a function that can be fed into VideoCapturePlayer
@@ -118,7 +115,7 @@ CvMat * doNothing(CvMat *x)
     //*/
     return x;
 }
-
+/*
 int main( int argc, char** argv )
 {
     cout << "Starting VideoCapturePlayer demo" << endl;
@@ -130,3 +127,4 @@ int main( int argc, char** argv )
     
     return 0;
 }
+*/
