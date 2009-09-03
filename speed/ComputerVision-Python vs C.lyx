@@ -1,4 +1,4 @@
-#LyX 1.6.3 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -56,7 +56,7 @@ Developing Computer Vision Programs?
 \end_layout
 
 \begin_layout Plain Layout
-Cprofiling gprof
+Cprofiling gprof, cProfile in python
 \end_layout
 
 \begin_layout Plain Layout
@@ -379,7 +379,96 @@ C++
 \end_layout
 
 \begin_layout Standard
-Blah blah
+Calling the OpenCV function cvSmooth to carry out gaussian blur with a filter
+ size of 43.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#include <iostream> 
+\end_layout
+
+\begin_layout Plain Layout
+
+#include "videoCapturePlayer.h"
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+CvMat * gaussianBlur(CvMat *x){// Filter with gaussian smoothing
+\end_layout
+
+\begin_layout Plain Layout
+
+    int filterSize = 43;
+\end_layout
+
+\begin_layout Plain Layout
+
+    cvSmooth(x, x, CV_GAUSSIAN, filterSize);
+\end_layout
+
+\begin_layout Plain Layout
+
+    return x;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+int main( int argc, char** argv ){
+\end_layout
+
+\begin_layout Plain Layout
+
+    std::cout << "Starting Gassian Blur C++ demo" << std::endl;
+\end_layout
+
+\begin_layout Plain Layout
+
+    std::cout << "Press 'q' to exit the program" << std::endl;
+\end_layout
+
+\begin_layout Plain Layout
+
+    VideoCapturePlayer vcp = VideoCapturePlayer(&gaussianBlur);
+\end_layout
+
+\begin_layout Plain Layout
+
+    vcp.init(); vcp.main();
+\end_layout
+
+\begin_layout Plain Layout
+
+    return 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -387,21 +476,17 @@ Python
 \end_layout
 
 \begin_layout Standard
-With OpenCV:
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-todo test these on multiplatforms, use the VidCapPlayer class as mentioned
- above.
-\end_layout
-
-\end_inset
-
+In python taking advantage of VideoCapturePlayer, the python class mentioned
+ above, and using OpenCV to do the convolution for us.
  
 \begin_inset listings
 inline false
 status open
+
+\begin_layout Plain Layout
+
+from VideoCapturePlayer import VideoCapturePlayer as VCP
+\end_layout
 
 \begin_layout Plain Layout
 
@@ -410,47 +495,52 @@ from opencv import cv
 
 \begin_layout Plain Layout
 
-from opencv import highgui as hg
+def gaussianBlur(image):
 \end_layout
 
 \begin_layout Plain Layout
 
-title = "Filtered Image"
+    """Blur an image"""     
 \end_layout
 
 \begin_layout Plain Layout
 
-a = hg.cvLoadImage('image.jpg')
+    result = cv.cvCreateMat(image.rows, image.cols, image.type)
 \end_layout
 
 \begin_layout Plain Layout
 
-b = cv.cvCreateMat(a.rows, a.cols, a.type) 
+    filterSize = 43
 \end_layout
 
 \begin_layout Plain Layout
 
-filterSize = 3  # Must be odd 
+    cv.cvSmooth(image, result, cv.CV_GAUSSIAN, filterSize)   # Carry out the
+ filter operation
 \end_layout
 
 \begin_layout Plain Layout
 
-cv.cvSmooth(a, b, cv.CV_GAUSSIAN, filterSize)   # Carry out the filter operation
+    return result
 \end_layout
 
 \begin_layout Plain Layout
 
-hg.cvNamedWindow(title) 
 \end_layout
 
 \begin_layout Plain Layout
 
-hg.cvShowImage(title, b)               # Show the resulting image 
+if __name__ == "__main__":
 \end_layout
 
 \begin_layout Plain Layout
 
-hg.cvWaitKey() hg.cvDestroyWindow(title)
+    title = "Guassian Filtered Output"
+\end_layout
+
+\begin_layout Plain Layout
+
+    VCP(gaussianBlur, title).main()
 \end_layout
 
 \end_inset
@@ -459,7 +549,133 @@ hg.cvWaitKey() hg.cvDestroyWindow(title)
 \end_layout
 
 \begin_layout Standard
-With scipy:
+This produces a blurred image.
+ 
+\begin_inset Graphics
+	filename report_data/blur_opencv.png
+	lyxscale 20
+	width 80col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Secondly using the VideoCapturePlayer again but this time using scipy to
+ do the convolution.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+from numpy import array, uint8
+\end_layout
+
+\begin_layout Plain Layout
+
+from scipy import signal, ndimage 
+\end_layout
+
+\begin_layout Plain Layout
+
+from VideoCapturePlayer import VideoCapturePlayer as VCP 
+\end_layout
+
+\begin_layout Plain Layout
+
+from misc import scipyFromOpenCV
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@scipyFromOpenCV 
+\end_layout
+
+\begin_layout Plain Layout
+
+def gaussianBlur(np_image):
+\end_layout
+
+\begin_layout Plain Layout
+
+    """Blur an image with scipy"""
+\end_layout
+
+\begin_layout Plain Layout
+
+    filterSize = 13     #139 gives a very strong blur, but takes a while
+\end_layout
+
+\begin_layout Plain Layout
+
+    result = ndimage.filters.gaussian_filter(np_image, (filterSize, filterSize,
+ 1))
+\end_layout
+
+\begin_layout Plain Layout
+
+    return result
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+if __name__ == "__main__":
+\end_layout
+
+\begin_layout Plain Layout
+
+    title = "Guassian Filtered Output"
+\end_layout
+
+\begin_layout Plain Layout
+
+    VCP(gaussianBlur,title=title).main()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename report_data/blur_scipy.png
+	lyxscale 20
+	width 80col%
+
+\end_inset
+
+Note that due to XXXXXXX these functions are not computing the exact same
+ thing.
+ A filter window of 43 in OpenCV produces about the same amount of blur
+ as a filter size of 13 in Scipy.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+THESE FUNCTIONS ARE NOT EQUIVALENT, THE BLUR IS DIFFERANT FOR SAME FILTER
+ SIZE
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -491,17 +707,433 @@ Results
 Using OpenCV from Python examples
 \end_layout
 
-\begin_layout Standard
-Image Capture - display and saving of an image from a webcam.
+\begin_layout Subsubsection
+Image Capture
 \end_layout
 
 \begin_layout Standard
-Video Acquisition - 
+Results for taking an image from a webcam, drawing a box ontop of the image
+ and displaying all with OpenCV.
+ The average frames per second are taken over 3 runs each averaging over
+ a 2 minute period.
 \end_layout
 
 \begin_layout Standard
-Static Image Processing - for example a median filter, blur, sharpening,
- face detection etc.
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="7">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Language
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Run 1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Run 2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Run 3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Mean
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Std Dev
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Python
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+15.0073
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+15.0073
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+15.0069
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+15.0072 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2.68E-04 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+CPlusPlus
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+14.9662
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+14.9642
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+14.9638
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+14.9647 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.29E-03 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Oddly Python was faster....
+\begin_inset Graphics
+	filename report_data/image_capture_graph.png
+	lyxscale 20
+	width 80col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+median filter, blur, sharpening, face detection etc.
+\end_layout
+
+\begin_layout Subsubsection
+Image Blur
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="6">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
