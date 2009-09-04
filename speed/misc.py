@@ -3,6 +3,12 @@ from scipy import signal
 
 from opencv import adaptors
 
+def opencvFilt2sigma(size):
+    """OpenCV defaults to making sigma up with this formula.
+    Learning OpenCV: computer vision with the OpenCV library
+    By Gary Bradski, Adrian Kaehler pg 112"""
+    return (( size*0.5 ) - 1)*0.30 + 0.80
+
 class scipyFromOpenCV(object):
     """This decorator can be used to wrap a function that takes 
     and returns a numpy array into one that takes and retuns an
@@ -34,10 +40,6 @@ def convert_to_grey(image):
     return result
 
 
-
-
-
-
 ###########################
 # This is very slow.
 def gauss_kern(size, sizey=None):
@@ -54,7 +56,7 @@ def gauss_kern(size, sizey=None):
 @scipyFromOpenCV
 def slowGaussianBlur(matrix):
     """Manual gaussian blur - Very very very slow!"""
-    filterSize = 3
+    filterSize = 43
     filt = gauss_kern(filterSize)
 
     r = signal.convolve(matrix[:,:,0],filt,'same')
@@ -65,3 +67,7 @@ def slowGaussianBlur(matrix):
    
     return result
 #########################
+
+
+
+
