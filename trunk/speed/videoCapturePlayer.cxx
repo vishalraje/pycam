@@ -50,43 +50,62 @@ void VideoCapturePlayer::init()
         cvNamedWindow( WINDOW_TITLE, CV_WINDOW_AUTOSIZE );
     }
     t_setup = cvGetTickCount();
-    cout << "Setup time=" << (double)(t_setup-t_begin) << endl;
+    cout << "Setup time=" << (double)(t_setup-t_begin)/(1000000 * cvGetTickFrequency()) << endl;
 
     
 }
 
 void VideoCapturePlayer::main()
 {
-    t_start = cvGetTickCount();
+    bool timing_now = false;
+    
+    // start main loop - quit if user press 'q'
     while( (char)key != 'q' )
     {
-        /* get a frame - image should not be released or modified*/
-        frame = cvQueryFrame( capture );
-        
-        /* Convert to a CvMat*/
-        {
-            CvMat temp_mat;
-            mat_frame = cvGetMat( frame, &temp_mat);
+        // start the clock after the system has been running for a few 
+        // frames and has flushed buffers etc...
+        if( !timing_now && num_frames > 5){
+            num_frames = 0;
+            timing_now = true;
+            t_start = cvGetTickCount();
         }
         
-        /* always check */
-        if( !frame ){ cout << "No frame!" << endl; break;}
+        // count how many frames we process
+        ++num_frames;
         
+        // made new scope so frame & temp_mat get cleaned up quickly.
+        {
+            // get a frame - image should not be released or modified
+            IplImage  *frame = cvQueryFrame( capture );
+            
+            // always check that we received a frame
+            if( !frame ){ cout << "Failed to receive image!" << endl; break;}
+            
+            // cloning the mat instead of the image due to smaller size
+            CvMat temp_mat;
+            mat_frame = cvCloneMat( cvGetMat( frame, &temp_mat) );
+        }
+        
+        
+        
+        // Give the CvMat to the supplied external function for processing.
         if (processFunc)
         {
             mat_frame = processFunc(mat_frame);
         }
         
-        /* display frame */
+        // display frame
         if(show)
         {
             cvShowImage( WINDOW_TITLE, mat_frame );
         }
-        ++num_frames;
-        /* quit if user press 'q' */
+
+        // reveive any key event
         key = cvWaitKey( 5 );
     }
     t_end = cvGetTickCount();
+    
+    // Post processing
     float tickFreq = cvGetTickFrequency();
     //cout << "Frames captured: " << num_frames << endl;
     //cout << "Running ticks:" << (double)(t_end-t_start) << endl;
@@ -99,28 +118,27 @@ void VideoCapturePlayer::main()
 
 //  Example Usage Follows
 
-/**
- * This is a template for a function that can be fed into VideoCapturePlayer
- * It must take a CvMat, and return a CvMat.
- * It draws a rectangle on the screen.
- */
-CvMat * doNothing(CvMat *x)
+/*
+
+// This is a template for a function that can be fed into VideoCapturePlayer
+// It must take a CvMat, and return a CvMat.
+// It draws a rectangle on the screen.
+CvMat * drawBox(CvMat *x)
 {
-    ///*
     CvPoint pt1, pt2;
     pt1.x = pt1.y = 200;
     pt2.x = pt2.y = 250;
-    
     cvRectangle( x, pt1, pt2, CV_RGB(30,0,200) );
-    //*/
     return x;
 }
-/*
+
+// An example main function creating a VideoCapturePlayer
+// with a process function.
 int main( int argc, char** argv )
 {
     cout << "Starting VideoCapturePlayer demo" << endl;
     cout << "Press 'q' to exit the program" << endl;
-    VideoCapturePlayer vcp = VideoCapturePlayer(&doNothing);
+    VideoCapturePlayer vcp = VideoCapturePlayer(&drawBox);
     //VideoCapturePlayer vcp = VideoCapturePlayer();
     vcp.init();
     vcp.main();

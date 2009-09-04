@@ -66,6 +66,11 @@ Cprofiling gprof, cProfile in python
 http://developer.apple.com/tools/sharkoptimize.html
 \end_layout
 
+\begin_layout Plain Layout
+You should have few code snippets, maybe 3 will sufficient, the rest in
+ the appendices yes.
+\end_layout
+
 \end_inset
 
 
@@ -73,6 +78,27 @@ http://developer.apple.com/tools/sharkoptimize.html
 
 \begin_layout Author
 Brian Thorne, Raphael Grasset, Richard Green
+\begin_inset Newline newline
+\end_inset
+
+HIT Lab NZ, University of Canterbury, Private Bag 4800, Christchurch
+\begin_inset Newline newline
+\end_inset
+
+Email: {brian.thorne|raphael.grasset|richard.green}@hitlabnz.org
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Keywords??? Python, C++
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Abstract
@@ -109,6 +135,17 @@ Firstly, I will briefly present the basics of computer vision; such as video
  can be achieved with other Python tools such as scipy.
  I will show how these libraries can be used in conjunction to perform video
  capturing, image processing and video feedback.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+if it's openCV in C++ and openCV in Python, use a simple notation: OPENCV_C++,
+ OPENCV_PY that you introduce in the text.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -227,7 +264,7 @@ RAPH...
 \begin_inset Float algorithm
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout LyX-Code
 #include "cv.h"
@@ -279,7 +316,7 @@ name "alg:C-Image-capture"
 
 \end_inset
 
-Image capture in C.
+Image capture and display with OpenCV in C.
  
 \end_layout
 
@@ -386,6 +423,25 @@ reference "tab:IO-bound-Webcam"
 wide false
 sideways false
 status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:IO-bound-Webcam"
+
+\end_inset
+
+Simple IO bound test - Webcam streaming comparison of Python and C++.
+ Results shown are in frames per second.
+\end_layout
+
+\end_inset
+
+
+\end_layout
 
 \begin_layout Plain Layout
 \begin_inset Tabular
@@ -514,7 +570,7 @@ Python
 \begin_inset Text
 
 \begin_layout Plain Layout
-CPlusPlus
+C++
 \end_layout
 
 \end_inset
@@ -573,25 +629,6 @@ CPlusPlus
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "tab:IO-bound-Webcam"
-
-\end_inset
-
-Simple IO bound test - Webcam streaming comparison of Python and CPlusPlus.
- Results shown are frames per second.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
 
 \end_layout
 
@@ -607,14 +644,20 @@ Oddly Python was faster....
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO: Make the bars thinner
+\end_layout
+
+\end_inset
+
+
 \begin_inset Float figure
 wide false
 sideways false
 status collapsed
-
-\begin_layout Plain Layout
-
-\end_layout
 
 \begin_layout Plain Layout
 \align center
@@ -629,7 +672,7 @@ status collapsed
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Comparison of Python and C performance using OpenCV for webcam capture,
+Comparison of Python and C++ performance using OpenCV for webcam capture,
  drawing on the image, and displaying.
 \end_layout
 
@@ -771,7 +814,7 @@ name "alg:Gaussian-C"
 
 \end_inset
 
-Applying Gaussian Blur to webcam stream from C Plus Plus
+Applying Gaussian Blur to webcam stream from C++
 \end_layout
 
 \end_inset
@@ -883,15 +926,12 @@ This produces a blurred image as desired.
 \begin_layout Standard
 Secondly using the VideoCapturePlayer again but this time using scipy to
  do the convolution.
- To continue using the OpenCV cameara capture, a conversion must be done
- into NumPy arrays; this is achieved here by creating and using a Python
- decorator 
-\noun on
-scipyFromOpenCV
-\noun default
-.
+ To continue using the OpenCV camera capture, the image data must be converted
+ into NumPy arrays; this has been achieved here by creating and using a
+ Python decorator which converts before and after calling a Python function
+ using NumPy.
  Also the filter parameters need converted to be compatible with OpenCV's
- cvSmooth defaults 
+ cvSmooth defaults
 \begin_inset CommandInset citation
 LatexCommand cite
 key "key-6"
@@ -1043,7 +1083,7 @@ status collapsed
 \begin_inset Caption
 
 \begin_layout Plain Layout
-C Plus Plus
+C++
 \end_layout
 
 \end_inset
@@ -1415,7 +1455,7 @@ name "tab:Gaussian-Results"
 \end_inset
 
 CPU bound test results - Gaussian Blur filtering on webcam stream.
- (In fps)
+ (in fps)
 \end_layout
 
 \end_inset
@@ -1432,7 +1472,7 @@ CPU bound test results - Gaussian Blur filtering on webcam stream.
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -1602,6 +1642,17 @@ Part 2 should be "related works" as referencing people comparing: different
  version of CV library in different languages, in different platforms, maybe
  also people using OpenCV+IPL, people having implementing other CV library
  in Python, etc.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Thank Rob for the profiling help
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -1747,6 +1798,24 @@ Learning OpenCV: computer vision with the OpenCV library
 
 , page 112.
  
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-1"
+
+\end_inset
+
+OpenCV 1.1 C Reference, by OpenCV developers.
+ Retrieved from 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://opencv.willowgarage.com/documentation/index.html"
+
+\end_inset
+
+
 \end_layout
 
 \end_body

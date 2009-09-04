@@ -5,7 +5,7 @@
  * 
  *      Compile with:
  * 
- * g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx videoCapturePlayer.cxx
+ * g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx videoCapturePlayer.cxx
  *  
  */
 
@@ -17,7 +17,8 @@ CvMat * gaussianBlur(CvMat *x)
 {
     // Filter with gaussian smoothing
     int filterSize = 43;
-    cvSmooth(x, x, CV_GAUSSIAN, filterSize);
+    //cvSmooth(x, x, CV_GAUSSIAN, filterSize);
+    cvSmooth(x, x,CV_MEDIAN, filterSize);
     return x;
 }
 

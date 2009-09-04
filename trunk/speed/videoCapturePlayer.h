@@ -2,7 +2,6 @@
  *  videoCapturePlayer.h
  *
  *  Created by Brian Thorne on 31/08/09.
- *  Copyright 2009 All rights reserved.
  *
  */
 
@@ -22,10 +21,10 @@ public:
     
     ~VideoCapturePlayer();
     
-    /* Try load a webcam, exits on fail, open the display window */
+    /* Try load a webcam, exits on fail, open an OpenCV display window */
     void init();
     
-    /* Run the main capture, process, display loop */
+    /* Run the main loop: capture, process, and display. Times exectution */
     void main();
 
 private:
@@ -36,13 +35,12 @@ private:
     const int device;   // Which camera device to run off
     CvCapture *capture; // The camera capture device
     
-    // two types of image formats for each frame.
-    IplImage  *frame;
+    // save a local copy of image in each frame.
     CvMat *mat_frame;
     
     int key;
     int num_frames;
-    int64 t_start,t_end;
+    int64 t_start, t_end;
     float fps;
         
 };

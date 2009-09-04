@@ -4,7 +4,7 @@ from opencv import cv, highgui as hg
 import time
 import logging
 
-verbosity = logging.DEBUG
+verbosity = logging.INFO
 profiling = False
 
 logging.basicConfig(filename=None,level=verbosity,)
@@ -44,7 +44,7 @@ class VideoCapturePlayer(object):
     def __init__(self, processFunction = None, title = "Video Capture Player", show=True, **argd):
         self.__dict__.update(**argd)
         super(VideoCapturePlayer, self).__init__(**argd)
-        
+        t_begin = time.time()
         self.processFunction = processFunction
         self.title = title
         self.show = show
@@ -60,10 +60,12 @@ class VideoCapturePlayer(object):
             raise SystemExit
         
         # Take a frame to get props and use in testing
-        self.snapshot = hg.cvQueryFrame( self.camera )
+        self.snapshot = cv.cvCloneMat( hg.cvQueryFrame( self.camera ) )
+        # check that we got an image, otherwise try again.
         for i in xrange(100):
             if self.snapshot is not None: break
             self.snapshot = hg.cvQueryFrame( self.camera )
+        
 
     def process(self, take_new_image=True):
         """We will take a snapshot, optionally do some arbitrary process (eg in numpy/scipy)
@@ -73,7 +75,7 @@ class VideoCapturePlayer(object):
         try:
             if take_new_image:
                 logging.debug("capturing an image")
-                self.snapshot = hg.cvQueryFrame( self.camera)
+                self.snapshot = cv.cvCloneMat( hg.cvQueryFrame( self.camera) )
        
             if self.processFunction is not None:
                 logging.debug("Sending image to process function")

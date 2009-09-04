@@ -13,7 +13,8 @@ def gaussianBlur(image, filterSize=43):
     Default is 43, 139 gives a very strong blur, but takes a while"""
     
     # Carry out the filter operation
-    cv.cvSmooth(image, image, cv.CV_GAUSSIAN, filterSize)
+    #cv.cvSmooth(image, image, cv.CV_GAUSSIAN, filterSize)
+    cv.cvSmooth(image, image, cv.CV_MEDIAN, filterSize)
     return image
 
 if __name__ == "__main__":
