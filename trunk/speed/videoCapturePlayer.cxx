@@ -1,6 +1,6 @@
 /*
 Should be able to compile by uncommenting the main function at the bottom and using:
-g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
 */
 
 #include <string>
@@ -40,9 +40,14 @@ void VideoCapturePlayer::init()
         cout << "Couldn't create camera capture" << endl; 
     }
     
-    /* get fps, needed to set the delay */
-    //fps = ( int )cvGetCaptureProperty( capture, CV_CAP_PROP_FPS );
-    //fps /= 2;
+    // Check that we can get an image
+    for(int i = 100;i;--i)
+    {
+        IplImage  *frame = cvQueryFrame( capture );
+        if(frame) break;
+        cout << "couldn't receive image from capture, trying again" << endl;
+    }
+        
     
     
     if(show){
@@ -138,8 +143,8 @@ int main( int argc, char** argv )
 {
     cout << "Starting VideoCapturePlayer demo" << endl;
     cout << "Press 'q' to exit the program" << endl;
-    VideoCapturePlayer vcp = VideoCapturePlayer(&drawBox);
-    //VideoCapturePlayer vcp = VideoCapturePlayer();
+    //VideoCapturePlayer vcp = VideoCapturePlayer(&drawBox);
+    VideoCapturePlayer vcp = VideoCapturePlayer();
     vcp.init();
     vcp.main();
     

@@ -88,22 +88,13 @@ HIT Lab NZ, University of Canterbury, Private Bag 4800, Christchurch
 Email: {brian.thorne|raphael.grasset|richard.green}@hitlabnz.org
 \end_layout
 
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Keywords??? Python, C++
-\end_layout
-
-\end_inset
-
-
+\begin_layout Keywords
+Computer Vision, OpenCV, Python, C++
 \end_layout
 
 \begin_layout Abstract
-An introduction to and argument for computer vision in Python inplace of
- the C programming language.
+An introduction to and argument for programming computer vision applications
+ and scripts in Python inplace of the C/C++ programming language.
  From the general concept to its implementation with some current open-source
  libraries (opencv, numpy/scipy, pygame).
  
@@ -120,27 +111,37 @@ The purpose of this paper is an introduction to computer vision (CV) and
  or C++.
  There a significant benefits to developer time if Python is a viable alternativ
 e.
- I aim to show what is possible with current libraries, demonstrate their
- usability, explore their limitations, compare performance and cover elements
- of best coding practice.
+ This paper aims to show what is possible with current libraries, demonstrate
+ their usability, explore their limitations, compare performance and cover
+ elements of best coding practice.
 \end_layout
 
 \begin_layout Standard
-Firstly, I will briefly present the basics of computer vision; such as video
- grabbing, image processing and computer vision algorithms.
- I will illustrate with the Python bindings to the OpenCV library and show
- different examples such as displaying a video image, some filtering algorithms
+To Compare performance between C++ and Python for computer vision the OpenCV
+ library is used to show different examples of computer vision.
+ Examples analyzed include displaying a video image, filtering algorithms
  (dilation, gaussian blur), and how to implement facial recognition.
- I will go on to describe how these and other computer vision related tasks
- can be achieved with other Python tools such as scipy.
+ We go on to describe how these and other computer vision related tasks
+ can be achieved with other Python tools such as SciPy
+\begin_inset CommandInset citation
+LatexCommand cite
+key "oliphant2007python"
+
+\end_inset
+
+.
  I will show how these libraries can be used in conjunction to perform video
  capturing, image processing and video feedback.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
 if it's openCV in C++ and openCV in Python, use a simple notation: OPENCV_C++,
  OPENCV_PY that you introduce in the text.
+ just for tables?
 \end_layout
 
 \end_inset
@@ -157,7 +158,14 @@ Python
 \end_layout
 
 \begin_layout Standard
-Python is a general purpose dynamic programming language.
+Python is a general purpose dynamic programming language
+\begin_inset CommandInset citation
+LatexCommand cite
+key "entry-0"
+
+\end_inset
+
+.
  It is highley regarded due in no small part for its fast development time.
 \end_layout
 
@@ -171,6 +179,8 @@ Intel's open source computer vision libraries...
  C library.
  Python bindings.
  IPP.
+ For the tests carried out in this paper the latest tested snapshot of OpenCV
+ 1.1.1 was used.
 \end_layout
 
 \begin_layout Subsection
@@ -178,7 +188,14 @@ NumPy
 \end_layout
 
 \begin_layout Standard
-Numpy gives N-dimensional arrays to python.
+Numpy gives N-dimensional arrays to python
+\begin_inset CommandInset citation
+LatexCommand cite
+key "oliphant2006guide"
+
+\end_inset
+
+.
  Has very fast raw data crunching, iterating.
  Much easier to use than multidimensinal matrices in C.
 \end_layout
@@ -188,9 +205,23 @@ SciPy
 \end_layout
 
 \begin_layout Standard
-SciPy is a set of libraries and tools for scientific and mathematical work
- build ontop of NumPy.
- Has filters and convolution etc much like matlab.
+SciPy
+\begin_inset CommandInset citation
+LatexCommand cite
+key "jones2001scipy"
+
+\end_inset
+
+ is a set of Python libraries and tools for scientific and mathematical
+ work build ontop of NumPy
+\begin_inset CommandInset citation
+LatexCommand cite
+key "oliphant2007python"
+
+\end_inset
+
+.
+ SciPy has filters and convolution etc much like matlab.
  Should be much simpler higher level code, without any significant performance
  loss.
 \end_layout
@@ -230,41 +261,35 @@ reference "alg:C-Image-capture"
 status collapsed
 
 \begin_layout Plain Layout
-For brevity these code snippets do not carry out error checking.
+For brevity these code snippets do not carry out error checking or cleanup.
  It is assumed that a camera was found succesfully and that a frame was
  available and returned.
- The C++ code VideoCapturePlayer does carry out this error checking.
+ The C++ and Python versions of VideoCapturePlayer do carry out this error
+ checking.
 \end_layout
 
 \end_inset
 
 .
  Using this as a template it is straight forward to wrap the capture and
- display in a loop, this forms the basis of the C++ class VideoCapturePlayer
- included in the appendix
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-RAPH...
- So what is the deal with code.
- VideoCapturePlayer in C Plus Plus and in Python are many times longer than
- the rest of the code snippets.
- Are the algorithms okay as floating elements?
-\end_layout
-
-\end_inset
-
-.
- This C++ class is used in the other examples to keep the code duplication
- and variation to a minimum.
+ display in a loop, this forms the basis of the C++ class 
+\noun on
+VideoCapturePlayer
+\noun default
+ included in the appendix.
+ This 
+\noun on
+VideoCapturePlayer
+\noun default
+ class is used in the other examples to keep the code duplication and variation
+ to a minimum.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float algorithm
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout LyX-Code
 #include "cv.h"
@@ -344,11 +369,19 @@ reference "alg:Python-Image-capture"
 
  does the same basic task of accessing a webcam and displaying one image
  in Python.
+ The code is almost entirely identical in C and Python.
+ The main difference being in the Python code no variables types are declared,
+ this shows the dynamic nature of the language.
  As with C++, an object orrientated version of this acquisition loop with
  error checking is used in further tests.
- The VideoCapturePlayer object optionally takes a pointer to a function.
- The function takes the raw image, does some process on it, and returns
- a possibly modified image.
+ The 
+\noun on
+VideoCapturePlayer
+\noun default
+ classes in both C++ and Python optionally take a function as an argument.
+ This function takes the raw image, does some process on it, and returns
+ an image for display.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -412,8 +445,8 @@ reference "tab:IO-bound-Webcam"
 
 \end_inset
 
- shows results for taking an image from a webcam, drawing a box ontop of
- the image and displaying all with OpenCV.
+ shows results for taking an image from a webcam and displaying the image
+ with OpenCV.
  The average frames per second are taken over 3 runs each averaging over
  a 2 minute period.
 \end_layout
@@ -444,6 +477,7 @@ Simple IO bound test - Webcam streaming comparison of Python and C++.
 \end_layout
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="3" columns="6">
 <features>
@@ -523,7 +557,7 @@ Python
 \begin_inset Text
 
 \begin_layout Plain Layout
-15.0073
+15.007
 \end_layout
 
 \end_inset
@@ -532,7 +566,7 @@ Python
 \begin_inset Text
 
 \begin_layout Plain Layout
-15.0073
+15.003
 \end_layout
 
 \end_inset
@@ -541,7 +575,7 @@ Python
 \begin_inset Text
 
 \begin_layout Plain Layout
-15.0069
+15.007
 \end_layout
 
 \end_inset
@@ -550,7 +584,7 @@ Python
 \begin_inset Text
 
 \begin_layout Plain Layout
-15.0072 
+15.006 
 \end_layout
 
 \end_inset
@@ -559,7 +593,7 @@ Python
 \begin_inset Text
 
 \begin_layout Plain Layout
-2.68E-04 
+2.25E-03 
 \end_layout
 
 \end_inset
@@ -579,7 +613,7 @@ C++
 \begin_inset Text
 
 \begin_layout Plain Layout
-14.9662
+15.017
 \end_layout
 
 \end_inset
@@ -588,7 +622,7 @@ C++
 \begin_inset Text
 
 \begin_layout Plain Layout
-14.9642
+15.009
 \end_layout
 
 \end_inset
@@ -597,7 +631,7 @@ C++
 \begin_inset Text
 
 \begin_layout Plain Layout
-14.9638
+15.010
 \end_layout
 
 \end_inset
@@ -606,7 +640,7 @@ C++
 \begin_inset Text
 
 \begin_layout Plain Layout
-14.9647 
+15.012 
 \end_layout
 
 \end_inset
@@ -615,7 +649,7 @@ C++
 \begin_inset Text
 
 \begin_layout Plain Layout
-1.29E-03 
+4.27E-03 
 \end_layout
 
 \end_inset
@@ -638,22 +672,28 @@ C++
 \end_layout
 
 \begin_layout Standard
-Oddly Python was faster....
- minor but still faster...
- interesting...
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO: Make the bars thinner
-\end_layout
+As the results in Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:IO-bound-Webcam"
 
 \end_inset
 
+and Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Streaming-comparison"
 
+\end_inset
+
+ show, Python and C++ perform at very similar rates whilst carrying out
+ an I/O bound task.
+ The not unexpected result points at C++ having a marginally higher frame
+ rate output than Python.
+ 
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
@@ -662,7 +702,7 @@ status collapsed
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename report_data/image_capture_graph.png
+	filename report_data/streaming_from_webcam_in_opencv.png
 	lyxscale 50
 	width 80col%
 
@@ -672,8 +712,14 @@ status collapsed
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Comparison of Python and C++ performance using OpenCV for webcam capture,
- drawing on the image, and displaying.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Streaming-comparison"
+
+\end_inset
+
+Comparison of Python and C++ performance using OpenCV for webcam capture
+ and display.
 \end_layout
 
 \end_inset
@@ -691,30 +737,60 @@ Image Blur
 \end_layout
 
 \begin_layout Standard
-One of the simplest operations is bluring an image.
- This can be achieved by adding gaussian blur.
+One of the simplest operations in image processing is bluring an image.
+ This can be achieved in a few ways, the method looked at here is by adding
+ gaussian blur.
  Mathematically this is achieved by convolving the image with a gaussian
  filter.
- The filter can be applied in two ways; applying a 1-dimensional filter
+ Because of the separability of multidimensional gaussian filters
+\begin_inset CommandInset citation
+LatexCommand cite
+key "young1995recursive"
+
+\end_inset
+
+, the convolution can be applied in two ways; applying a 1 dimensional filter
  twice, once in each direction; or secondly the image can be convolved with
- a 2-dimensional gaussian filter created by the product of two 1-dimensional
+ a 2-dimensional gaussian filter created by the product of two 1 dimensional
  filters.
- The gaussian function for obtaining the filter is in one dimension: 
+ Equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:1D Gaussian Filter"
+
+\end_inset
+
+ shows the gaussian function for obtaining the filter is in one dimension
+\begin_inset CommandInset citation
+LatexCommand cite
+key "SS01"
+
+\end_inset
+
+.
+ 
 \begin_inset Formula \begin{equation}
 G\left(x\right)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{x^{2}}{2\sigma^{2}}}\label{eq:1D Gaussian Filter}\end{equation}
 
 \end_inset
 
- And in two dimensions: 
+
 \begin_inset Formula \begin{equation}
 G\left(x,y\right)=\frac{1}{\sqrt{2\pi}\sigma^{2}}e^{-\frac{x^{2}+y^{2}}{2\sigma^{2}}}\label{eq:2D Gaussian Filter}\end{equation}
 
 \end_inset
 
+Equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:2D Gaussian Filter"
 
+\end_inset
+
+ shows the 2 dimensional case
 \begin_inset CommandInset citation
 LatexCommand cite
-key "key-5"
+key "SS01"
 
 \end_inset
 
@@ -722,10 +798,13 @@ key "key-5"
  OpenCV includes a gaussian filter that can be applied to an image by calling
  the 
 \emph on
+\noun on
 cvSmooth
 \emph default
+\noun default
  function and passing the desired window size.
- SciPy has a multi-dimensional Gaussian filter that acts on a NumPy array.
+ SciPy has a n-dimensional Gaussian filter that acts on a NumPy array.
+ Both libraries use the 1 dimensional case, as it requires less calculations.
 \end_layout
 
 \begin_layout Subsubsection
@@ -733,8 +812,18 @@ C++
 \end_layout
 
 \begin_layout Standard
-Calling the OpenCV function cvSmooth to carry out gaussian blur with a filter
- size of 43.
+Algorithm 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:Gaussian-C"
+
+\end_inset
+
+ shows calling the OpenCV function 
+\noun on
+cvSmooth
+\noun default
+ to carry out gaussian blur with a filter size of 43.
  
 \end_layout
 
@@ -832,8 +921,53 @@ Python
 \end_layout
 
 \begin_layout Standard
-In python taking advantage of VideoCapturePlayer, the Python class mentioned
- above, and using OpenCV to do the convolution for us.
+Algorithm 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:Gaussian-Python-OpenCV"
+
+\end_inset
+
+ shows Python taking advantage of VideoCapturePlayer, the Python class mentioned
+ above to do the same bluring operation with OpenCV
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+A helper function here calculates the sigma value to use in the convolution,
+ this is usually done automatically in OpenCV, but to port to SciPy the
+ paramaters must all be known.
+\end_layout
+
+\end_inset
+
+.
+ Algorithm 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:Gaussian-Python-SciPy"
+
+\end_inset
+
+ is also using the VideoCapturePlayer but this time using SciPy instead
+ of OpenCV to do the convolution.
+ To continue using the OpenCV camera capture, the image data must be converted
+ into NumPy arrays; this has been achieved here by creating and using a
+ Python decorator which converts before and after calling a Python function
+ using NumPy.
+ Also the filter parameters need converted to be compatible with OpenCV's
+ 
+\noun on
+cvSmooth
+\noun default
+ defaults
+\begin_inset CommandInset citation
+LatexCommand cite
+key "bradski2008learning"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -851,6 +985,22 @@ from opencv import cv
 \end_layout
 
 \begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+def opencvFilt2sigma(size):
+\end_layout
+
+\begin_layout LyX-Code
+    return (( size*0.5 ) - 1)*0.30 + 0.80
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
 def gaussianBlur(image):
 \end_layout
 
@@ -863,12 +1013,11 @@ def gaussianBlur(image):
 \end_layout
 
 \begin_layout LyX-Code
-    filterSize = 43
+    filterSize = 43; sigma = opencvFilt2sigma(filterSize)
 \end_layout
 
 \begin_layout LyX-Code
-    cv.cvSmooth(image, result, cv.CV_GAUSSIAN, filterSize) # Carry out the
- filter operation
+    cv.cvSmooth(image, result, cv.CV_GAUSSIAN, filterSize,0, sigma)
 \end_layout
 
 \begin_layout LyX-Code
@@ -880,15 +1029,11 @@ def gaussianBlur(image):
 \end_layout
 
 \begin_layout LyX-Code
-if __name__ == "__main__":
+
 \end_layout
 
 \begin_layout LyX-Code
-    title = "Guassian Filtered Output"
-\end_layout
-
-\begin_layout LyX-Code
-    VCP(gaussianBlur, title).main()
+VCP(gaussianBlur, "Guassian Filtered Output").main()
 \end_layout
 
 \begin_layout Plain Layout
@@ -909,39 +1054,9 @@ Gaussian Bluring in Python using OpenCV
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-This produces a blurred image as desired.
- 
-\end_layout
-
-\begin_layout Standard
-Secondly using the VideoCapturePlayer again but this time using scipy to
- do the convolution.
- To continue using the OpenCV camera capture, the image data must be converted
- into NumPy arrays; this has been achieved here by creating and using a
- Python decorator which converts before and after calling a Python function
- using NumPy.
- Also the filter parameters need converted to be compatible with OpenCV's
- cvSmooth defaults
-\begin_inset CommandInset citation
-LatexCommand cite
-key "key-6"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
 \begin_inset Float algorithm
 wide true
 sideways false
@@ -1056,6 +1171,39 @@ Comparison
 \end_layout
 
 \begin_layout Standard
+As expected the images produced by this are blurred as shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Gaussian-Output-Images"
+
+\end_inset
+
+.
+ For qualitative comparison a static input image was used.
+ What is not immediatly obvious without further investigation is how similar
+ the results are.
+ The OpenCV images produced by C++ and Python are exactly the same pixel
+ for pixel, this is expected because the same function is doing the filtering.
+ More interesting is figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Difference-in-Python"
+
+\end_inset
+
+ which shows that the SciPy and OpenCV Python code doing the filtering produces
+ slightly differant results.
+ This could be caused by the floating point nature of the convolution, as
+ the difference is very small.
+ It may be due to a type difference or a small difference in the algorithms.
+ Or possibly since SciPy uses the sigma parameter, the filter is created
+ by direct sampling of the Gaussian function.
+ On the other side, OpenCV uses the size(in pixels) of the filter.
+ This is a good indication it probably uses the pascal triangle as an approximat
+ion for the Gaussian kernel.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
@@ -1070,9 +1218,9 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename report_data/blur_c.png
+	filename report_data/blurred_imag_cpp_opencv_gaussian.jpg
 	lyxscale 20
-	width 25col%
+	width 30col%
 
 \end_inset
 
@@ -1105,9 +1253,9 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename report_data/blur_opencv.png
+	filename report_data/blurred_imag_python_opencv_gaussian.jpg
 	lyxscale 20
-	width 25col%
+	width 30col%
 
 \end_inset
 
@@ -1140,9 +1288,9 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename report_data/blur_scipy.png
+	filename report_data/blurred_imag_python_scipy_gaussian.jpg
 	lyxscale 20
-	width 25col%
+	width 30col%
 
 \end_inset
 
@@ -1162,6 +1310,47 @@ Python SciPy
 \end_layout
 
 \begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename report_data/python_gaussian_diffpng.png
+	lyxscale 20
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Difference-in-Python"
+
+\end_inset
+
+Difference in OpenCV and SciPy
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
@@ -1191,19 +1380,31 @@ Output Images from Gaussian Blur Examples
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-Oddly Python was faster again....
-\end_layout
-
-\begin_layout Standard
 \begin_inset Float table
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Gaussian-Results"
+
+\end_inset
+
+CPU bound test results - Gaussian Blur filtering on webcam stream (in fps)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="4" columns="6">
 <features>
@@ -1283,7 +1484,7 @@ Python
 \begin_inset Text
 
 \begin_layout Plain Layout
-14.968987
+14.555
 \end_layout
 
 \end_inset
@@ -1292,7 +1493,7 @@ Python
 \begin_inset Text
 
 \begin_layout Plain Layout
-14.953608
+14.737
 \end_layout
 
 \end_inset
@@ -1301,7 +1502,7 @@ Python
 \begin_inset Text
 
 \begin_layout Plain Layout
-14.970845
+13.989
 \end_layout
 
 \end_inset
@@ -1310,7 +1511,7 @@ Python
 \begin_inset Text
 
 \begin_layout Plain Layout
-14.964480 
+14.427
 \end_layout
 
 \end_inset
@@ -1319,7 +1520,7 @@ Python
 \begin_inset Text
 
 \begin_layout Plain Layout
-9.95E-03 
+0.318
 \end_layout
 
 \end_inset
@@ -1330,7 +1531,7 @@ Python
 \begin_inset Text
 
 \begin_layout Plain Layout
-CPlusPlus
+C++
 \end_layout
 
 \end_inset
@@ -1339,7 +1540,7 @@ CPlusPlus
 \begin_inset Text
 
 \begin_layout Plain Layout
-4.08165
+14.722
 \end_layout
 
 \end_inset
@@ -1348,7 +1549,7 @@ CPlusPlus
 \begin_inset Text
 
 \begin_layout Plain Layout
-4.04797
+14.627
 \end_layout
 
 \end_inset
@@ -1357,7 +1558,7 @@ CPlusPlus
 \begin_inset Text
 
 \begin_layout Plain Layout
-4.04227
+14.612
 \end_layout
 
 \end_inset
@@ -1366,7 +1567,7 @@ CPlusPlus
 \begin_inset Text
 
 \begin_layout Plain Layout
-4.057297 
+14.653
 \end_layout
 
 \end_inset
@@ -1375,7 +1576,7 @@ CPlusPlus
 \begin_inset Text
 
 \begin_layout Plain Layout
-2.13E-02 
+0.049
 \end_layout
 
 \end_inset
@@ -1395,7 +1596,7 @@ Scipy
 \begin_inset Text
 
 \begin_layout Plain Layout
-4.107837
+4.374
 \end_layout
 
 \end_inset
@@ -1404,7 +1605,7 @@ Scipy
 \begin_inset Text
 
 \begin_layout Plain Layout
-4.159811
+4.3886
 \end_layout
 
 \end_inset
@@ -1413,7 +1614,7 @@ Scipy
 \begin_inset Text
 
 \begin_layout Plain Layout
-4.135005
+4.337
 \end_layout
 
 \end_inset
@@ -1422,7 +1623,7 @@ Scipy
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+4.3664
 \end_layout
 
 \end_inset
@@ -1431,7 +1632,7 @@ Scipy
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+0.0219
 \end_layout
 
 \end_inset
@@ -1444,31 +1645,9 @@ Scipy
 
 \end_layout
 
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "tab:Gaussian-Results"
-
-\end_inset
-
-CPU bound test results - Gaussian Blur filtering on webcam stream.
- (in fps)
-\end_layout
-
 \end_inset
 
 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
@@ -1490,6 +1669,12 @@ status collapsed
 \begin_inset Caption
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:performance-gaussian"
+
+\end_inset
+
 OpenCV performance carrying out Gaussian Blur
 \end_layout
 
@@ -1695,123 +1880,11 @@ Pycam - All code from this project, my framework linking OpenCV to Pygame
  http://pycam.googlecode.com
 \end_layout
 
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "key-1"
-
-\end_inset
-
-Python, By Guido Van Rossum.
- Retrieved from 
-\begin_inset CommandInset href
-LatexCommand href
-target "http://python.org"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "key-2"
-
-\end_inset
-
-NumPy, By Enthought.
- Retrieved from 
-\begin_inset CommandInset href
-LatexCommand href
-target "http://numpy.scipy.org"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "key-3"
-
-\end_inset
-
-SciPy, By Enthought.
- Retrieved from 
-\begin_inset CommandInset href
-LatexCommand href
-target "http://www.scipy.org"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "key-4"
-
-\end_inset
-
-The OpenCV Library.
- Retrieved from 
-\begin_inset CommandInset href
-LatexCommand href
-target "http://opencv.willowgarage.com/wiki/"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "key-5"
-
-\end_inset
-
-Shapiro, L.
- G.
- & Stockman, G.
- C: "Computer Vision", page 137, 150.
- Prentence Hall, 2001
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "key-6"
-
-\end_inset
-
-Gary Bradski, Adrian Kaehler: 
-\begin_inset Quotes eld
-\end_inset
-
-Learning OpenCV: computer vision with the OpenCV library
-\begin_inset Quotes erd
-\end_inset
-
-, page 112.
- 
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "key-1"
-
-\end_inset
-
-OpenCV 1.1 C Reference, by OpenCV developers.
- Retrieved from 
-\begin_inset CommandInset href
-LatexCommand href
-target "http://opencv.willowgarage.com/documentation/index.html"
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "report_data/database"
+options "ieeetr"
 
 \end_inset
 
