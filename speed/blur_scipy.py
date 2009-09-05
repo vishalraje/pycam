@@ -37,6 +37,72 @@ def gaussianBlur3Way(np_image, sigma=opencvFilt2sigma(43.0)):
     return array([r,g,b]).transpose((1,2,0))
 
 
+#############
+# From the scipy mailing list
+
+from numpy import array, zeros, ones, flipud, fliplr
+from scipy.signal import lfilter
+from math import sqrt
+
+def __gausscoeff(s):
+
+   # Young, I.T. and van Vliet, L.J. (1995). Recursive implementation
+   # of the Gaussian filter, Signal Processing, 44: 139-151.
+
+   if s < .5: raise ValueError, \
+       'Sigma for Gaussian filter must be >0.5 samples'
+   q = 0.98711*s - 0.96330 if s > 0.5 else 3.97156 \
+       - 4.14554*sqrt(1.0 - 0.26891*s)
+   b = zeros(4)
+   b[0] = 1.5785 + 2.44413*q + 1.4281*q**2 + 0.422205*q**3
+   b[1] = 2.44413*q + 2.85619*q**2 + 1.26661*q**3
+   b[2] = -(1.4281*q**2 + 1.26661*q**3)
+   b[3] = 0.422205*q**3
+   B = 1.0 - ((b[1] + b[2] + b[3])/b[0])
+
+   # convert to a format compatible with lfilter's
+   # difference equation
+
+   B = array([B])
+   A = ones(4)
+   A[1:] = -b[1:]/b[0]
+   return B,A
+
+def gaussian1D(signal, sigma, padding=0):
+   n = signal.shape[0]
+   tmp = zeros(n + padding)
+   if tmp.shape[0] < 4: raise ValueError, \
+       'Signal and padding too short'
+   tmp[:n] = signal
+   B,A = __gausscoeff(sigma)
+   tmp = lfilter(B, A, tmp)
+   tmp = tmp[::-1]
+   tmp = lfilter(B, A, tmp)
+   tmp = tmp[::-1]
+   return tmp[:n]
+
+def gaussian2D(image, sigma, padding=0):
+   n,m = image.shape[0],image.shape[1]
+   tmp = zeros((n + padding, m + padding))
+   if tmp.shape[0] < 4 or tmp.shape[1] < 4: raise ValueError, \
+       'Image and padding too small'
+   B,A = __gausscoeff(sigma)
+   tmp[:n,:m] = image
+   tmp = lfilter(B, A, tmp, axis=0)
+   tmp = flipud(tmp)
+   tmp = lfilter(B, A, tmp, axis=0)
+   tmp = flipud(tmp)
+   tmp = lfilter(B, A, tmp, axis=1)
+   tmp = fliplr(tmp)
+   tmp = lfilter(B, A, tmp, axis=1)
+   tmp = fliplr(tmp)
+   return tmp[:n,:m]
+   
+@scipyFromOpenCV
+def mlGaussianBlur(image):   
+    return gaussian2D(image[:,:,1], 0.6)
+########
+
 
 
 def testGaussianBlur():
@@ -74,6 +140,7 @@ def testGaussianBlur():
     # For visual inspection:
     
     from pylab import show, imshow, figure, subplot, title
+    """
     figure()
     subplot(1,3,1); title("The OpenCV Output (Py and C++)")
     imshow(python_opencv_image)
@@ -88,10 +155,32 @@ def testGaussianBlur():
     imshow(diff2)
     subplot(1,3,3)
     imshow(diff3)
+    """
+    import matplotlib.pyplot as plt
+    import matplotlib.cm as cm
     
-    figure()
-    title("Pixel by pixel difference in Scipy and OpenCV Gaussian Filter")
-    imshow(diff)
+    
+    plt.figure()
+    plt.title("Pixel by pixel difference of one row from image in Scipy and OpenCV Gaussian Filter")
+    plt.plot(diff[:,50,1])
+    
+    plt.figure()
+    plt.subplot(1,3,1)
+    plt.title("R")
+    im1 = plt.imshow(diff[:,:,0])
+    CB1 = plt.colorbar(im1, orientation='horizontal')
+    plt.subplot(1,3,2)
+    plt.title("G")
+    im2 = plt.imshow(diff[:,:,1], cmap=cm.gray)
+    CB2 = plt.colorbar(im2, orientation='horizontal')
+    plt.subplot(1,3,3)
+    plt.title("B")
+    im3 = plt.imshow(diff[:,:,2], cmap=cm.gray)
+    CB3 = plt.colorbar(im3, orientation='horizontal')
+    
+    #plt.figure()
+    #im = plt.imshow(python_opencv_image[:,:,2], cmap=cm.gray)
+    
     show()
     
     # Check that the sum of all differences at each point is 0
@@ -99,11 +188,12 @@ def testGaussianBlur():
 
 def main():
     title = "SciPy Guassian Filtered Output"
+    #VCP(mlGaussianBlur,title=title).main()
     VCP(gaussianBlur,title=title).main()
     #VCP(slowGaussianBlur,title=title).main()
 
 if __name__ == "__main__": 
-    testGaussianBlur()
+    #testGaussianBlur()
     main()
     #import cProfile
     #cProfile.run("main()",'python_profile_data')

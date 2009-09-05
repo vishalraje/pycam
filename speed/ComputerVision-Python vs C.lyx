@@ -94,9 +94,9 @@ Computer Vision, OpenCV, Python, C++
 
 \begin_layout Abstract
 An introduction to and argument for programming computer vision applications
- and scripts in Python inplace of the C/C++ programming language.
+ and scripts in Python in place of the C/C++ programming language.
  From the general concept to its implementation with some current open-source
- libraries (opencv, numpy/scipy, pygame).
+ libraries (OpenCV, NumPy/SciPy, Pygame).
  
 \end_layout
 
@@ -139,7 +139,7 @@ key "oliphant2007python"
 status open
 
 \begin_layout Plain Layout
-if it's openCV in C++ and openCV in Python, use a simple notation: OPENCV_C++,
+if it's OpenCV in C++ and OpenCV in Python, use a simple notation: OPENCV_C++,
  OPENCV_PY that you introduce in the text.
  just for tables?
 \end_layout
@@ -166,7 +166,7 @@ key "entry-0"
 \end_inset
 
 .
- It is highley regarded due in no small part for its fast development time.
+ It is highly regarded due in no small part for its fast development time.
 \end_layout
 
 \begin_layout Subsection
@@ -188,7 +188,7 @@ NumPy
 \end_layout
 
 \begin_layout Standard
-Numpy gives N-dimensional arrays to python
+NumPy gives N-dimensional arrays to python
 \begin_inset CommandInset citation
 LatexCommand cite
 key "oliphant2006guide"
@@ -197,7 +197,7 @@ key "oliphant2006guide"
 
 .
  Has very fast raw data crunching, iterating.
- Much easier to use than multidimensinal matrices in C.
+ Much easier to use than multidimensional matrices in C.
 \end_layout
 
 \begin_layout Subsection
@@ -213,7 +213,7 @@ key "jones2001scipy"
 \end_inset
 
  is a set of Python libraries and tools for scientific and mathematical
- work build ontop of NumPy
+ work build on top of NumPy
 \begin_inset CommandInset citation
 LatexCommand cite
 key "oliphant2007python"
@@ -221,7 +221,7 @@ key "oliphant2007python"
 \end_inset
 
 .
- SciPy has filters and convolution etc much like matlab.
+ SciPy has filters and convolution etc much like Matlab.
  Should be much simpler higher level code, without any significant performance
  loss.
 \end_layout
@@ -231,20 +231,20 @@ Theory of operation
 \end_layout
 
 \begin_layout Subsection
-Image Aquisition
+Image Acquisition
 \end_layout
 
 \begin_layout Standard
 The first thing to think about in computer vision programs is where the
  image data comes from.
- In this report only live data from a webcam is under consideration.
+ In this report only live data from a web-cam is under consideration.
  The main difference in using a live system is the time available for processing
- is very constrained to allow a framarate sufficient for live viewing.
+ is very constrained to allow a frame rate sufficient for live viewing.
  Processing on static images or recorded video data doesn't have this constraint.
 \end_layout
 
 \begin_layout Subsubsection
-Aquiring and displaying an image in C with OpenCV
+Acquiring and displaying an image in C with OpenCV
 \end_layout
 
 \begin_layout Standard
@@ -262,7 +262,7 @@ status collapsed
 
 \begin_layout Plain Layout
 For brevity these code snippets do not carry out error checking or cleanup.
- It is assumed that a camera was found succesfully and that a frame was
+ It is assumed that a camera was found successfully and that a frame was
  available and returned.
  The C++ and Python versions of VideoCapturePlayer do carry out this error
  checking.
@@ -287,6 +287,7 @@ VideoCapturePlayer
 
 \begin_layout Standard
 \begin_inset Float algorithm
+placement h
 wide false
 sideways false
 status collapsed
@@ -372,7 +373,7 @@ reference "alg:Python-Image-capture"
  The code is almost entirely identical in C and Python.
  The main difference being in the Python code no variables types are declared,
  this shows the dynamic nature of the language.
- As with C++, an object orrientated version of this acquisition loop with
+ As with C++, an object orientated version of this acquisition loop with
  error checking is used in further tests.
  The 
 \noun on
@@ -386,6 +387,7 @@ VideoCapturePlayer
 
 \begin_layout Standard
 \begin_inset Float algorithm
+placement h
 wide false
 sideways false
 status collapsed
@@ -695,6 +697,7 @@ reference "fig:Streaming-comparison"
 
 \begin_layout Standard
 \begin_inset Float figure
+placement h
 wide false
 sideways false
 status collapsed
@@ -737,7 +740,7 @@ Image Blur
 \end_layout
 
 \begin_layout Standard
-One of the simplest operations in image processing is bluring an image.
+One of the simplest operations in image processing is blurring an image.
  This can be achieved in a few ways, the method looked at here is by adding
  gaussian blur.
  Mathematically this is achieved by convolving the image with a gaussian
@@ -827,95 +830,6 @@ cvSmooth
  
 \end_layout
 
-\begin_layout Standard
-\begin_inset Float algorithm
-wide true
-sideways false
-status collapsed
-
-\begin_layout LyX-Code
-#include <iostream> 
-\end_layout
-
-\begin_layout LyX-Code
-#include "videoCapturePlayer.h"
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-CvMat * gaussianBlur(CvMat *x){
-\end_layout
-
-\begin_layout LyX-Code
-// Filter with gaussian smoothing
-\end_layout
-
-\begin_layout LyX-Code
-    int filterSize = 43;
-\end_layout
-
-\begin_layout LyX-Code
-    cvSmooth(x, x, CV_GAUSSIAN, filterSize);
-\end_layout
-
-\begin_layout LyX-Code
-    return x;
-\end_layout
-
-\begin_layout LyX-Code
-}
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-int main( int argc, char** argv ){
-\end_layout
-
-\begin_layout LyX-Code
-    VideoCapturePlayer vcp = VideoCapturePlayer(&gaussianBlur);
-\end_layout
-
-\begin_layout LyX-Code
-    vcp.init(); vcp.main();
-\end_layout
-
-\begin_layout LyX-Code
-    return 0;
-\end_layout
-
-\begin_layout LyX-Code
-}
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "alg:Gaussian-C"
-
-\end_inset
-
-Applying Gaussian Blur to webcam stream from C++
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsubsection
 Python
 \end_layout
@@ -929,14 +843,14 @@ reference "alg:Gaussian-Python-OpenCV"
 \end_inset
 
  shows Python taking advantage of VideoCapturePlayer, the Python class mentioned
- above to do the same bluring operation with OpenCV
+ above to do the same blurring operation with OpenCV
 \begin_inset Foot
 status collapsed
 
 \begin_layout Plain Layout
 A helper function here calculates the sigma value to use in the convolution,
  this is usually done automatically in OpenCV, but to port to SciPy the
- paramaters must all be known.
+ parameters must all be known.
 \end_layout
 
 \end_inset
@@ -970,202 +884,6 @@ key "bradski2008learning"
 .
 \end_layout
 
-\begin_layout Standard
-\begin_inset Float algorithm
-wide true
-sideways false
-status collapsed
-
-\begin_layout LyX-Code
-from VideoCapturePlayer import VideoCapturePlayer as VCP
-\end_layout
-
-\begin_layout LyX-Code
-from opencv import cv
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-def opencvFilt2sigma(size):
-\end_layout
-
-\begin_layout LyX-Code
-    return (( size*0.5 ) - 1)*0.30 + 0.80
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-def gaussianBlur(image):
-\end_layout
-
-\begin_layout LyX-Code
-    """Blur an image"""     
-\end_layout
-
-\begin_layout LyX-Code
-    result = cv.cvCreateMat(image.rows, image.cols, image.type)
-\end_layout
-
-\begin_layout LyX-Code
-    filterSize = 43; sigma = opencvFilt2sigma(filterSize)
-\end_layout
-
-\begin_layout LyX-Code
-    cv.cvSmooth(image, result, cv.CV_GAUSSIAN, filterSize,0, sigma)
-\end_layout
-
-\begin_layout LyX-Code
-    return result
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-VCP(gaussianBlur, "Guassian Filtered Output").main()
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "alg:Gaussian-Python-OpenCV"
-
-\end_inset
-
-Gaussian Bluring in Python using OpenCV
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Float algorithm
-wide true
-sideways false
-status collapsed
-
-\begin_layout LyX-Code
-from numpy import array, uint8
-\end_layout
-
-\begin_layout LyX-Code
-from scipy import signal, ndimage 
-\end_layout
-
-\begin_layout LyX-Code
-from VideoCapturePlayer import VideoCapturePlayer as VCP 
-\end_layout
-
-\begin_layout LyX-Code
-from misc import scipyFromOpenCV
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-def opencvFilt2sigma(size):
-\end_layout
-
-\begin_layout LyX-Code
-    """OpenCV defaults to making sigma up with this formula"""
-\end_layout
-
-\begin_layout LyX-Code
-    return (( size/2 ) - 1)*0.30 + 0.80
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-@scipyFromOpenCV
-\end_layout
-
-\begin_layout LyX-Code
-def gaussianBlur(np_image):
-\end_layout
-
-\begin_layout LyX-Code
-    """Blur an image with scipy"""
-\end_layout
-
-\begin_layout LyX-Code
-    filterSize = opencvFilt2sigma(43)
-\end_layout
-
-\begin_layout LyX-Code
-    result = ndimage.filters.gaussian_filter(np_image, (filterSize, filterSize,
- 1))
-\end_layout
-
-\begin_layout LyX-Code
-    return result
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-if __name__ == "__main__":
-\end_layout
-
-\begin_layout LyX-Code
-    title = "Guassian Filtered Output"
-\end_layout
-
-\begin_layout LyX-Code
-    VCP(gaussianBlur,title=title).main()
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "alg:Gaussian-Python-SciPy"
-
-\end_inset
-
-Gaussian Blurring in Python using SciPy
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsubsection
 Comparison
 \end_layout
@@ -1180,7 +898,7 @@ reference "fig:Gaussian-Output-Images"
 
 .
  For qualitative comparison a static input image was used.
- What is not immediatly obvious without further investigation is how similar
+ What is not immediately obvious without further investigation is how similar
  the results are.
  The OpenCV images produced by C++ and Python are exactly the same pixel
  for pixel, this is expected because the same function is doing the filtering.
@@ -1192,7 +910,7 @@ reference "fig:Difference-in-Python"
 \end_inset
 
  which shows that the SciPy and OpenCV Python code doing the filtering produces
- slightly differant results.
+ slightly different results.
  This could be caused by the floating point nature of the convolution, as
  the difference is very small.
  It may be due to a type difference or a small difference in the algorithms.
@@ -1205,6 +923,7 @@ ion for the Gaussian kernel.
 
 \begin_layout Standard
 \begin_inset Float figure
+placement h
 wide false
 sideways false
 status collapsed
@@ -1587,7 +1306,7 @@ C++
 \begin_inset Text
 
 \begin_layout Plain Layout
-Scipy
+SciPy
 \end_layout
 
 \end_inset
@@ -1649,6 +1368,7 @@ Scipy
 
 
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status collapsed
@@ -1705,13 +1425,604 @@ reference Richard Greens paper
 \end_layout
 
 \begin_layout Subsection
+Feature Point Detection
+\end_layout
+
+\begin_layout Standard
+Many methods in computer vision for identifying the contents of an image
+ relies on extracting 
+\emph on
+interesting
+\emph default
+ features.
+ An interesting feature point could be corners of intersecting lines, a
+ line ending, or any isolated point where local image regions have a high
+ degree of variation in all directions
+\begin_inset CommandInset citation
+LatexCommand cite
+key "harris1988combined"
+
+\end_inset
+
+.
+ The features must be found algorithmically and have a well-defined position.
+ The repeatability of choosing the same points under differing conditions
+ is a measure of how good an interesting feature algorithm is.
+ The corner detection algorithm works by locating points where the surroundings
+ have edges in more than one direction.
+ Harris & Stephens algorithm is in short: 
+\end_layout
+
+\begin_layout Quote
+A matrix W is created from the outer product of the image gradient, this
+ matrix is averaged over a region and then a corner response function is
+ defined as the ratio of the determinant to the trace of W.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Sol09"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A threshold is then applied to this corner response image to pick the most
+ likely candidates and then these points are plotted.
+ An example usage of the algorithm is in the Lucas–Kanade Optical Flow Method
+ where it can be used to select good feature points
+\begin_inset CommandInset citation
+LatexCommand cite
+key "beauchemin1995computation"
+
+\end_inset
+
+ for tracking movement.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename static_harris_file.png
+	lyxscale 30
+	width 45col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+static image processing
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename temp_harris_file_248_points.png
+	lyxscale 30
+	width 45col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+processing from webcam
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:A-SciPy-harris"
+
+\end_inset
+
+A SciPy implementation of the Harris & Stephens feature detection algorithm.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename report_data/opencv_python_harris.png
+	lyxscale 30
+	width 90col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:OpenCV-harris"
+
+\end_inset
+
+OpenCV implementation of the Harris & Stephens feature detection algorithm
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Algorithm 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:SciPy-Harris-Corner"
+
+\end_inset
+
+ modified an existing implementation in SciPy by 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Sol09"
+
+\end_inset
+
+ which produced figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:A-SciPy-harris"
+
+\end_inset
+
+.
+ The same concept but in a different implementation is shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:OpenCV-harris"
+
+\end_inset
+
+ for OpenCV in algorithm 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:Harris-Detection-opencv"
+
+\end_inset
+
+.
+ Note care has not been taken to get the exact same output in OpenCV as
+ in SciPy, it is assumed that one could get the same output as shown earlier
+ with the gaussian blur example.
+ The main difference between algorithms 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:SciPy-Harris-Corner"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:Harris-Detection-opencv"
+
+\end_inset
+
+ is the filtering and display of the corner response.
+ Not implemented here is the OpenCV response in C++.
+\end_layout
+
+\begin_layout Subsection
 Face Detection
 \end_layout
 
 \begin_layout Standard
-Haar-Cascades....
- except from my objectDetect class....
- explain stuff here...
+Face detection is the task of locating a face in an image, this is a specific
+ case of a general object detection.
+ Before locating an object, one must be able to describe it.
+ Many object detection algorithms use a classifier which is a collection
+ of feature patterns made by scanning a database of images with known content.
+ Algorithm 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:OpenCV-Haar-detect"
+
+\end_inset
+
+ shows how to use the OpenCV library to detect the location of any object
+ provided a Haar Classifier describing that object is provided.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:OpenCV-Face-Detection"
+
+\end_inset
+
+ shows the output under different conditions when using the face Haar-cascade
+ classifier that comes with OpenCV.
+ The method gave a mean framerate of 7.16 ± 0.02 Hz.
+ The detection method used has limitations as shown in fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Obscured-opencv-face"
+
+\end_inset
+
+ and fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Angled-opencv-face"
+
+\end_inset
+
+.
+ But in ideal conditions, with good lighting and unobscured faces directly
+ facing the camera the algorithm produces very good results.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename report_data/face_detect_one.png
+	lyxscale 30
+	width 45col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Single face in frame
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename report_data/face_detect_obscure.png
+	lyxscale 30
+	width 45col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Obscured-opencv-face"
+
+\end_inset
+
+Obscured face in frame
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename report_data/face_detect_two.png
+	lyxscale 30
+	width 45col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Multiple faces
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename report_data/face_detect_sideways.png
+	lyxscale 30
+	width 45col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Angled-opencv-face"
+
+\end_inset
+
+Rotated face
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:OpenCV-Face-Detection"
+
+\end_inset
+
+OpenCV Face Detection
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename report_data/pygame-eye-locate.png
+	lyxscale 50
+	width 90col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Pygame-object"
+
+\end_inset
+
+Pygame can be used to capture and display the webcam, while OpenCV does
+ the processing.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Pygame-object"
+
+\end_inset
+
+ shows an alternative setup; using Pygame for image capture, OpenCV for
+ the object detection and Pygame for the rendering.
+ Python really shows its strengths as a glue language here, as the different
+ libraries are easily used in conjunction.
+ The benifits from this can be huge, it is very easy for a developer to
+ incorperate different computer vision tools, even with very limited knowledge
+ of computer vision.
+\end_layout
+
+\begin_layout Section
+Related Works
+\end_layout
+
+\begin_layout Standard
+Part 2 should be "related works" as referencing people comparing: different
+ version of CV library in different languages, in different platforms, maybe
+ also people using OpenCV+IPL, people having implementing other CV library
+ in Python, etc.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Thank Rob for the profiling help
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Conclusions
+\end_layout
+
+\begin_layout Standard
+Initial thoughts are that Python will be slow, but for many applications
+ probably fast enough not to notice.
+ The benefits for quick prototyping of new algorithms and using those prototypes
+ in the final product is a serious draw card...
+\end_layout
+
+\begin_layout Standard
+Limitations (other than speed), hardware, firewire, support, libraries and
+ functionality?
+\end_layout
+
+\begin_layout Section
+Appendix
+\end_layout
+
+\begin_layout Subsection
+Code Listings
 \end_layout
 
 \begin_layout Standard
@@ -1721,11 +2032,389 @@ sideways false
 status collapsed
 
 \begin_layout LyX-Code
-def detectObject(self,img):
+#include <iostream> 
 \end_layout
 
 \begin_layout LyX-Code
-    """This should be pure opencv and reasonably quick."""
+#include "videoCapturePlayer.h"
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+CvMat * gaussianBlur(CvMat *x){
+\end_layout
+
+\begin_layout LyX-Code
+// Filter with gaussian smoothing
+\end_layout
+
+\begin_layout LyX-Code
+    int filterSize = 43;
+\end_layout
+
+\begin_layout LyX-Code
+    cvSmooth(x, x, CV_GAUSSIAN, filterSize);
+\end_layout
+
+\begin_layout LyX-Code
+    return x;
+\end_layout
+
+\begin_layout LyX-Code
+}
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+int main( int argc, char** argv ){
+\end_layout
+
+\begin_layout LyX-Code
+    VideoCapturePlayer vcp = VideoCapturePlayer(&gaussianBlur);
+\end_layout
+
+\begin_layout LyX-Code
+    vcp.init(); vcp.main();
+\end_layout
+
+\begin_layout LyX-Code
+    return 0;
+\end_layout
+
+\begin_layout LyX-Code
+}
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:Gaussian-C"
+
+\end_inset
+
+Applying Gaussian Blur to web-cam stream from C++
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float algorithm
+wide true
+sideways false
+status collapsed
+
+\begin_layout LyX-Code
+from VideoCapturePlayer import VideoCapturePlayer as VCP
+\end_layout
+
+\begin_layout LyX-Code
+from opencv import cv
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+def opencvFilt2sigma(size):
+\end_layout
+
+\begin_layout LyX-Code
+    return (( size*0.5 ) - 1)*0.30 + 0.80
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+def gaussianBlur(image):
+\end_layout
+
+\begin_layout LyX-Code
+    """Blur an image"""     
+\end_layout
+
+\begin_layout LyX-Code
+    result = cv.cvCreateMat(image.rows, image.cols, image.type)
+\end_layout
+
+\begin_layout LyX-Code
+    filterSize = 43; sigma = opencvFilt2sigma(filterSize)
+\end_layout
+
+\begin_layout LyX-Code
+    cv.cvSmooth(image, result, cv.CV_GAUSSIAN, filterSize,0, sigma)
+\end_layout
+
+\begin_layout LyX-Code
+    return result
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+VCP(gaussianBlur, "Gaussian Filtered Output").main()
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:Gaussian-Python-OpenCV"
+
+\end_inset
+
+Gaussian Blurring in Python using OpenCV
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float algorithm
+wide true
+sideways false
+status collapsed
+
+\begin_layout LyX-Code
+from numpy import array, uint8
+\end_layout
+
+\begin_layout LyX-Code
+from scipy import signal, ndimage 
+\end_layout
+
+\begin_layout LyX-Code
+from VideoCapturePlayer import VideoCapturePlayer as VCP 
+\end_layout
+
+\begin_layout LyX-Code
+from misc import scipyFromOpenCV
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+def opencvFilt2sigma(size):
+\end_layout
+
+\begin_layout LyX-Code
+    """OpenCV defaults to making sigma up with this formula"""
+\end_layout
+
+\begin_layout LyX-Code
+    return (( size/2 ) - 1)*0.30 + 0.80
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+@scipyFromOpenCV
+\end_layout
+
+\begin_layout LyX-Code
+def gaussianBlur(np_image):
+\end_layout
+
+\begin_layout LyX-Code
+    """Blur an image with scipy"""
+\end_layout
+
+\begin_layout LyX-Code
+    filterSize = opencvFilt2sigma(43)
+\end_layout
+
+\begin_layout LyX-Code
+    result = ndimage.filters.gaussian_filter(np_image, (filterSize, filterSize,
+ 1))
+\end_layout
+
+\begin_layout LyX-Code
+    return result
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+if __name__ == "__main__":
+\end_layout
+
+\begin_layout LyX-Code
+    title = "Gaussian Filtered Output"
+\end_layout
+
+\begin_layout LyX-Code
+    VCP(gaussianBlur,title=title).main()
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:Gaussian-Python-SciPy"
+
+\end_inset
+
+Gaussian Blurring in Python using SciPy
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float algorithm
+wide true
+sideways false
+status collapsed
+
+\begin_layout LyX-Code
+def gauss_derivatives(im, n, ny=None):
+\end_layout
+
+\begin_layout LyX-Code
+     """ returns x and y derivatives of an image using gaussian
+\end_layout
+
+\begin_layout LyX-Code
+          derivative filters of size n.
+ The optional argument
+\end_layout
+
+\begin_layout LyX-Code
+          ny allows for a different size in the y direction."""
+\end_layout
+
+\begin_layout LyX-Code
+    gx,gy = gauss_derivative_kernels(n, sizey=ny)
+\end_layout
+
+\begin_layout LyX-Code
+    imx = signal.convolve(im,gx, mode='same')
+\end_layout
+
+\begin_layout LyX-Code
+    imy = signal.convolve(im,gy, mode='same')
+\end_layout
+
+\begin_layout LyX-Code
+    return imx,imy
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+   def compute_harris_response(image):
+\end_layout
+
+\begin_layout LyX-Code
+       """ compute the Harris corner detector response function
+\end_layout
+
+\begin_layout LyX-Code
+        for each pixel in the image"""
+\end_layout
+
+\begin_layout LyX-Code
+        imx,imy = gauss_derivatives(image, 3)
+\end_layout
+
+\begin_layout LyX-Code
+        gauss = gauss_kern(3)
+\end_layout
+
+\begin_layout LyX-Code
+        Wxx = signal.convolve(imx*imx,gauss, mode='same')
+\end_layout
+
+\begin_layout LyX-Code
+        Wxy = signal.convolve(imx*imy,gauss, mode='same')
+\end_layout
+
+\begin_layout LyX-Code
+        Wyy = signal.convolve(imy*imy,gauss, mode='same')
+\end_layout
+
+\begin_layout LyX-Code
+        Wdet = Wxx*Wyy - Wxy**2
+\end_layout
+
+\begin_layout LyX-Code
+        Wtr = Wxx + Wyy
+\end_layout
+
+\begin_layout LyX-Code
+        return Wdet / Wtr
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:SciPy-Harris-Corner"
+
+\end_inset
+
+SciPy Harris Corner Detection
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float algorithm
+wide true
+sideways false
+status collapsed
+
+\begin_layout LyX-Code
+def detectObject(self,img):
 \end_layout
 
 \begin_layout LyX-Code
@@ -1796,6 +2485,12 @@ vGetTickFrequency()*1000.))
 \begin_inset Caption
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:OpenCV-Haar-detect"
+
+\end_inset
+
 Using the OpenCV Haar Detect Objects Function
 \end_layout
 
@@ -1804,8 +2499,173 @@ Using the OpenCV Haar Detect Objects Function
 
 \end_layout
 
-\begin_layout Plain Layout
+\end_inset
 
+
+\begin_inset Float algorithm
+wide true
+sideways false
+status collapsed
+
+\begin_layout LyX-Code
+#!/usr/bin/env python
+\end_layout
+
+\begin_layout LyX-Code
+from VideoCapturePlayer import VideoCapturePlayer as VCP
+\end_layout
+
+\begin_layout LyX-Code
+import numpy
+\end_layout
+
+\begin_layout LyX-Code
+from scipy.ndimage import gaussian_filter,maximum_filter
+\end_layout
+
+\begin_layout LyX-Code
+from numpy import array,ones,zeros,nonzero
+\end_layout
+
+\begin_layout LyX-Code
+from opencv import cv
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+def harrisResponse(image, n = 15):
+\end_layout
+
+\begin_layout LyX-Code
+  """Modified from PyVision example
+\end_layout
+
+\begin_layout LyX-Code
+  """
+\end_layout
+
+\begin_layout LyX-Code
+  gray = cv.cvCreateImage( cv.cvGetSize(image), 8, 1 )
+\end_layout
+
+\begin_layout LyX-Code
+  corners = cv.cvCreateImage( cv.cvGetSize(image), 32, 1 )
+\end_layout
+
+\begin_layout LyX-Code
+  cv.cvCvtColor( image, gray, cv.CV_BGR2GRAY )
+\end_layout
+
+\begin_layout LyX-Code
+  cv.cvCornerHarris(gray,corners, n)
+\end_layout
+
+\begin_layout LyX-Code
+  
+\end_layout
+
+\begin_layout LyX-Code
+  # Filter the response and draw points
+\end_layout
+
+\begin_layout LyX-Code
+  buffer = corners.imageData
+\end_layout
+
+\begin_layout LyX-Code
+  corners = numpy.frombuffer(buffer,numpy.float32)
+\end_layout
+
+\begin_layout LyX-Code
+  corners = corners.reshape(corners.height,corners.width)
+\end_layout
+
+\begin_layout LyX-Code
+  corners = corners.transpose()
+\end_layout
+
+\begin_layout LyX-Code
+  
+\end_layout
+
+\begin_layout LyX-Code
+  footprint = ones((n,n))
+\end_layout
+
+\begin_layout LyX-Code
+  mx = maximum_filter(corners, footprint = footprint)
+\end_layout
+
+\begin_layout LyX-Code
+  local_maxima = (corners == mx) * (corners != zeros(corners.shape))
+\end_layout
+
+\begin_layout LyX-Code
+  points = nonzero(local_maxima)
+\end_layout
+
+\begin_layout LyX-Code
+  del local_maxima
+\end_layout
+
+\begin_layout LyX-Code
+  points = array([points[0],points[1]]).transpose()
+\end_layout
+
+\begin_layout LyX-Code
+  L = []
+\end_layout
+
+\begin_layout LyX-Code
+  for each in points:
+\end_layout
+
+\begin_layout LyX-Code
+    L.append((corners[each[0],each[1]],each[0],each[1],None))
+\end_layout
+
+\begin_layout LyX-Code
+    i = cv.cvPoint(int(each[0]),int(each[1]))
+\end_layout
+
+\begin_layout LyX-Code
+    cv.cvCircle(image, i, 2, cv.CV_RGB(0,0,200),3 )
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+  return image
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+title = "Harris Feature Detection"
+\end_layout
+
+\begin_layout LyX-Code
+VCP(harrisResponse, title).main()
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:Harris-Detection-opencv"
+
+\end_inset
+
+Harris Detection in OpenCV
 \end_layout
 
 \end_inset
@@ -1813,55 +2673,9 @@ Using the OpenCV Haar Detect Objects Function
 
 \end_layout
 
-\begin_layout Subsection
-Harris Corner Detect, Ransac...
- 
-\end_layout
-
-\begin_layout Section
-Related Works
-\end_layout
-
-\begin_layout Standard
-Part 2 should be "related works" as referencing people comparing: different
- version of CV library in different languages, in different platforms, maybe
- also people using OpenCV+IPL, people having implementing other CV library
- in Python, etc.
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Thank Rob for the profiling help
-\end_layout
-
 \end_inset
 
 
-\end_layout
-
-\begin_layout Section
-Conclusions
-\end_layout
-
-\begin_layout Standard
-Initial thoughts are that Python will be slow, but for many applications
- probably fast enough not to notice.
- The benefits for quick prototyping of new algorithms and using those prototypes
- in the final product is a serious draw card...
-\end_layout
-
-\begin_layout Standard
-Limitations (other than speed), hardware, Firewire, support, libraries and
- functionality?
-\end_layout
-
-\begin_layout Section
-Appendix
-\end_layout
-
-\begin_layout Subsection
-Code Listings
 \end_layout
 
 \begin_layout Section*
@@ -1869,8 +2683,9 @@ Software Links
 \end_layout
 
 \begin_layout Itemize
-Pygame - a game making module for Python, aimed at new programmers.
- I will demonstrate how simple it is to get started in Computer Vision.
+Pygame - a game making package for Python, aimed at new programmers.
+ It has a camera module and is able to do basic computer vision tasks, or
+ call on SciPy/NumPy.
  http://pygame.org
 \end_layout
 

@@ -103,7 +103,7 @@ class VideoCapturePlayer(object):
         num_frames = 0
         start_time = time.time()
         
-        while(key is not "q"):
+        while(key is not "q" and key != '\x1b'):
             num_frames +=1
             self.process()
             key = hg.cvWaitKey(5)

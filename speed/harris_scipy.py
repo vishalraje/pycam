@@ -42,7 +42,7 @@ def gauss_derivatives(im, n, ny=None):
     imx = signal.convolve(im,gx, mode='same')
     imy = signal.convolve(im,gy, mode='same')
 
-    return imx,imy
+    return imx, imy
     
 def compute_harris_response(image):
     """ compute the Harris corner detector response function 
@@ -104,16 +104,16 @@ def plot_harris_points(image, filtered_coords):
     imshow(image)
     plot([p[1] for p in filtered_coords],[p[0] for p in filtered_coords],'*')
     axis('off')
+    savefig("static_harris_file.png", transparent=True)  
     show()
 
 def render_harris_points(image, filtered_coords):
     imshow(image)
     axis('off')
     plot([p[1] for p in filtered_coords],[p[0] for p in filtered_coords],'*')
-    savefig("temp_harris_file.png")
+    savefig("temp_harris_file_%i_points.png" % len(filtered_coords), transparent=True)
     show()
-    
-    i = imread("temp_harris_file.png")
+    i = imread("temp_harris_file_%i_points.png" % len(filtered_coords))
     return i
     
     
@@ -122,7 +122,8 @@ def static_test():
     im = misc.lena().astype(float32)
     harrisim = compute_harris_response(im)
     filtered_coords = get_harris_points(harrisim,6)
-    plot_harris_points(im, filtered_coords)    
+    plot_harris_points(im, filtered_coords)  
+    
 
 @scipyFromOpenCV
 def process_image(np_image):
@@ -135,10 +136,10 @@ def process_image(np_image):
 
 
 def main():
-    static_test()
+    #static_test()
     
     title = "Harris Detector Output"
-    #VCP(process_image,title=title).main()
+    VCP(process_image,title=title).main()
     
 
 if __name__ == "__main__": 
