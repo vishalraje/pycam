@@ -22,7 +22,11 @@ class GreenScreen():
     
     def threshold(self, snapshot):
         dest = snapshot.copy()
-        pygame.transform.threshold(dest, snapshot, (0,0,0), (100,100,100) ,(255,255,255),1,self.background)   
+        dest.fill((255,255,255))    # Make a black background
+        threshold_value = 10        # How close to the existing color must each point be?
+        pygame.transform.threshold(dest, snapshot, (0,0,0), [threshold_value]*3 ,(255,255,255),1, self.background)
+        # Median filter would be good here to remove salt + pepper noise...  
+        
         return dest #self.dest
 
     def process(self, snapshot):

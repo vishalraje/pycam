@@ -13,22 +13,12 @@ from VideoCapturePlayer import VideoCapturePlayer as VCP
 from misc import scipyFromOpenCV, opencvFilt2sigma
 
 
-@scipyFromOpenCV
-def gaussianBlur(np_image):
-    """Blur an image with scipy"""
-    sigma = opencvFilt2sigma(43.0)
-    
-    result = ndimage.filters.gaussian_filter(np_image, 
-                            sigma=(sigma, sigma, 0),
-                            order=0,
-                            mode='reflect'
-                            )
-    return result
+
 
 @scipyFromOpenCV
 def gaussianBlur3Way(np_image, sigma=opencvFilt2sigma(43.0)):
     """Blur an image with scipy using 3 seperate gaussian filters
-    This is equivalent to the above function"""
+    This is exactly equivalent to the above function"""
     
     r = ndimage.filters.gaussian_filter(np_image[:,:,0], sigma=(sigma, sigma))
     g = ndimage.filters.gaussian_filter(np_image[:,:,1], sigma=(sigma, sigma))
@@ -98,53 +88,74 @@ def gaussian2D(image, sigma, padding=0):
    tmp = fliplr(tmp)
    return tmp[:n,:m]
    
+
 @scipyFromOpenCV
-def mlGaussianBlur(image):   
-    return gaussian2D(image[:,:,1], 0.6)
+def mlGaussianBlur(image):
+    """Method using code from Sturla on the SciPy-User@scipy.org"""
+    img = array(image)
+    sigma = opencvFilt2sigma(43.0)
+    gain = gaussian2D(np.ones((512,512)), sigma) # corrects edges
+    
+    for i in range(3):
+       img[:,:,i] = gaussian2D(img[:,:,i], sigma) / gain
+    return img
 ########
 
-
+@scipyFromOpenCV
+def gaussianBlur(np_image):
+    """Blur an image with scipy"""
+    sigma = opencvFilt2sigma(43.0)
+    
+    result = ndimage.filters.gaussian_filter(np_image, 
+                            sigma=(sigma, sigma, 0),
+                            order=0,
+                            mode='reflect'
+                            )
+    return result
 
 def testGaussianBlur():
     """Test that the guassian blur function gives the exact same output
-    in Python and in C++ with OpenCV and with SciPy. Can run this test with:
+    in Python and in C++ with OpenCV and ideally with SciPy. 
+    
+    Can run this test with:
     nosetests --with-doctest blur_scipy.py -v
     """
     from pylab import imread
     from opencv import highgui
-    import blur_opencv
+    import blur_opencv          # a seperate file with the opencv gaussian operation
     
     # Using Lena image create tests image.
     image_filename = "/usr/share/doc/opencv-doc/examples/c/lena.jpg"
     i = highgui.cvLoadImage(image_filename)
     
-    # Carry out the bluring
-    py_scipy = gaussianBlur3Way(i)
+    # Carry out the filtering
+    py_scipy = mlGaussianBlur(i)    # note - it is decorated to convert between cvMat and NumPy
     py_scipy2 = gaussianBlur(i)
     py_opencv = blur_opencv.gaussianBlur(i)
     
     # Save the outputs as jpg files
-    highgui.cvSaveImage("blurred_imag_python_scipy_gaussian.jpg", py_scipy)
-    highgui.cvSaveImage("blurred_imag_python_scipy2_gaussian.jpg", py_scipy2)
-    highgui.cvSaveImage("blurred_imag_python_opencv_gaussian.jpg", py_opencv)
+    highgui.cvSaveImage("gaussian_scipy_iir.jpg", py_scipy)
+    highgui.cvSaveImage("gaussian_scipy_ndfilt.jpg", py_scipy2)
+    highgui.cvSaveImage("gaussian_opencv.jpg", py_opencv)
     
     # Load in the image data with scipy
-    python_opencv_image = imread("blurred_imag_python_opencv_gaussian.jpg")
-    python_scipy_image = imread("blurred_imag_python_scipy_gaussian.jpg")
-    python_scipy2_image = imread("blurred_imag_python_scipy2_gaussian.jpg")
+    python_opencv_image = imread("gaussian_opencv.jpg")
+    python_scipy_image = imread("gaussian_scipy_ndfilt.jpg")
+    python_scipy2_image = imread("gaussian_scipy_iir.jpg")
     
-    diff = python_opencv_image - python_scipy_image
-    diff2 = python_opencv_image - python_scipy2_image
-    diff3 = python_scipy_image - python_scipy2_image
+    
+    diff = uint8( abs( python_opencv_image.astype(float) - python_scipy_image.astype(float) ))
+    diff2 = uint8( abs( python_opencv_image.astype(float) - python_scipy2_image.astype(float) ))
+    diff3 = uint8( abs( python_scipy_image.astype(float) - python_scipy2_image.astype(float)  ))
     
     # For visual inspection:
     
     from pylab import show, imshow, figure, subplot, title
-    """
+    
     figure()
     subplot(1,3,1); title("The OpenCV Output (Py and C++)")
     imshow(python_opencv_image)
-    subplot(1,3,2); title("3 way ndimage filter")
+    subplot(1,3,2); title("SciPy: IIR filter")
     imshow(python_scipy_image)
     subplot(1,3,3); title("SciPy: ndimage.filters.gaussian_filter")
     imshow(python_scipy2_image)
@@ -155,32 +166,10 @@ def testGaussianBlur():
     imshow(diff2)
     subplot(1,3,3)
     imshow(diff3)
-    """
-    import matplotlib.pyplot as plt
-    import matplotlib.cm as cm
     
-    
-    plt.figure()
-    plt.title("Pixel by pixel difference of one row from image in Scipy and OpenCV Gaussian Filter")
-    plt.plot(diff[:,50,1])
-    
-    plt.figure()
-    plt.subplot(1,3,1)
-    plt.title("R")
-    im1 = plt.imshow(diff[:,:,0])
-    CB1 = plt.colorbar(im1, orientation='horizontal')
-    plt.subplot(1,3,2)
-    plt.title("G")
-    im2 = plt.imshow(diff[:,:,1], cmap=cm.gray)
-    CB2 = plt.colorbar(im2, orientation='horizontal')
-    plt.subplot(1,3,3)
-    plt.title("B")
-    im3 = plt.imshow(diff[:,:,2], cmap=cm.gray)
-    CB3 = plt.colorbar(im3, orientation='horizontal')
-    
-    #plt.figure()
-    #im = plt.imshow(python_opencv_image[:,:,2], cmap=cm.gray)
-    
+    from misc import plot_seperate_rgb
+    plot_seperate_rgb(diff)
+    plot_seperate_rgb(diff3)
     show()
     
     # Check that the sum of all differences at each point is 0
@@ -193,8 +182,8 @@ def main():
     #VCP(slowGaussianBlur,title=title).main()
 
 if __name__ == "__main__": 
-    #testGaussianBlur()
-    main()
+    testGaussianBlur()
+    #main()
     #import cProfile
     #cProfile.run("main()",'python_profile_data')
 

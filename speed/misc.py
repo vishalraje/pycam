@@ -3,6 +3,25 @@ from scipy import signal
 
 from opencv import adaptors
 
+def plot_seperate_rgb(diff):
+    
+    import matplotlib.pyplot as plt
+    import matplotlib.cm as cm
+    plt.figure()
+    plt.subplot(1,3,1)
+    plt.title("R")
+    im1 = plt.imshow(diff[:,:,0], cmap=cm.Reds)
+    CB1 = plt.colorbar(im1, orientation='horizontal')
+    plt.subplot(1,3,2)
+    plt.title("G")
+    im2 = plt.imshow(diff[:,:,1], cmap=cm.Greens)
+    CB2 = plt.colorbar(im2, orientation='horizontal')
+    plt.subplot(1,3,3)
+    plt.title("B")
+    im3 = plt.imshow(diff[:,:,2], cmap=cm.Blues)
+    CB3 = plt.colorbar(im3, orientation='horizontal')
+    #user may have to call show() depending on env
+
 def opencvFilt2sigma(size):
     """OpenCV defaults to making sigma up with this formula.
     Learning OpenCV: computer vision with the OpenCV library
