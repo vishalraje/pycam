@@ -22,10 +22,15 @@ from os import path
 import sys
 import exceptions
 import opencv
+#TODO stop polluting the namespace
 from opencv.cv import *
 from opencv.highgui import *
 
-verbose = False
+import logging
+
+verbosity = logging.INFO
+logging.basicConfig(filename=None,level=verbosity,)
+
 
 cascades = {
             'eye': "haarcascade_eye",
@@ -38,7 +43,7 @@ cascades = {
             }
 
 cascadeExtension = ".xml"
-# TODO: generate these from evironment vars... eg for windows...
+# TODO: generate these from evironment vars... eg for windows, osx... not just linux
 cascadePaths = (
                 '/usr/local/share/opencv/haarcascades/',
                 '/usr/share/opencv/haarcascades/',
@@ -48,8 +53,8 @@ def findCascade(cascade):
     """
     Given the most flimsy of names like "face" or "eye" give a valid file path of a Haar cascade.
         
-        >>> findCascade('eye')
-        '/usr/local/share/opencv/haarcascades/haarcascade_eye.xml'
+    >>> findCascade('eye')
+    '/usr/local/share/opencv/haarcascades/haarcascade_eye.xml'
         
     """
     if cascades.has_key(cascade):
@@ -76,15 +81,14 @@ class ObjectDetector(object):
     def __init__(self,cascadeName="face"):
         self.storage = cvCreateMemStorage(0)
         self.cascade_name = findCascade(cascadeName)
-        print cascadeName
+        logging.info("Found descriptor for object: %s" % cascadeName )
         
         # the OpenCV API says this function is obsolete, but we can't
         # cast the output of cvLoad to a HaarClassifierCascade, so use this anyways
         # the size parameter is ignored
         self.cascade = cvLoadHaarClassifierCascade( self.cascade_name, cvSize(1,1) )
         if( self.cascade ):
-            if verbose:
-                print "cascade loaded..."
+            logging.info("Haar classifier cascade loaded...")
         else:
             raise exceptions.IOError("Could not locate cascade file.")
         self.cvWin = cvNamedWindow( "result", 1 ) # is this needed? return value?
@@ -97,7 +101,7 @@ class ObjectDetector(object):
         # scale_factor=1.2, min_neighbors=2, flags=CV_HAAR_DO_CANNY_PRUNING, 
         # min_size=<minimum possible object size
         self.min_size = cvSize(20,20)
-        self.image_scale = 1.3        # TODO what does this one do?
+        self.image_scale = 1.3
         self.haar_scale = 1.3
         self.min_neighbors = 4
         self.haar_flags = CV_HAAR_DO_CANNY_PRUNING
@@ -107,6 +111,7 @@ class ObjectDetector(object):
     def detectObject(self,img):
         """
         This should be pure opencv and reasonably quick.
+        It carrys out the actual detection, and returns a list of objects found
         """
         # Could this go into init?
         gray = cvCreateImage( cvSize(img.width,img.height), 8, 1 )
@@ -116,40 +121,41 @@ class ObjectDetector(object):
         cvResize( gray, small_img, CV_INTER_LINEAR )
         cvEqualizeHist( small_img, small_img )
         cvClearMemStorage( self.storage )
-    
         
         if( self.cascade ):
             t = cvGetTickCount()
             objects = cvHaarDetectObjects( small_img, self.cascade, self.storage,
                                          self.haar_scale, self.min_neighbors, self.haar_flags, self.min_size )
             t = cvGetTickCount() - t
-            if verbose:
-                print "%i objects found, detection time = %gms" % (objects.total,t/(cvGetTickFrequency()*1000.))
+            logging.debug( "%i objects found, detection time = %gms" % (objects.total,t/(cvGetTickFrequency()*1000.)) )
             return objects
         else:
-            print "no cascade"
+            logging.error("no cascade")
     
     def detect_and_draw(self, img):
         """
-        draw a box with opencv on the image around the detected faces.
+        draw a box with opencv on the image around the detected faces and display the output
         """
         objects = self.detectObject(img)
         if objects:
             for r in objects:
-                if verbose:
-                    print "Oject found at (x,y) = (%i,%i)" % (r.x*self.image_scale,r.y*self.image_scale)
+                logging.debug( "Oject found at (x,y) = (%i,%i)" % (r.x*self.image_scale,r.y*self.image_scale) )
                 pt1 = cvPoint( int(r.x*self.image_scale), int(r.y*self.image_scale))
                 pt2 = cvPoint( int((r.x+r.width)*self.image_scale), int((r.y+r.height)*self.image_scale) )
                 cvRectangle( img, pt1, pt2, CV_RGB(255,0,0), 3, 8, 0 )
-        cvShowImage( "result", img ) # This isreqd if opencv is rendering... TODO: what if pygame renders?
+        cvShowImage( "result", img )
+
 
 def main():
-   
-    input_name = '0'
+    """Run the default object detector"""
+    
+    input_name = '0'    # Can easily modify this to use a file, or take command line args
 
     if input_name.isdigit():
+        logging.debug("Opening camera capture")
         capture = cvCreateCameraCapture( int(input_name) )
     else:
+        logging.debug("Opening video file")
         capture = cvCreateFileCapture( input_name )
 
     cvNamedWindow( "result", 1 )

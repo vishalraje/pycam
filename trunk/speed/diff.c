@@ -15,7 +15,7 @@ int main()
     IplImage* image            = cvQueryFrame(capture);       // get the first frame of video
     IplImage* previousFrame    = cvCloneImage( image );       // allocate image buffer for previous frame
     IplImage* differenceImage  = cvCloneImage( image );       // allocate image buffer for difference image
-    cvNamedWindow("difference images",  CV_WINDOW_AUTOSIZE);                    // title display window
+    cvNamedWindow("difference images",  CV_WINDOW_AUTOSIZE);  // title display window
     while (cvWaitKey(10) < 0)
     {
         cvCopy( image, previousFrame );                       // backup current frame

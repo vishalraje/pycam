@@ -88,16 +88,20 @@ HIT Lab NZ, University of Canterbury, Private Bag 4800, Christchurch
 Email: {brian.thorne|raphael.grasset|richard.green}@hitlabnz.org
 \end_layout
 
-\begin_layout Keywords
-Computer Vision, OpenCV, Python, C++
-\end_layout
-
 \begin_layout Abstract
 An introduction to and argument for programming computer vision applications
  and scripts in Python in place of the C/C++ programming language.
  From the general concept to its implementation with some current open-source
  libraries (OpenCV, NumPy/SciPy, Pygame).
- 
+ We found that that Python was consistently a fraction slower than C, but
+ for many applications fast enough not to notice.
+ Having an interactive interpreter and being a dynamic language makes it
+ significantly easier and faster to modify and experiment for quick prototyping
+ of new algorithms, or to debug and tweak existing ones.
+\end_layout
+
+\begin_layout Keywords
+Computer Vision, OpenCV, Python, C++
 \end_layout
 
 \begin_layout Section
@@ -117,36 +121,22 @@ e.
 \end_layout
 
 \begin_layout Standard
-To Compare performance between C++ and Python for computer vision the OpenCV
- library is used to show different examples of computer vision.
+The goal of this paper is to compare performance between C++ and Python
+ for computer vision, the OpenCV library is used to show different examples
+ of computer vision.
  Examples analyzed include displaying a video image, filtering algorithms
- (dilation, gaussian blur), and how to implement facial recognition.
- We go on to describe how these and other computer vision related tasks
- can be achieved with other Python tools such as SciPy
+ (dilation, gaussian blur), feature detection and how to implement facial
+ recognition.
+ We describe how these and other computer vision related tasks can be achieved
+ with other Python tools such as SciPy
 \begin_inset CommandInset citation
 LatexCommand cite
 key "oliphant2007python"
 
 \end_inset
 
-.
- I will show how these libraries can be used in conjunction to perform video
- capturing, image processing and video feedback.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-if it's OpenCV in C++ and OpenCV in Python, use a simple notation: OPENCV_C++,
- OPENCV_PY that you introduce in the text.
- just for tables?
-\end_layout
-
-\end_inset
-
-
+ and will show how these libraries can be used in conjunction to perform
+ video capturing, image processing and video feedback.
 \end_layout
 
 \begin_layout Section
@@ -166,7 +156,32 @@ key "entry-0"
 \end_inset
 
 .
- It is highly regarded due in no small part for its fast development time.
+ It is highly regarded due in no small part for its fast development time
+ and the ease of integrating packages
+\begin_inset CommandInset citation
+LatexCommand cite
+key "sanner1999python"
+
+\end_inset
+
+.
+ Python's performance makes it a viable programming language for scientific
+ work
+\begin_inset CommandInset citation
+LatexCommand cite
+key "cai2005performance"
+
+\end_inset
+
+.
+ It has been used by a few people in Computer Vision for many years
+\begin_inset CommandInset citation
+LatexCommand cite
+key "doakPyCV"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsection
@@ -174,13 +189,33 @@ OpenCV
 \end_layout
 
 \begin_layout Standard
-Intel's open source computer vision libraries...
- History, capabilities.
- C library.
- Python bindings.
- IPP.
- For the tests carried out in this paper the latest tested snapshot of OpenCV
- 1.1.1 was used.
+Originally an Intel research initiative, this cross-platform open source
+ computer vision library is widly used in real time image processing.
+ It aims to provide well tested, optimized and open code for image processing.
+ The library is written in C, this ensures it is both fast and portable,
+ even onto embeded platforms.
+ If found the Intel's Integrated Performance Primitives are used extensively
+ by the library to accelerate performance.
+ Multiple bindings exist for the library, including multiple for Python,
+ the one used here is the swig
+\begin_inset CommandInset citation
+LatexCommand cite
+key "beazley1996swig"
+
+\end_inset
+
+ wrapper included with the library source
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+For the tests carried out in this paper the latest tested snapshot of the
+ OpenCV library was used; version 1.1.1, rev 1978.
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsection
@@ -188,7 +223,7 @@ NumPy
 \end_layout
 
 \begin_layout Standard
-NumPy gives N-dimensional arrays to python
+NumPy gives N-dimensional arrays to Python
 \begin_inset CommandInset citation
 LatexCommand cite
 key "oliphant2006guide"
@@ -198,6 +233,8 @@ key "oliphant2006guide"
 .
  Has very fast raw data crunching, iterating.
  Much easier to use than multidimensional matrices in C.
+ A CvMat from OpenCV can be converted into a NumPy array.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -222,8 +259,26 @@ key "oliphant2007python"
 
 .
  SciPy has filters and convolution etc much like Matlab.
- Should be much simpler higher level code, without any significant performance
- loss.
+ This leads to much simpler higher level code, usually without any significant
+ performance loss over C.
+ Two tools that are usually distributed with SciPy that are very usefull
+ for comptuer vision work are matplotlib and ipython.
+ Matplotlib
+\begin_inset CommandInset citation
+LatexCommand cite
+key "hunter2007matplotlib"
+
+\end_inset
+
+ is a matrix plotting library, and Ipython is an improved interactive shell
+ for Python
+\begin_inset CommandInset citation
+LatexCommand cite
+key "perez2007ipython"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
@@ -237,7 +292,7 @@ Image Acquisition
 \begin_layout Standard
 The first thing to think about in computer vision programs is where the
  image data comes from.
- In this report only live data from a web-cam is under consideration.
+ In this report mostely just live data from a web-cam is under consideration.
  The main difference in using a live system is the time available for processing
  is very constrained to allow a frame rate sufficient for live viewing.
  Processing on static images or recorded video data doesn't have this constraint.
@@ -842,8 +897,8 @@ reference "alg:Gaussian-Python-OpenCV"
 
 \end_inset
 
- shows Python taking advantage of VideoCapturePlayer, the Python class mentioned
- above to do the same blurring operation with OpenCV
+ shows Python taking advantage of VideoCapturePlayer, the Python class introduce
+d earlier in this document, to do the same blurring operation with OpenCV
 \begin_inset Foot
 status collapsed
 
@@ -869,6 +924,8 @@ reference "alg:Gaussian-Python-SciPy"
  into NumPy arrays; this has been achieved here by creating and using a
  Python decorator which converts before and after calling a Python function
  using NumPy.
+ A (640x480) RGB image takes less than 2ms to convert either way on the
+ testing platform used throughout this report.
  Also the filter parameters need converted to be compatible with OpenCV's
  
 \noun on
@@ -910,15 +967,86 @@ reference "fig:Difference-in-Python"
 \end_inset
 
  which shows that the SciPy and OpenCV Python code doing the filtering produces
- slightly different results.
- This could be caused by the floating point nature of the convolution, as
- the difference is very small.
- It may be due to a type difference or a small difference in the algorithms.
- Or possibly since SciPy uses the sigma parameter, the filter is created
- by direct sampling of the Gaussian function.
- On the other side, OpenCV uses the size(in pixels) of the filter.
- This is a good indication it probably uses the pascal triangle as an approximat
-ion for the Gaussian kernel.
+ very similar but slightly different results.
+ This could be caused by the discretization at the precission limit of the
+ image, or the floating point nature of the convolution as the difference
+ is very small.
+ It may be due to a type difference or another possible small effect would
+ be caused by a difference in the algorithms.
+ Possibly since SciPy uses the sigma parameter, the filter is created by
+ direct sampling of the Gaussian function.
+ OpenCV on the other hand, uses the size of the filter, this is a good indicatio
+n it probably uses the pascal triangle which is another good approximation
+ for the Gaussian kernel
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ben1991image"
+
+\end_inset
+
+.
+ Whatever the reasons, the differences are negligible.
+\end_layout
+
+\begin_layout Standard
+The graph itself in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Difference-in-Python"
+
+\end_inset
+
+ is worth a mention, because it shows a 3 way sub plot of a single image
+ made inplace with the Python plotting package matplotlib directly on the
+ data from OpenCV.
+ This means that as a researcher to debug a misbehaving programmer you can
+ just jump right into the middle of a deeply nested loop, introspect all
+ variables, plot any signal or image, call any function, accuratly time
+ any function.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout LyX-Code
+from IPython.Shell import IPShellEmbed 
+\end_layout
+
+\begin_layout LyX-Code
+IPShellEmbed()()
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:drop-to-shell"
+
+\end_inset
+
+Two lines of Python code can be put anywhere in a computer vision program
+ and it will pause execution and drop into a live interactive shell with
+ full plotting capabilities.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -926,7 +1054,7 @@ ion for the Gaussian kernel.
 placement h
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -1041,14 +1169,14 @@ Python SciPy
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename report_data/python_gaussian_diffpng.png
-	lyxscale 20
-	width 100col%
+	filename report_data/gaussian_diffs.png
+	lyxscale 60
+	width 95col%
 
 \end_inset
 
@@ -1065,7 +1193,10 @@ name "fig:Difference-in-Python"
 
 \end_inset
 
-Difference in OpenCV and SciPy
+Difference of each channel after gaussian blur in OpenCV and SciPy.
+ Note full scale is 255, Pixel for pixel difference image stats: maximum
+ intensity difference = 20, average difference = 2.1.
+ with std dev = 1.4
 \end_layout
 
 \end_inset
@@ -1413,15 +1544,444 @@ OpenCV performance carrying out Gaussian Blur
 \end_layout
 
 \begin_layout Subsection
-Background subtractions
+Background subtraction
 \end_layout
 
 \begin_layout Standard
-Double Diff, Graph Cut maybe....
+To detect movement in a video, a comparison of a frame to a previous frame
+ must be undertaken
+\begin_inset CommandInset citation
+LatexCommand cite
+key "gao2006robust"
+
+\end_inset
+
+.
+ This can be done quite straighforwardly by simply taking the absolute intensity
+ difference between those frames, pixel for pixel, across all channels.
+ This gives a difference image, which contains specific colour information
+ about the change of state.
+ We need to filter this information, to only look at points which have changed
+ more than a set minimum.
+ We do this by applying a threshold, then removing salt and pepper noise
+ with a median filter, the output from this is a multichannel binary image.
+ Then create a new black image, to render the movement data on.
+ Then for every point in the binary difference image, if any of the channels
+ are true, copy the original point data from the current frame onto the
+ black image.
+ And thus we have a colour image of only what has changed.
+ The response is shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Adding-a-single"
+
+\end_inset
+
+ after adding a cellphone to the scene for the Python implementation in
+ algorithm 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:back-Python-imple"
+
+\end_inset
+
+.
+ 
 \end_layout
 
 \begin_layout Standard
-reference Richard Greens paper
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename report_data/background_python_add_item.png
+	lyxscale 40
+	width 30col%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Adding-a-single"
+
+\end_inset
+
+Adding item
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename report_data/background_python_add_more_items.png
+	lyxscale 40
+	width 30col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Adding-another-item,"
+
+\end_inset
+
+minor problems
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename report_data/background_python_add_remove_item.png
+	lyxscale 40
+	width 30col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:remove-laptop"
+
+\end_inset
+
+Addition and removal
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:background-Adding-and-removing"
+
+\end_inset
+
+Background subtraction response to adding and removing items from a scene.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename report_data/background_python_before.png
+	lyxscale 40
+	width 30col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+before
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename report_data/background_python_add_items_complicated.png
+	lyxscale 40
+	width 30col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+program output
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename report_data/background_python_after.png
+	lyxscale 40
+	width 30col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+after
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:back-Proces-clutter"
+
+\end_inset
+
+Background subtraction response on a cluttered scene where a cellphone is
+ switched for a wallet and a contact card is added.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Regions of the same colour, like pieces of paper make it more difficult
+ for this algorithm to work, the noise around the USB device in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Adding-another-item,"
+
+\end_inset
+
+ is caused by moving the paper underneath it.
+ Only the edges are detected as having changed.
+ Another issue is shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:remove-laptop"
+
+\end_inset
+
+, although from visual inspection one can see that something has changed
+ to the right of the added wallet and cellphone, it is almost impossible
+ to identify that a laptop was removed.
+ This method could be improved by having a second view looking at the changes
+ applied in the same way to the original image.
+ The figures in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:back-Proces-clutter"
+
+\end_inset
+
+ show how the algorithm deals with a combination of changes.
+ 
+\end_layout
+
+\begin_layout Standard
+While creating this program I found algorithm 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:drop-to-shell"
+
+\end_inset
+
+ particuly helpfull, it allows for interactive, inplace trialing, timing
+ and plotting as shown in algorithm 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:Interactive,-inplace-timing"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide true
+sideways false
+status open
+
+\begin_layout LyX-Code
+\noindent
+In [1]: from opencv import cv
+\end_layout
+
+\begin_layout LyX-Code
+\noindent
+In [2]: cv.cvAnd(differenceImage,image, temp)
+\end_layout
+
+\begin_layout LyX-Code
+\noindent
+In [3]: timeit cv.cvAnd(differenceImage,image, temp)
+\end_layout
+
+\begin_layout LyX-Code
+\noindent
+1000 loops, best of 3: 229 µs per loop
+\end_layout
+
+\begin_layout LyX-Code
+\noindent
+In [4]: from pylab import imshow, show
+\end_layout
+
+\begin_layout LyX-Code
+\noindent
+In [5]: imshow(temp) 
+\end_layout
+
+\begin_layout LyX-Code
+\noindent
+Out[5]: <matplotlib.image.AxesImage object at 0x42489d0>
+\end_layout
+
+\begin_layout LyX-Code
+\noindent
+In [6]: show()
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:Interactive,-inplace-timing"
+
+\end_inset
+
+Using algorithm 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:drop-to-shell"
+
+\end_inset
+
+ the interactive shell can be used from deep inside a nested loop.
+ Inplace timing and plotting with access to local variables and functions
+ like this example speeds up development time.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -1450,20 +2010,20 @@ key "harris1988combined"
  is a measure of how good an interesting feature algorithm is.
  The corner detection algorithm works by locating points where the surroundings
  have edges in more than one direction.
- Harris & Stephens algorithm is in short: 
-\end_layout
-
-\begin_layout Quote
-A matrix W is created from the outer product of the image gradient, this
- matrix is averaged over a region and then a corner response function is
- defined as the ratio of the determinant to the trace of W.
+ According to 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Sol09"
 
 \end_inset
 
+ the Harris & Stephens algorithm is in short: 
+\end_layout
 
+\begin_layout Quote
+A matrix W is created from the outer product of the image gradient, this
+ matrix is averaged over a region and then a corner response function is
+ defined as the ratio of the determinant to the trace of W.
 \end_layout
 
 \begin_layout Standard
@@ -1640,7 +2200,140 @@ reference "fig:A-SciPy-harris"
 \end_inset
 
 .
- The same concept but in a different implementation is shown in figure 
+ The algorithm was timed by executing it on lena 300 times per sample:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="4">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Sample:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+SciPy
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+621 ms
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+620 ms
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+626 ms
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+OpenCv
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+64.3 ms
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+65.6 ms
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+67.4 ms
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The same concept but in a different implementation is shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:OpenCV-harris"
@@ -1658,6 +2351,11 @@ reference "alg:Harris-Detection-opencv"
  Note care has not been taken to get the exact same output in OpenCV as
  in SciPy, it is assumed that one could get the same output as shown earlier
  with the gaussian blur example.
+ Also note the algorithms are working on different dimensional images, OpenCV
+ is running on a 3 channel image whereas the SciPy version is only working
+ on a grayscale image.
+ Even so, OpenCV clearly runs a magnitude faster than the unoptimized SciPy
+ code.
  The main difference between algorithms 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1673,7 +2371,8 @@ reference "alg:Harris-Detection-opencv"
 \end_inset
 
  is the filtering and display of the corner response.
- Not implemented here is the OpenCV response in C++.
+ Another limitation is that the OpenCV response in C++ is not implemented
+ here.
 \end_layout
 
 \begin_layout Subsection
@@ -1681,8 +2380,8 @@ Face Detection
 \end_layout
 
 \begin_layout Standard
-Face detection is the task of locating a face in an image, this is a specific
- case of a general object detection.
+Face detection is the task of locating any number of faces in an image,
+ this is a specific case of general object detection.
  Before locating an object, one must be able to describe it.
  Many object detection algorithms use a classifier which is a collection
  of feature patterns made by scanning a database of images with known content.
@@ -1705,14 +2404,15 @@ reference "fig:OpenCV-Face-Detection"
  shows the output under different conditions when using the face Haar-cascade
  classifier that comes with OpenCV.
  The method gave a mean framerate of 7.16 ± 0.02 Hz.
- The detection method used has limitations as shown in fig 
+ The detection process itself gave very consistent timings of 107 ± 1 ms.
+ The detection method used has limitations as shown in figures 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Obscured-opencv-face"
 
 \end_inset
 
- and fig 
+ and 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Angled-opencv-face"
@@ -1735,7 +2435,7 @@ status collapsed
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -1771,7 +2471,7 @@ Single face in frame
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -1816,7 +2516,7 @@ Obscured face in frame
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -1852,7 +2552,7 @@ Multiple faces
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -1924,10 +2624,79 @@ status collapsed
 
 \begin_layout Plain Layout
 \align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename report_data/pygame-eye-locate.png
 	lyxscale 50
-	width 90col%
+	width 40col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+detecting eye and face objects
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename report_data/pygame-face-edge.png
+	lyxscale 40
+	width 40col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:edge-filtering-face"
+
+\end_inset
+
+edge filtering and face detection
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
 
 \end_inset
 
@@ -1970,10 +2739,11 @@ reference "fig:Pygame-object"
 
 \end_inset
 
- shows an alternative setup; using Pygame for image capture, OpenCV for
- the object detection and Pygame for the rendering.
+ shows an alternative setup; using the Pygame camera module for image capture,
+ OpenCV for the object detection and Pygame surfaces for the box rendering
+ and display.
  Python really shows its strengths as a glue language here, as the different
- libraries are easily used in conjunction.
+ libraries are easily used in conjunction with each other.
  The benifits from this can be huge, it is very easy for a developer to
  incorperate different computer vision tools, even with very limited knowledge
  of computer vision.
@@ -1984,16 +2754,15 @@ Related Works
 \end_layout
 
 \begin_layout Standard
-Part 2 should be "related works" as referencing people comparing: different
- version of CV library in different languages, in different platforms, maybe
- also people using OpenCV+IPL, people having implementing other CV library
- in Python, etc.
- 
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-Thank Rob for the profiling help
+Part 2 should be "related works" as referencing people comparing: different
+ version of CV library in different languages, in different platforms, maybe
+ also people using OpenCV+IPL, people having implementing other CV library
+ in Python, etc.
+ Thanks...? IE: Rob for the profiling help
 \end_layout
 
 \end_inset
@@ -2001,28 +2770,74 @@ Thank Rob for the profiling help
 
 \end_layout
 
+\begin_layout Itemize
+GPUCV
+\begin_inset CommandInset citation
+LatexCommand cite
+key "farrugia2006gpucv"
+
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "allusse2008gpucv"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Pyro - 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "blank2003pyro"
+
+\end_inset
+
+ introduced Pyro, a robotics simulation environment
+\end_layout
+
+\begin_layout Itemize
+Pygame - a game making package for Python, aimed at new programmers.
+ It has a camera module and is able to do basic computer vision tasks, or
+ call on SciPy/NumPy.
+ http://pygame.org
+\end_layout
+
+\begin_layout Itemize
+Pycam - All code from this project, including framework linking OpenCV to
+ Pygame and NumPy.
+ http://pycam.googlecode.com
+\end_layout
+
 \begin_layout Section
-Conclusions
+Concluding Messages
 \end_layout
 
 \begin_layout Standard
-Initial thoughts are that Python will be slow, but for many applications
- probably fast enough not to notice.
- The benefits for quick prototyping of new algorithms and using those prototypes
- in the final product is a serious draw card...
+Having an interactive interpretter, and using these prototypes in the final
+ product is a big argument in favor of Python.
+ Most of the time the reason for slow performance comes down to naive implementa
+tions, which every language is prone to.
 \end_layout
 
 \begin_layout Standard
-Limitations (other than speed), hardware, firewire, support, libraries and
- functionality?
+A major limitations of using Python would be when the application is being
+ developed for embedded hardware.
+ 
+\end_layout
+
+\begin_layout Standard
+I would like to thank Rob Ramsey for help with profiling the exectution
+ of C++ code to ensure acurate timing results were used.
+ Thanks also to all the developers investing time helping work on the open
+ source projects OpenCV, Python and SciPy.
 \end_layout
 
 \begin_layout Section
 Appendix
-\end_layout
-
-\begin_layout Subsection
-Code Listings
 \end_layout
 
 \begin_layout Standard
@@ -2112,6 +2927,9 @@ Applying Gaussian Blur to web-cam stream from C++
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float algorithm
 wide true
 sideways false
@@ -2198,6 +3016,9 @@ Gaussian Blurring in Python using OpenCV
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float algorithm
 wide true
 sideways false
@@ -2301,6 +3122,9 @@ Gaussian Blurring in Python using SciPy
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float algorithm
 wide true
 sideways false
@@ -2408,6 +3232,9 @@ SciPy Harris Corner Detection
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float algorithm
 wide true
 sideways false
@@ -2502,6 +3329,9 @@ Using the OpenCV Haar Detect Objects Function
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float algorithm
 wide true
 sideways false
@@ -2678,21 +3508,791 @@ Harris Detection in OpenCV
 
 \end_layout
 
-\begin_layout Section*
-Software Links
+\begin_layout Standard
+\begin_inset Float algorithm
+wide true
+sideways false
+status collapsed
+
+\begin_layout LyX-Code
+
 \end_layout
 
-\begin_layout Itemize
-Pygame - a game making package for Python, aimed at new programmers.
- It has a camera module and is able to do basic computer vision tasks, or
- call on SciPy/NumPy.
- http://pygame.org
+\begin_layout LyX-Code
+    differenceImage  = cv.cvCloneMat( image )
 \end_layout
 
-\begin_layout Itemize
-Pycam - All code from this project, my framework linking OpenCV to Pygame
- and NumPy.
- http://pycam.googlecode.com
+\begin_layout LyX-Code
+    cv.cvAbsDiff( image, original, differenceImage )
+\end_layout
+
+\begin_layout LyX-Code
+    
+\end_layout
+
+\begin_layout LyX-Code
+    cv.cvThreshold( differenceImage, differenceImage, 32, 255, cv.CV_THRESH_BINARY
+ )
+\end_layout
+
+\begin_layout LyX-Code
+    cv.cvSmooth(differenceImage, differenceImage, cv.CV_MEDIAN, 15)
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+    temp  = cv.cvCloneMat( image)
+\end_layout
+
+\begin_layout LyX-Code
+    cv.cvSetZero(temp)
+\end_layout
+
+\begin_layout LyX-Code
+    
+\end_layout
+
+\begin_layout LyX-Code
+    for row_n in xrange(image.rows):
+\end_layout
+
+\begin_layout LyX-Code
+        for col_n in xrange(image.cols):
+\end_layout
+
+\begin_layout LyX-Code
+            if differenceImage[row_n,col_n][0] > 0 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+            or differenceImage[row_n,col_n][1] > 0 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+            or differenceImage[row_n,col_n][2] > 0:
+\end_layout
+
+\begin_layout LyX-Code
+                temp[row_n,col_n] = image[row_n,col_n]
+\end_layout
+
+\begin_layout LyX-Code
+    
+\end_layout
+
+\begin_layout LyX-Code
+    return temp
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:back-Python-imple"
+
+\end_inset
+
+Python implementaition of background subtraction
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide true
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+/* g++ -O3 -Wall
+\end_layout
+
+\begin_layout Plain Layout
+`pkg-config --cflags opencv` 
+\end_layout
+
+\begin_layout Plain Layout
+`pkg-config --libs opencv` -o bg_sub 
+\end_layout
+
+\begin_layout Plain Layout
+bg_sub.cxx videoCapturePlayer.cxx
+\end_layout
+
+\begin_layout Plain Layout
+*/
+\end_layout
+
+\begin_layout Plain Layout
+#include <iostream>
+\end_layout
+
+\begin_layout Plain Layout
+#include "videoCapturePlayer.h"
+\end_layout
+
+\begin_layout Plain Layout
+CvMat *original;
+\end_layout
+
+\begin_layout Plain Layout
+CvMat * bg_subtract(CvMat *x)
+\end_layout
+
+\begin_layout Plain Layout
+{
+\end_layout
+
+\begin_layout Plain Layout
+static int n = 0;
+\end_layout
+
+\begin_layout Plain Layout
+++n;
+\end_layout
+
+\begin_layout Plain Layout
+if( n == 3) original = cvCloneMat( x );
+\end_layout
+
+\begin_layout Plain Layout
+if( n < 4) return x;
+\end_layout
+
+\begin_layout Plain Layout
+if(n%100 == 0) std::cout << "100 frames" << std::endl;
+\end_layout
+
+\begin_layout Plain Layout
+CvMat * differenceImage = cvCloneMat( x );
+\end_layout
+
+\begin_layout Plain Layout
+cvAbsDiff( x, original, differenceImage );
+\end_layout
+
+\begin_layout Plain Layout
+//CV_THRESH_TOZERO
+\end_layout
+
+\begin_layout Plain Layout
+CvMat * temp = cvCloneMat( x );
+\end_layout
+
+\begin_layout Plain Layout
+cvSetZero(temp);
+\end_layout
+
+\begin_layout Plain Layout
+cvThreshold( differenceImage, temp, 32, 255, CV_THRESH_BINARY );
+\end_layout
+
+\begin_layout Plain Layout
+// median filter out the salt & pepper noise in the difference image
+\end_layout
+
+\begin_layout Plain Layout
+cvSmooth(temp, temp, CV_MEDIAN, 5);
+\end_layout
+
+\begin_layout Plain Layout
+cvSetZero(differenceImage);
+\end_layout
+
+\begin_layout Plain Layout
+cvAnd(x, temp, differenceImage ); // NOTE DIFF FROM PYTHON
+\end_layout
+
+\begin_layout Plain Layout
+return differenceImage;
+\end_layout
+
+\begin_layout Plain Layout
+}
+\end_layout
+
+\begin_layout Plain Layout
+VideoCapturePlayer vcp = VideoCapturePlayer(&bg_subtract);
+\end_layout
+
+\begin_layout Plain Layout
+vcp.init(); vcp.main();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+C++ Background Subtraction
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide true
+sideways false
+status collapsed
+
+\begin_layout LyX-Code
+#!/usr/bin/env python
+\end_layout
+
+\begin_layout LyX-Code
+from __future__ import division
+\end_layout
+
+\begin_layout LyX-Code
+from opencv import cv, highgui as hg
+\end_layout
+
+\begin_layout LyX-Code
+import time
+\end_layout
+
+\begin_layout LyX-Code
+import logging
+\end_layout
+
+\begin_layout LyX-Code
+verbosity = logging.INFO
+\end_layout
+
+\begin_layout LyX-Code
+profiling = False
+\end_layout
+
+\begin_layout LyX-Code
+logging.basicConfig(filename=None,level=verbosity,)
+\end_layout
+
+\begin_layout LyX-Code
+class VideoCapturePlayer(object):
+\end_layout
+
+\begin_layout LyX-Code
+    """
+\end_layout
+
+\begin_layout LyX-Code
+    A VideoCapturePlayer object is an encapsulation of 
+\end_layout
+
+\begin_layout LyX-Code
+    the display of a video stream.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+    
+\end_layout
+
+\begin_layout LyX-Code
+    A process can be given (as a function) that is run
+\end_layout
+
+\begin_layout LyX-Code
+    on every frame between capture and display.
+\end_layout
+
+\begin_layout LyX-Code
+    
+\end_layout
+
+\begin_layout LyX-Code
+    For example a filter function that takes and returns a 
+\end_layout
+
+\begin_layout LyX-Code
+    cvMat can be given.
+ This player will take the webcam image, 
+\end_layout
+
+\begin_layout LyX-Code
+    pass it through the filter then display the result.
+\end_layout
+
+\begin_layout LyX-Code
+    
+\end_layout
+
+\begin_layout LyX-Code
+    >>> vcp = VideoCapturePlayer()  # Open the webcam.
+\end_layout
+
+\begin_layout LyX-Code
+    >>> vcp.main()  # should start capturing and showing the webcam
+\end_layout
+
+\begin_layout LyX-Code
+    
+\end_layout
+
+\begin_layout LyX-Code
+    And defining and giving a process function to the player:
+\end_layout
+
+\begin_layout LyX-Code
+    
+\end_layout
+
+\begin_layout LyX-Code
+    >>> def drawBox(x):
+\end_layout
+
+\begin_layout LyX-Code
+    ....
+    pt1, pt2 = cv.CvPoint(), cv.CvPoint()
+\end_layout
+
+\begin_layout LyX-Code
+    ....
+    pt1.x = pt1.y = 200
+\end_layout
+
+\begin_layout LyX-Code
+    ....
+    pt2.x = pt2.y = 250
+\end_layout
+
+\begin_layout LyX-Code
+    ....
+    cv.cvRectangle( x, pt1, pt2, cv.CV_RGB(30,0,200) )
+\end_layout
+
+\begin_layout LyX-Code
+    ....
+    return x
+\end_layout
+
+\begin_layout LyX-Code
+    >>> vcp = VideoCapturePlayer(processFunction=drawBox)
+\end_layout
+
+\begin_layout LyX-Code
+    >>> vcp.main()
+\end_layout
+
+\begin_layout LyX-Code
+    
+\end_layout
+
+\begin_layout LyX-Code
+    """
+\end_layout
+
+\begin_layout LyX-Code
+   
+\end_layout
+
+\begin_layout LyX-Code
+    def __init__(self, processFunction = None, title = "Video Capture Player",
+ show=True)
+\end_layout
+
+\begin_layout LyX-Code
+        t_begin = time.time()
+\end_layout
+
+\begin_layout LyX-Code
+        self.processFunction = processFunction
+\end_layout
+
+\begin_layout LyX-Code
+        self.title = title
+\end_layout
+
+\begin_layout LyX-Code
+        self.show = show
+\end_layout
+
+\begin_layout LyX-Code
+        if self.show is True:
+\end_layout
+
+\begin_layout LyX-Code
+            self.display = hg.cvNamedWindow(self.title)
+\end_layout
+
+\begin_layout LyX-Code
+        try:
+\end_layout
+
+\begin_layout LyX-Code
+            self.camera = hg.cvCreateCameraCapture(0)
+\end_layout
+
+\begin_layout LyX-Code
+        except:
+\end_layout
+
+\begin_layout LyX-Code
+            print("Couldn't open camera device, is it connected?")
+\end_layout
+
+\begin_layout LyX-Code
+            hg.cvDestroyWindow(title)
+\end_layout
+
+\begin_layout LyX-Code
+            raise SystemExit
+\end_layout
+
+\begin_layout LyX-Code
+        
+\end_layout
+
+\begin_layout LyX-Code
+        # Take a frame to get props and use in testing
+\end_layout
+
+\begin_layout LyX-Code
+        self.snapshot = cv.cvCloneMat( hg.cvQueryFrame( self.camera ) )
+\end_layout
+
+\begin_layout LyX-Code
+        # check that we got an image, otherwise try again.
+\end_layout
+
+\begin_layout LyX-Code
+        for i in xrange(100):
+\end_layout
+
+\begin_layout LyX-Code
+            if self.snapshot is not None: break
+\end_layout
+
+\begin_layout LyX-Code
+            self.snapshot = hg.cvQueryFrame( self.camera )
+\end_layout
+
+\begin_layout LyX-Code
+        
+\end_layout
+
+\begin_layout LyX-Code
+    def process(self, take_new_image=True):
+\end_layout
+
+\begin_layout LyX-Code
+        """We will take a snapshot, optionally do some arbitrary process
+ (eg in numpy/scipy)
+\end_layout
+
+\begin_layout LyX-Code
+        then display it.
+\end_layout
+
+\begin_layout LyX-Code
+        """
+\end_layout
+
+\begin_layout LyX-Code
+        try:
+\end_layout
+
+\begin_layout LyX-Code
+            if take_new_image:
+\end_layout
+
+\begin_layout LyX-Code
+                logging.debug("capturing an image")
+\end_layout
+
+\begin_layout LyX-Code
+                self.snapshot = cv.cvCloneMat( hg.cvQueryFrame( self.camera)
+ )
+\end_layout
+
+\begin_layout LyX-Code
+       
+\end_layout
+
+\begin_layout LyX-Code
+            if self.processFunction is not None:
+\end_layout
+
+\begin_layout LyX-Code
+                logging.debug("Sending image to process function")
+\end_layout
+
+\begin_layout LyX-Code
+                res = self.processFunction(self.snapshot)
+\end_layout
+
+\begin_layout LyX-Code
+                logging.debug("Received result from processing function")
+\end_layout
+
+\begin_layout LyX-Code
+                assert isinstance(res,cv.CvMat), "Not CvMat"
+\end_layout
+
+\begin_layout LyX-Code
+                self.snapshot = res
+\end_layout
+
+\begin_layout LyX-Code
+                       
+\end_layout
+
+\begin_layout LyX-Code
+            if self.show:
+\end_layout
+
+\begin_layout LyX-Code
+                hg.cvShowImage( self.title, self.snapshot )
+\end_layout
+
+\begin_layout LyX-Code
+        except Exception, e:
+\end_layout
+
+\begin_layout LyX-Code
+            # If something goes wrong make sure we close the window
+\end_layout
+
+\begin_layout LyX-Code
+            logging.error("Error in processing image: %s" % e)
+\end_layout
+
+\begin_layout LyX-Code
+            hg.cvDestroyWindow(self.title)
+\end_layout
+
+\begin_layout LyX-Code
+            raise SystemExit
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+    def main(self):
+\end_layout
+
+\begin_layout LyX-Code
+        """
+\end_layout
+
+\begin_layout LyX-Code
+        Run and time the main loop.
+\end_layout
+
+\begin_layout LyX-Code
+        """
+\end_layout
+
+\begin_layout LyX-Code
+        logging.info("Starting main video capture loop now, press 'q' to
+ quit")
+\end_layout
+
+\begin_layout LyX-Code
+        key = hg.cvWaitKey(1)
+\end_layout
+
+\begin_layout LyX-Code
+        
+\end_layout
+
+\begin_layout LyX-Code
+        num_frames = 0
+\end_layout
+
+\begin_layout LyX-Code
+        start_time = time.time()
+\end_layout
+
+\begin_layout LyX-Code
+        
+\end_layout
+
+\begin_layout LyX-Code
+        while(key is not "q" and key != '
+\backslash
+x1b'):
+\end_layout
+
+\begin_layout LyX-Code
+            num_frames +=1
+\end_layout
+
+\begin_layout LyX-Code
+            self.process()
+\end_layout
+
+\begin_layout LyX-Code
+            key = hg.cvWaitKey(5)
+\end_layout
+
+\begin_layout LyX-Code
+            
+\end_layout
+
+\begin_layout LyX-Code
+        total_time = float(time.time()) - float(start_time)
+\end_layout
+
+\begin_layout LyX-Code
+        
+\end_layout
+
+\begin_layout LyX-Code
+        logging.debug("Main loop complete")
+\end_layout
+
+\begin_layout LyX-Code
+        logging.debug("Total time took %e" % total_time)
+\end_layout
+
+\begin_layout LyX-Code
+        
+\end_layout
+
+\begin_layout LyX-Code
+        logging.info("Average time per frame: %e" % (total_time/num_frames)
+ )
+\end_layout
+
+\begin_layout LyX-Code
+        logging.info("Average frames per second: %f" % (num_frames/total_time)
+ )
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+def drawBox(x):
+\end_layout
+
+\begin_layout LyX-Code
+    """
+\end_layout
+
+\begin_layout LyX-Code
+    This is a template for a function that can be fed into VideoCapturePlayer
+\end_layout
+
+\begin_layout LyX-Code
+    It must take a CvMat, and return a CvMat.
+\end_layout
+
+\begin_layout LyX-Code
+    It draws a rectangle on the screen."""
+\end_layout
+
+\begin_layout LyX-Code
+    pt1, pt2 = cv.CvPoint(), cv.CvPoint()
+\end_layout
+
+\begin_layout LyX-Code
+    pt1.x = pt1.y = 200
+\end_layout
+
+\begin_layout LyX-Code
+    pt2.x = pt2.y = 250
+\end_layout
+
+\begin_layout LyX-Code
+    cv.cvRectangle( x, pt1, pt2, cv.CV_RGB(30,0,200) )
+\end_layout
+
+\begin_layout LyX-Code
+    return x
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+if __name__ == "__main__":
+\end_layout
+
+\begin_layout LyX-Code
+    logging.info("Starting the example VideoCapturePlayer")
+\end_layout
+
+\begin_layout LyX-Code
+    #vcp = VideoCapturePlayer(processFunction=drawBox)
+\end_layout
+
+\begin_layout LyX-Code
+    vcp = VideoCapturePlayer()
+\end_layout
+
+\begin_layout LyX-Code
+    vcp.main()
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Python implementaiton of the VideoCaptureClass
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
