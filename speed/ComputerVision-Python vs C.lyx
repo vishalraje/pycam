@@ -47,42 +47,6 @@ theorems-ams
 
 \begin_layout Title
 Using Python in Computer Vision: Approach, Performance and Usability 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Comparing Python and C for Computer Vision?
-\end_layout
-
-\begin_layout Plain Layout
-Developing Computer Vision Programs?
-\end_layout
-
-\begin_layout Plain Layout
-Cprofiling gprof, cProfile in python
-\end_layout
-
-\begin_layout Plain Layout
-http://developer.apple.com/tools/sharkoptimize.html
-\end_layout
-
-\begin_layout Plain Layout
-You should have few code snippets, maybe 3 will sufficient, the rest in
- the appendices yes.
-\end_layout
-
-\begin_layout Plain Layout
-%matlab + pygpu %importance of well written code, multi-thread optimization
- %development and implementation time, documentation quality library, support
- %declared and typed variable %high level language, easy to read and understand
- (memory management, data storage format) %PyPy py2exe, freeze %GBLAS, GSL,
- Numerical Recipes in C %http://old.scipy.org/documentation/weave/weaveperformance.
-html %scientific/numerical computing
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Author
@@ -111,11 +75,11 @@ OpenCV
 \shape default
 .
  In this paper, we present a comparative evaluation of both libraries, assessing
- their performance as their usability.
+ their performance as well as their usability.
  We also describe how Python implementation of OpenCV performs in comparison
- of the C++ implementation.
- Our lessons learnt as a list of recommendations for the scholar community
- are also presented.
+ to the nativie C++ implementation.
+ Our lessons learnt and recommendations for the scholar community are also
+ presented.
  
 \end_layout
 
@@ -135,22 +99,22 @@ key "van1994python"
 
 \end_inset
 
- has been growing of interest by the academic community over the last decade.
+ has been of growing interest to the academic community over the last decade.
  The increase of computational science as a scientific method drives the
  need for scientists to implement different mathematical models or simulation
  processes.
- The simple syntax of python, the absence of strongly typed data, or hardware
- resources management (e.g.
- memory management) has retained their attention and forged it as a popular
+ The simple syntax of Python, high level dynamic data types, and automated
+ memory management has retained their attention and forged it as a popular
  tool for the research community.
 \end_layout
 
 \begin_layout Standard
 Differently, the field of image processing and computer vision (CV) has
  been driven for the last decade by C/C++ implementation or the usage of
- MATLAB 
+ MATLAB
 \begin_inset CommandInset citation
 LatexCommand cite
+key "kovesi-matlab"
 
 \end_inset
 
@@ -170,9 +134,7 @@ The goal of this paper is to evaluate the quality of the most common solution
 \end_layout
 
 \begin_layout Standard
-We were particularly interested to learn how Python performs in comparison
- with the native C implementation.
- We also focused our attention on the performances of two widely used CV
+We also focused our attention on the performances of two widely used CV
  libraries in Python: 
 \shape italic
 OpenCV
@@ -199,6 +161,8 @@ key "oliphant2007python"
  For this matter, we analyzed their performances through a list of common
  tasks and processes regularly employed in computer vision (e.g.
  video capture, filtering algorithms, feature detection, etc).
+ We were particularly interested to learn how Python performs in comparison
+ with the native C implementation of OpenCV.
 \end_layout
 
 \begin_layout Standard
@@ -274,8 +238,8 @@ OpenCV
 \begin_layout Standard
 The library is written in C, ensuring both fast and portable code (optionally
  to embedded platforms).
- The library is using a base layer related to image structure and basic
- image manipulation.
+ The library uses a base layer related to image structure and basic image
+ manipulation.
  A software implementation is provided freely whilst an accelerated version
  (
 \shape italic
@@ -294,24 +258,32 @@ key "taylor2004intel"
 \end_layout
 
 \begin_layout Standard
-Nowadays, multiple language bindings are available for OpenCV, such as OpenCV
- DotNet ( OpenCVDotNet, .NET Framework Wrapper for Intel's OpenCV Package),
- the cross platform C# EmguCV (http://www.emgu.com/wiki/index.php/Main_Page),
- GPUCV
+Nowadays, multiple language bindings are available for OpenCV, such as OpenCVDot
+Net and EmguCV.
+ Additional tools using graphics hardware to accelerate Computer Vision
+ performance have been made for OpenCV, GPUCV
 \begin_inset CommandInset citation
 LatexCommand cite
 key "farrugia2006gpucv"
 
 \end_inset
 
- and multiple for Python (automatically Swig
+.
+ Multiple bindings to OpenCV such as OpenCV Python, and PyCV
+\begin_inset CommandInset citation
+LatexCommand cite
+key "tri2009principled"
+
+\end_inset
+
+ have been created for Python, as well as the automatically Swig
 \begin_inset CommandInset citation
 LatexCommand cite
 key "beazley1996swig"
 
 \end_inset
 
- wrapped, OpenCV Python).
+ wrapped bindings included with the source.
 \end_layout
 
 \begin_layout Subsection*
@@ -331,11 +303,11 @@ key "oliphant2006guide"
 \end_inset
 
 .
- It's a well recognized library, much of the lower level algorithms are
- implemented in C and Fortran, offering very fast raw data crunching, iterating,
- ande an easier approach for multidimensional array manipulation than in
- the C programming language.
- 
+ It's a well recognized library, offering an easier approach for multidimensiona
+l array manipulation than in the C programming language.
+ Much of the lower level algorithms are implemented in highly optimized
+ C and FORTRAN libraries, resulting in very fast raw data crunching and
+ iterating.
 \end_layout
 
 \begin_layout Standard
@@ -359,12 +331,12 @@ key "oliphant2007python"
 \end_inset
 
 .
- SciPy offers many different filters, routines for numerical integration
- and optimization.
+ SciPy offers many different modules including, many filters, routines for
+ numerical integration and optimization.
  This leads to much more elegant code, usually achieved without any significant
  performance loss over C.
- Two major tools that are usually distributed with SciPy that are very usefull
- for computer vision work are matplotlib and ipython.
+ Two major tools that are usually distributed with SciPy that are very use
+ full for computer vision work are matplotlib and IPython.
  Matplotlib
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -372,7 +344,7 @@ key "hunter2007matplotlib"
 
 \end_inset
 
- is a matrix plotting library, and IPython
+ is an array and image plotting library, and IPython
 \begin_inset CommandInset citation
 LatexCommand cite
 key "perez2007ipython"
@@ -395,10 +367,10 @@ We conducted our test on a Intel Core 2 Duo 6600 machine, with 3.8 RAM, running
 \begin_layout Itemize
 OpenCV Native Language (OPENCV_C): we used snapshot built version 1.1.1, rev
  1978.
- The code has been compiled with the GNU toolchain version (4.3.3), and in
- Release mode with O3 compiler optimisations, MMX, fast math, SSE3.
- All additional packages, EXCEPT 1393, are turned on, eg png, jpg, gtk,
- gstreamer, unicap, V4L turned on.
+ The code has been compiled with the GNU tool chain version (4.3.3), and in
+ Release mode with O3 compiler optimizations, MMX, fast math, SSE3.
+ All additional packages, EXCEPT 1393, are turned on, for example: png,
+ jpg, gtk, gstreamer, unicap, V4L turned on.
  
 \end_layout
 
@@ -416,7 +388,7 @@ key "beazley1996swig"
 \end_layout
 
 \begin_layout Itemize
-SciPy/NumPy (SCIPY):we used the stable versions from the ubuntu repositories;
+SciPy/NumPy (SCIPY):we used the stable versions from the Ubuntu repositories;
  SciPy version 0.7.0 and NumPy 1.2.1
 \end_layout
 
@@ -426,16 +398,27 @@ Tests
 
 \begin_layout Standard
 We cover different standard algorithms traditionally used in a CV application
- and also some standard operations used in CV such as video grabbing or
- image recording.
- For each of the tests we describe the process, the difference in term of
- the syntax, the performance and the usability.
+ and also some standard operations used in CV such as image acquisition.
+ For each of the tests we describe the process, the difference in terms
+ of the syntax, the performance and the usability.
+ All of the testing code is made available open source at the project website.
+\end_layout
+
+\begin_layout Subsubsection*
+Limitations in testing
 \end_layout
 
 \begin_layout Standard
-Notice that for some tests we only compare the Python OpenCV implementation
- against the SciPy libraries, as disscussed later, the performance of the
- wrapped code alone, made more testing redundant.
+Note that for some tests we only compare the Python OpenCV implementation
+ against the SciPy library.
+ Early results showed performance of OpenCV called from Python performs
+ similar to the native code making further testing redundant.
+ 
+\end_layout
+
+\begin_layout Standard
+In some cases there was no analogous function in both OpenCV and SciPy,
+ in which case we simply recommend to use the tool for the job.
 \end_layout
 
 \begin_layout Section
@@ -448,8 +431,9 @@ Image Acquisition
 
 \begin_layout Standard
 Since live image acquisition is such a crucial role in the majority of CV
- applications, we tested just getting and showing a frame as the most basic,
- but nessasary test.
+ applications, we tested just getting and showing a frame as a most basic,
+ but necessary test.
+ This also serves to compare the syntax of the languages.
 \end_layout
 
 \begin_layout Subsubsection
@@ -650,8 +634,8 @@ reference "fig:Streaming-comparison"
 
 \end_inset
 
- shows results for taking an image from a webcam and displaying the image
- with OpenCV.
+ shows performance results for taking an image from a webcam and displaying
+ the image with OpenCV.
  The average frames per second were taken with 3 iterations, each averaging
  the framerate over a 2 minute period.
  Error bars are showing standard deviation of sampled data.
@@ -666,7 +650,7 @@ reference "fig:Streaming-comparison"
  an I/O bound task.
  C++ having the expected result of a marginally higher frame rate output
  than Python.
- 
+ The SciPy package does not currently have a direct method for image capture.
 \end_layout
 
 \begin_layout Standard
@@ -784,69 +768,23 @@ cvSmooth
  Both libraries use the 1 dimensional case, as it requires less calculations.
 \end_layout
 
-\begin_layout Subsubsection
-C++
-\end_layout
-
 \begin_layout Standard
-Algorithm 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "alg:Gaussian-C"
-
-\end_inset
-
- shows calling the OpenCV function 
-\noun on
-cvSmooth
-\noun default
- to carry out gaussian blur with a filter size of 43.
+In all implementations of this test an object oriented approach is used,
+ this ensures timing consistency between tests, and reduces code duplication.
  
 \end_layout
 
-\begin_layout Subsubsection
-Python
-\end_layout
-
 \begin_layout Standard
-Algorithm 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "alg:Gaussian-Python-OpenCV"
-
-\end_inset
-
- shows Python taking advantage of VideoCapturePlayer, the Python class introduce
-d earlier in this document, to do the same blurring operation with OpenCV
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-A helper function here calculates the sigma value to use in the convolution,
- this is usually done automatically in OpenCV, but to port to SciPy the
- parameters must all be known.
-\end_layout
-
-\end_inset
-
-.
- Algorithm 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "alg:Gaussian-Python-SciPy"
-
-\end_inset
-
- is also using the VideoCapturePlayer but this time using SciPy instead
- of OpenCV to do the convolution.
+The algorithms differ in that in order for the SciPy implementation to work,
+ the image data must be converted into NumPy arrays before blurring.
  To continue using the OpenCV camera capture, the image data must be converted
- into NumPy arrays; this has been achieved here by creating and using a
- Python decorator which converts before and after calling a Python function
- using NumPy.
+ into NumPy arrays.
+ This has been achieved by creating and using a Python decorator which converts
+ before and after calling a Python function using NumPy.
  A (640x480) RGB image takes less than 2ms to convert either way on the
  testing platform used throughout this report.
- Also the filter parameters need converted to be compatible with OpenCV's
- 
+ Also to ensure the same level of filtering is carried out in all tests,
+ the filter parameters need converted to be compatible with OpenCV's 
 \noun on
 cvSmooth
 \noun default
@@ -877,7 +815,7 @@ reference "fig:Gaussian-Output-Images"
  What is not immediately obvious without further investigation is how similar
  the results are.
  The OpenCV images produced by C++ and Python are exactly the same pixel
- for pixel, this is expected because the same function is doing the filtering.
+ for pixel, this is expected because the same library is doing the filtering.
  More interesting is Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -887,16 +825,17 @@ reference "fig:Difference-in-Python"
 
  which shows that the SciPy and OpenCV Python code doing the filtering produces
  very similar but slightly different results.
- This could be caused by the discretization at the precission limit of the
- image, or the floating point nature of the convolution as the difference
- is very small.
- It may be due to a type difference or another possible small effect would
- be caused by a difference in the algorithms.
- Possibly since SciPy uses the sigma parameter, the filter is created by
- direct sampling of the Gaussian function.
+ 
+\end_layout
+
+\begin_layout Standard
+This could be caused by a difference in the implementation of the gaussian
+ kernel approximations.
+ Since SciPy uses the sigma parameter, the filter is created by a direct
+ sampling of the gaussian function.
  OpenCV on the other hand, uses the size of the filter, this is a good indicatio
-n it probably uses the pascal triangle which is another good approximation
- for the Gaussian kernel
+n it probably uses the pascal triangle as a good approximation for the Gaussian
+ kernel
 \begin_inset CommandInset citation
 LatexCommand cite
 key "ben1991image"
@@ -904,26 +843,22 @@ key "ben1991image"
 \end_inset
 
 .
- Whatever the reasons, the differences are negligible.
 \end_layout
 
 \begin_layout Standard
-The graph itself in Figure 
+The graph in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Difference-in-Python"
 
 \end_inset
 
- is worth a mention, because it shows a 3 way sub plot of a single image
- made inplace with the Python plotting package matplotlib directly on the
- data from OpenCV.
- This means that as developers, to debug a misbehaving program, we can just
- jump right into the middle of a deeply nested loop, introspect all variables,
- plot any signal or image, call any function, accuratly time any function.
- Two lines of Python code can be put anywhere in a computer vision program
- and it will pause execution and drop into a live interactive shell with
- full plotting capabilities.
+ shows a 3 way sub plot of a single image.
+ This graph was created interactively using the Python plotting package
+ Matplotlib from IPython acting directly on the data from OpenCV.
+ With just two lines of Python code, which can be put anywhere in a computer
+ vision program, we can pause execution and drop into a live interactive
+ shell with full plotting capabilities.
  
 \begin_inset Quotes eld
 \end_inset
@@ -952,6 +887,14 @@ IPShellEmbed()()
 \end_layout
 
 \begin_layout Standard
+This means that as developers, to debug a misbehaving program, we can just
+ jump right into the middle of a deeply nested loop, introspect all variables,
+ plot any signal or image, call any function, and accurately time the execution
+ of any function.
+ This is massively in favor of using Python.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 placement h
 wide false
@@ -963,7 +906,7 @@ status collapsed
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -998,7 +941,7 @@ C++
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -1033,7 +976,7 @@ Python OpenCV
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -1136,7 +1079,7 @@ Output Images from Gaussian Blur Examples
 placement H
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -1193,7 +1136,7 @@ key "gao2006robust"
 \end_inset
 
 .
- If there is more than a threshold of differance, something changed.
+ If there is more than a threshold of difference, something changed.
 \end_layout
 
 \begin_layout Standard
@@ -1518,8 +1461,8 @@ reference "fig:back-Proces-clutter"
 \end_layout
 
 \begin_layout Standard
-While creating this program I found IPython particuly helpfull, it allows
- for interactive, inplace trialing, timing and plotting as shown in algorithm
+While creating this program I found IPython particularly helpful, it allows
+ for interactive, in place trialing, timing and plotting as shown in algorithm
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1588,7 +1531,7 @@ name "alg:Interactive,-inplace-timing"
 
 Using IPython, the interactive shell can be used from deep inside a nested
  loop in a running program.
- Inplace timing and plotting with access to local variables and functions
+ In place timing and plotting with access to local variables and functions
  like this example speeds up development time.
 \end_layout
 
@@ -1818,7 +1761,7 @@ reference "fig:A-SciPy-harris"
 \end_inset
 
 .
- The algorithm was timed by executing it on lena 300 times per sample:
+ The algorithm was timed by executing it on Lena 300 times per sample:
 \end_layout
 
 \begin_layout Standard
@@ -1892,7 +1835,7 @@ SciPy
 \begin_inset Text
 
 \begin_layout Plain Layout
-OpenCv
+OpenCV
 \end_layout
 
 \end_inset
@@ -1944,7 +1887,7 @@ reference "alg:Harris-Detection-opencv"
  with the gaussian blur example.
  Also note the algorithms are working on different dimensional images, OpenCV
  is running on a 3 channel image whereas the SciPy version is only working
- on a grayscale image.
+ on a gray-scale image.
  Even so, OpenCV clearly runs a magnitude faster than the unoptimized SciPy
  code.
  The main difference between algorithms 
@@ -1976,15 +1919,6 @@ Face detection is the task of locating any number of faces in an image,
  Before locating an object, one must be able to describe it.
  Many object detection algorithms use a classifier which is a collection
  of feature patterns made by scanning a database of images with known content.
- Algorithm 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "alg:OpenCV-Haar-detect"
-
-\end_inset
-
- shows how to use the OpenCV library to detect the location of any object
- provided a Haar Classifier describing that object is provided.
  Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1992,8 +1926,8 @@ reference "fig:OpenCV-Face-Detection"
 
 \end_inset
 
- shows the output under different conditions when using the face Haar-cascade
- classifier that comes with OpenCV.
+ shows the output from our tests running under different conditions when
+ using the face Haar-cascade classifier that comes with OpenCV.
  The method gave a mean framerate of 7.16 ± 0.02 Hz.
  The detection process itself gave very consistent timings of 107 ± 1 ms.
  The detection method used has limitations as shown in Figures 
@@ -2011,10 +1945,10 @@ reference "fig:Angled-opencv-face"
 \end_inset
 
 .
- But in ideal conditions, with good lighting and unobscured faces directly
+ But in ideal conditions, with good lighting and un-obscured faces directly
  facing the camera the algorithm produces very good results.
- In this example we did not find corrosponding high level functionality
- in SciPy, so no comparison is done.
+ In this example we did not find corresponding high level functionality
+ in SciPy, so no performance comparison is possible.
 \end_layout
 
 \begin_layout Standard
@@ -2337,8 +2271,8 @@ reference "fig:Pygame-object"
  and display.
  Python really shows its strengths as a glue language here, as the different
  libraries are easily used in conjunction with each other.
- The benifits from this can be huge, it is very easy for a developer to
- incorperate different computer vision tools, even with very limited knowledge
+ The benefits from this can be huge, it is very easy for a developer to
+ incorporate different computer vision tools, even with very limited knowledge
  of computer vision.
 \end_layout
 
@@ -2348,7 +2282,7 @@ Related Works
 
 \begin_layout Standard
 A feature of SciPy that has previously gone unmentioned, is the Weave module
- for inlining C and C++ code.
+ for in-lining C and C++ code.
  This can easily produce code 100x
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -2364,8 +2298,9 @@ key "cai2005performance"
 
 \end_inset
 
- showed that for parrallel programming, mixed language solutions exhibit
- the same performance gains from parralization as native language solutions.
+ showed that for parallel programming, mixed language solutions exhibit
+ the same performance gains as native language solutions from moving to
+ parallel solutions
 \end_layout
 
 \begin_layout Standard
@@ -2386,6 +2321,7 @@ Part 2 should be "related works" as referencing people comparing: different
 \end_layout
 
 \begin_layout Itemize
+Performance speed ups with NumPy
 \begin_inset CommandInset citation
 LatexCommand cite
 key "cai2005performance"
@@ -2442,10 +2378,10 @@ Conclusion
 \end_layout
 
 \begin_layout Standard
-We found that calling OpenCV from a Python wrapper was slower in general
- than natively using the library.
- In getting these results we can't help but note that the Python implementations
- were shorter, easier to create and debug, and easier to test.
+We found that calling OpenCV from a Python wrapper was only slightly slower
+ in general than natively using the library.
+ In getting these results we note that the Python implementations were shorter,
+ easier to create and debug, and easier to test.
  Having and using an interactive interpreter, to come to a solution prototype
  and being able to use these prototypes in the final product is a big argument
  in favor of Python.
@@ -2453,23 +2389,26 @@ We found that calling OpenCV from a Python wrapper was slower in general
 \end_layout
 
 \begin_layout Standard
-For the scholar of Computer Vision research we find that using Python can
- help in trying out new algorithms, very quickly.
- The breadth of the additional tools and libraries available .....
- 
-\end_layout
-
-\begin_layout Standard
-Support for these packages, is almost entirely reliant on experianced members
- of the community responding to message boards or mailing lists.
+The documentation was found to be complete, but not as extensive as for
+ a professional package like Matlab.
+ Support for these open source packages is almost entirely reliant on experience
+d members of the community responding to message boards or mailing lists.
  When one of the authors asked a question regarding the gaussian image filtering
  function to the SciPy mailing list it spurred not only an immediate response
- pointing out the solution to the direct query but also a disscussion on
- finite approximations to gaussian kernals, how OpenCV might do it differantly,
+ pointing out the solution to the direct query but also a discussion on
+ finite approximations to gaussian kernels, how OpenCV might do it differently,
  and a user even went as far as to test an IIR filter against the various
  implementations.
  This kind of support is quite common in the open source world, where a
  package like SciPy prides itself on its very rigorous and open tests.
+ 
+\end_layout
+
+\begin_layout Standard
+For the scholar of Computer Vision research we find that using Python can
+ help in trying out new algorithms, very quickly.
+ The breadth of the additional libraries available and the ease of integrating
+ make new and novel solutions quickly realizable.
  
 \end_layout
 
@@ -2482,1494 +2421,26 @@ For those newer to computer vision, we recommend Python for many reasons,
 \end_layout
 
 \begin_layout Standard
-Most of the time the reason for slow performance comes down to naive implementat
-ions, which every language is prone to.
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Code test coverage of SciPy
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-A major limitations of using Python would be when the application is being
+A major limitation of using Python would be when the application is being
  developed for special or embedded hardware.
  
 \end_layout
 
+\begin_layout Subsection*
+Acknowledgments
+\end_layout
+
 \begin_layout Standard
-I would like to thank Rob Ramsey for help with profiling the execution of
- C++ code to ensure accurate timing results were used.
- Thanks also to all the developers investing time helping work on the open
- source projects OpenCV, Python and SciPy.
+First and foremost I would like to thank Raphael Grasset for his mentoring
+ and guidance throughout this project.
+ I would also like to thank Rob Ramsey for help with profiling the execution
+ of C++ code to ensure accurate timing results were used.
+ Thanks to all the tireless developers investing time to work on open source
+ projects OpenCV, Python and SciPy.
 \end_layout
 
 \begin_layout Section
 Appendix
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float algorithm
-wide true
-sideways false
-status collapsed
-
-\begin_layout LyX-Code
-#include <iostream> 
-\end_layout
-
-\begin_layout LyX-Code
-#include "videoCapturePlayer.h"
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-CvMat * gaussianBlur(CvMat *x){
-\end_layout
-
-\begin_layout LyX-Code
-// Filter with gaussian smoothing
-\end_layout
-
-\begin_layout LyX-Code
-    int filterSize = 43;
-\end_layout
-
-\begin_layout LyX-Code
-    cvSmooth(x, x, CV_GAUSSIAN, filterSize);
-\end_layout
-
-\begin_layout LyX-Code
-    return x;
-\end_layout
-
-\begin_layout LyX-Code
-}
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-int main( int argc, char** argv ){
-\end_layout
-
-\begin_layout LyX-Code
-    VideoCapturePlayer vcp = VideoCapturePlayer(&gaussianBlur);
-\end_layout
-
-\begin_layout LyX-Code
-    vcp.init(); vcp.main();
-\end_layout
-
-\begin_layout LyX-Code
-    return 0;
-\end_layout
-
-\begin_layout LyX-Code
-}
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "alg:Gaussian-C"
-
-\end_inset
-
-Applying Gaussian Blur to web-cam stream from C++
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float algorithm
-wide true
-sideways false
-status collapsed
-
-\begin_layout LyX-Code
-from VideoCapturePlayer import VideoCapturePlayer as VCP
-\end_layout
-
-\begin_layout LyX-Code
-from opencv import cv
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-def opencvFilt2sigma(size):
-\end_layout
-
-\begin_layout LyX-Code
-    return (( size*0.5 ) - 1)*0.30 + 0.80
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-def gaussianBlur(image):
-\end_layout
-
-\begin_layout LyX-Code
-    """Blur an image"""     
-\end_layout
-
-\begin_layout LyX-Code
-    result = cv.cvCreateMat(image.rows, image.cols, image.type)
-\end_layout
-
-\begin_layout LyX-Code
-    filterSize = 43; sigma = opencvFilt2sigma(filterSize)
-\end_layout
-
-\begin_layout LyX-Code
-    cv.cvSmooth(image, result, cv.CV_GAUSSIAN, filterSize,0, sigma)
-\end_layout
-
-\begin_layout LyX-Code
-    return result
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-VCP(gaussianBlur, "Gaussian Filtered Output").main()
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "alg:Gaussian-Python-OpenCV"
-
-\end_inset
-
-Gaussian Blurring in Python using OpenCV
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float algorithm
-wide true
-sideways false
-status collapsed
-
-\begin_layout LyX-Code
-from numpy import array, uint8
-\end_layout
-
-\begin_layout LyX-Code
-from scipy import signal, ndimage 
-\end_layout
-
-\begin_layout LyX-Code
-from VideoCapturePlayer import VideoCapturePlayer as VCP 
-\end_layout
-
-\begin_layout LyX-Code
-from misc import scipyFromOpenCV
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-def opencvFilt2sigma(size):
-\end_layout
-
-\begin_layout LyX-Code
-    """OpenCV defaults to making sigma up with this formula"""
-\end_layout
-
-\begin_layout LyX-Code
-    return (( size/2 ) - 1)*0.30 + 0.80
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-@scipyFromOpenCV
-\end_layout
-
-\begin_layout LyX-Code
-def gaussianBlur(np_image):
-\end_layout
-
-\begin_layout LyX-Code
-    """Blur an image with scipy"""
-\end_layout
-
-\begin_layout LyX-Code
-    filterSize = opencvFilt2sigma(43)
-\end_layout
-
-\begin_layout LyX-Code
-    result = ndimage.filters.gaussian_filter(np_image, (filterSize, filterSize,
- 1))
-\end_layout
-
-\begin_layout LyX-Code
-    return result
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-if __name__ == "__main__":
-\end_layout
-
-\begin_layout LyX-Code
-    title = "Gaussian Filtered Output"
-\end_layout
-
-\begin_layout LyX-Code
-    VCP(gaussianBlur,title=title).main()
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "alg:Gaussian-Python-SciPy"
-
-\end_inset
-
-Gaussian Blurring in Python using SciPy
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float algorithm
-wide true
-sideways false
-status collapsed
-
-\begin_layout LyX-Code
-def gauss_derivatives(im, n, ny=None):
-\end_layout
-
-\begin_layout LyX-Code
-     """ returns x and y derivatives of an image using gaussian
-\end_layout
-
-\begin_layout LyX-Code
-          derivative filters of size n.
- The optional argument
-\end_layout
-
-\begin_layout LyX-Code
-          ny allows for a different size in the y direction."""
-\end_layout
-
-\begin_layout LyX-Code
-    gx,gy = gauss_derivative_kernels(n, sizey=ny)
-\end_layout
-
-\begin_layout LyX-Code
-    imx = signal.convolve(im,gx, mode='same')
-\end_layout
-
-\begin_layout LyX-Code
-    imy = signal.convolve(im,gy, mode='same')
-\end_layout
-
-\begin_layout LyX-Code
-    return imx,imy
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-   def compute_harris_response(image):
-\end_layout
-
-\begin_layout LyX-Code
-       """ compute the Harris corner detector response function
-\end_layout
-
-\begin_layout LyX-Code
-        for each pixel in the image"""
-\end_layout
-
-\begin_layout LyX-Code
-        imx,imy = gauss_derivatives(image, 3)
-\end_layout
-
-\begin_layout LyX-Code
-        gauss = gauss_kern(3)
-\end_layout
-
-\begin_layout LyX-Code
-        Wxx = signal.convolve(imx*imx,gauss, mode='same')
-\end_layout
-
-\begin_layout LyX-Code
-        Wxy = signal.convolve(imx*imy,gauss, mode='same')
-\end_layout
-
-\begin_layout LyX-Code
-        Wyy = signal.convolve(imy*imy,gauss, mode='same')
-\end_layout
-
-\begin_layout LyX-Code
-        Wdet = Wxx*Wyy - Wxy**2
-\end_layout
-
-\begin_layout LyX-Code
-        Wtr = Wxx + Wyy
-\end_layout
-
-\begin_layout LyX-Code
-        return Wdet / Wtr
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "alg:SciPy-Harris-Corner"
-
-\end_inset
-
-SciPy Harris Corner Detection
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float algorithm
-wide true
-sideways false
-status collapsed
-
-\begin_layout LyX-Code
-def detectObject(self,img):
-\end_layout
-
-\begin_layout LyX-Code
-    gray = cvCreateImage( cvSize(img.width,img.height), 8, 1 )
-\end_layout
-
-\begin_layout LyX-Code
-    small_img = cvCreateImage( cvSize( cvRound (img.width/self.image_scale),
- 
-\end_layout
-
-\begin_layout LyX-Code
-                              cvRound (img.height/self.image_scale)), 8, 1
- )
-\end_layout
-
-\begin_layout LyX-Code
-    cvCvtColor( img, gray, CV_BGR2GRAY )
-\end_layout
-
-\begin_layout LyX-Code
-    cvResize( gray, small_img, CV_INTER_LINEAR )
-\end_layout
-
-\begin_layout LyX-Code
-    cvEqualizeHist( small_img, small_img )
-\end_layout
-
-\begin_layout LyX-Code
-    cvClearMemStorage( self.storage )
-\end_layout
-
-\begin_layout LyX-Code
-    if( self.cascade ):
-\end_layout
-
-\begin_layout LyX-Code
-        t = cvGetTickCount()
-\end_layout
-
-\begin_layout LyX-Code
-        objects = cvHaarDetectObjects( small_img, self.cascade, self.storage,
-\end_layout
-
-\begin_layout LyX-Code
-                   self.haar_scale, self.min_neighbors, self.haar_flags, self.min_si
-ze )
-\end_layout
-
-\begin_layout LyX-Code
-        t = cvGetTickCount() - t
-\end_layout
-
-\begin_layout LyX-Code
-        if verbose:
-\end_layout
-
-\begin_layout LyX-Code
-            print "%i objects found, detection time = %gms" % (objects.total,t/(c
-vGetTickFrequency()*1000.))
-\end_layout
-
-\begin_layout LyX-Code
-        return objects
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "alg:OpenCV-Haar-detect"
-
-\end_inset
-
-Using the OpenCV Haar Detect Objects Function
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float algorithm
-wide true
-sideways false
-status collapsed
-
-\begin_layout LyX-Code
-#!/usr/bin/env python
-\end_layout
-
-\begin_layout LyX-Code
-from VideoCapturePlayer import VideoCapturePlayer as VCP
-\end_layout
-
-\begin_layout LyX-Code
-import numpy
-\end_layout
-
-\begin_layout LyX-Code
-from scipy.ndimage import gaussian_filter,maximum_filter
-\end_layout
-
-\begin_layout LyX-Code
-from numpy import array,ones,zeros,nonzero
-\end_layout
-
-\begin_layout LyX-Code
-from opencv import cv
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-def harrisResponse(image, n = 15):
-\end_layout
-
-\begin_layout LyX-Code
-  """Modified from PyVision example
-\end_layout
-
-\begin_layout LyX-Code
-  """
-\end_layout
-
-\begin_layout LyX-Code
-  gray = cv.cvCreateImage( cv.cvGetSize(image), 8, 1 )
-\end_layout
-
-\begin_layout LyX-Code
-  corners = cv.cvCreateImage( cv.cvGetSize(image), 32, 1 )
-\end_layout
-
-\begin_layout LyX-Code
-  cv.cvCvtColor( image, gray, cv.CV_BGR2GRAY )
-\end_layout
-
-\begin_layout LyX-Code
-  cv.cvCornerHarris(gray,corners, n)
-\end_layout
-
-\begin_layout LyX-Code
-  
-\end_layout
-
-\begin_layout LyX-Code
-  # Filter the response and draw points
-\end_layout
-
-\begin_layout LyX-Code
-  buffer = corners.imageData
-\end_layout
-
-\begin_layout LyX-Code
-  corners = numpy.frombuffer(buffer,numpy.float32)
-\end_layout
-
-\begin_layout LyX-Code
-  corners = corners.reshape(corners.height,corners.width)
-\end_layout
-
-\begin_layout LyX-Code
-  corners = corners.transpose()
-\end_layout
-
-\begin_layout LyX-Code
-  
-\end_layout
-
-\begin_layout LyX-Code
-  footprint = ones((n,n))
-\end_layout
-
-\begin_layout LyX-Code
-  mx = maximum_filter(corners, footprint = footprint)
-\end_layout
-
-\begin_layout LyX-Code
-  local_maxima = (corners == mx) * (corners != zeros(corners.shape))
-\end_layout
-
-\begin_layout LyX-Code
-  points = nonzero(local_maxima)
-\end_layout
-
-\begin_layout LyX-Code
-  del local_maxima
-\end_layout
-
-\begin_layout LyX-Code
-  points = array([points[0],points[1]]).transpose()
-\end_layout
-
-\begin_layout LyX-Code
-  L = []
-\end_layout
-
-\begin_layout LyX-Code
-  for each in points:
-\end_layout
-
-\begin_layout LyX-Code
-    L.append((corners[each[0],each[1]],each[0],each[1],None))
-\end_layout
-
-\begin_layout LyX-Code
-    i = cv.cvPoint(int(each[0]),int(each[1]))
-\end_layout
-
-\begin_layout LyX-Code
-    cv.cvCircle(image, i, 2, cv.CV_RGB(0,0,200),3 )
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-  return image
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-title = "Harris Feature Detection"
-\end_layout
-
-\begin_layout LyX-Code
-VCP(harrisResponse, title).main()
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "alg:Harris-Detection-opencv"
-
-\end_inset
-
-Harris Detection in OpenCV
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float algorithm
-wide true
-sideways false
-status collapsed
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-    differenceImage  = cv.cvCloneMat( image )
-\end_layout
-
-\begin_layout LyX-Code
-    cv.cvAbsDiff( image, original, differenceImage )
-\end_layout
-
-\begin_layout LyX-Code
-    
-\end_layout
-
-\begin_layout LyX-Code
-    cv.cvThreshold( differenceImage, differenceImage, 32, 255, cv.CV_THRESH_BINARY
- )
-\end_layout
-
-\begin_layout LyX-Code
-    cv.cvSmooth(differenceImage, differenceImage, cv.CV_MEDIAN, 15)
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-    temp  = cv.cvCloneMat( image)
-\end_layout
-
-\begin_layout LyX-Code
-    cv.cvSetZero(temp)
-\end_layout
-
-\begin_layout LyX-Code
-    
-\end_layout
-
-\begin_layout LyX-Code
-    for row_n in xrange(image.rows):
-\end_layout
-
-\begin_layout LyX-Code
-        for col_n in xrange(image.cols):
-\end_layout
-
-\begin_layout LyX-Code
-            if differenceImage[row_n,col_n][0] > 0 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-            or differenceImage[row_n,col_n][1] > 0 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-            or differenceImage[row_n,col_n][2] > 0:
-\end_layout
-
-\begin_layout LyX-Code
-                temp[row_n,col_n] = image[row_n,col_n]
-\end_layout
-
-\begin_layout LyX-Code
-    
-\end_layout
-
-\begin_layout LyX-Code
-    return temp
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "alg:back-Python-imple"
-
-\end_inset
-
-Python implementaition of background subtraction
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float algorithm
-wide true
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-/* g++ -O3 -Wall
-\end_layout
-
-\begin_layout Plain Layout
-`pkg-config --cflags opencv` 
-\end_layout
-
-\begin_layout Plain Layout
-`pkg-config --libs opencv` -o bg_sub 
-\end_layout
-
-\begin_layout Plain Layout
-bg_sub.cxx videoCapturePlayer.cxx
-\end_layout
-
-\begin_layout Plain Layout
-*/
-\end_layout
-
-\begin_layout Plain Layout
-#include <iostream>
-\end_layout
-
-\begin_layout Plain Layout
-#include "videoCapturePlayer.h"
-\end_layout
-
-\begin_layout Plain Layout
-CvMat *original;
-\end_layout
-
-\begin_layout Plain Layout
-CvMat * bg_subtract(CvMat *x)
-\end_layout
-
-\begin_layout Plain Layout
-{
-\end_layout
-
-\begin_layout Plain Layout
-static int n = 0;
-\end_layout
-
-\begin_layout Plain Layout
-++n;
-\end_layout
-
-\begin_layout Plain Layout
-if( n == 3) original = cvCloneMat( x );
-\end_layout
-
-\begin_layout Plain Layout
-if( n < 4) return x;
-\end_layout
-
-\begin_layout Plain Layout
-if(n%100 == 0) std::cout << "100 frames" << std::endl;
-\end_layout
-
-\begin_layout Plain Layout
-CvMat * differenceImage = cvCloneMat( x );
-\end_layout
-
-\begin_layout Plain Layout
-cvAbsDiff( x, original, differenceImage );
-\end_layout
-
-\begin_layout Plain Layout
-//CV_THRESH_TOZERO
-\end_layout
-
-\begin_layout Plain Layout
-CvMat * temp = cvCloneMat( x );
-\end_layout
-
-\begin_layout Plain Layout
-cvSetZero(temp);
-\end_layout
-
-\begin_layout Plain Layout
-cvThreshold( differenceImage, temp, 32, 255, CV_THRESH_BINARY );
-\end_layout
-
-\begin_layout Plain Layout
-// median filter out the salt & pepper noise in the difference image
-\end_layout
-
-\begin_layout Plain Layout
-cvSmooth(temp, temp, CV_MEDIAN, 5);
-\end_layout
-
-\begin_layout Plain Layout
-cvSetZero(differenceImage);
-\end_layout
-
-\begin_layout Plain Layout
-cvAnd(x, temp, differenceImage ); // NOTE DIFF FROM PYTHON
-\end_layout
-
-\begin_layout Plain Layout
-return differenceImage;
-\end_layout
-
-\begin_layout Plain Layout
-}
-\end_layout
-
-\begin_layout Plain Layout
-VideoCapturePlayer vcp = VideoCapturePlayer(&bg_subtract);
-\end_layout
-
-\begin_layout Plain Layout
-vcp.init(); vcp.main();
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-C++ Background Subtraction
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float algorithm
-wide true
-sideways false
-status collapsed
-
-\begin_layout LyX-Code
-#!/usr/bin/env python
-\end_layout
-
-\begin_layout LyX-Code
-from __future__ import division
-\end_layout
-
-\begin_layout LyX-Code
-from opencv import cv, highgui as hg
-\end_layout
-
-\begin_layout LyX-Code
-import time
-\end_layout
-
-\begin_layout LyX-Code
-import logging
-\end_layout
-
-\begin_layout LyX-Code
-verbosity = logging.INFO
-\end_layout
-
-\begin_layout LyX-Code
-profiling = False
-\end_layout
-
-\begin_layout LyX-Code
-logging.basicConfig(filename=None,level=verbosity,)
-\end_layout
-
-\begin_layout LyX-Code
-class VideoCapturePlayer(object):
-\end_layout
-
-\begin_layout LyX-Code
-    """
-\end_layout
-
-\begin_layout LyX-Code
-    A VideoCapturePlayer object is an encapsulation of 
-\end_layout
-
-\begin_layout LyX-Code
-    the display of a video stream.
- 
-\end_layout
-
-\begin_layout LyX-Code
-    
-\end_layout
-
-\begin_layout LyX-Code
-    A process can be given (as a function) that is run
-\end_layout
-
-\begin_layout LyX-Code
-    on every frame between capture and display.
-\end_layout
-
-\begin_layout LyX-Code
-    
-\end_layout
-
-\begin_layout LyX-Code
-    For example a filter function that takes and returns a 
-\end_layout
-
-\begin_layout LyX-Code
-    cvMat can be given.
- This player will take the webcam image, 
-\end_layout
-
-\begin_layout LyX-Code
-    pass it through the filter then display the result.
-\end_layout
-
-\begin_layout LyX-Code
-    
-\end_layout
-
-\begin_layout LyX-Code
-    >>> vcp = VideoCapturePlayer()  # Open the webcam.
-\end_layout
-
-\begin_layout LyX-Code
-    >>> vcp.main()  # should start capturing and showing the webcam
-\end_layout
-
-\begin_layout LyX-Code
-    
-\end_layout
-
-\begin_layout LyX-Code
-    And defining and giving a process function to the player:
-\end_layout
-
-\begin_layout LyX-Code
-    
-\end_layout
-
-\begin_layout LyX-Code
-    >>> def drawBox(x):
-\end_layout
-
-\begin_layout LyX-Code
-    ....
-    pt1, pt2 = cv.CvPoint(), cv.CvPoint()
-\end_layout
-
-\begin_layout LyX-Code
-    ....
-    pt1.x = pt1.y = 200
-\end_layout
-
-\begin_layout LyX-Code
-    ....
-    pt2.x = pt2.y = 250
-\end_layout
-
-\begin_layout LyX-Code
-    ....
-    cv.cvRectangle( x, pt1, pt2, cv.CV_RGB(30,0,200) )
-\end_layout
-
-\begin_layout LyX-Code
-    ....
-    return x
-\end_layout
-
-\begin_layout LyX-Code
-    >>> vcp = VideoCapturePlayer(processFunction=drawBox)
-\end_layout
-
-\begin_layout LyX-Code
-    >>> vcp.main()
-\end_layout
-
-\begin_layout LyX-Code
-    
-\end_layout
-
-\begin_layout LyX-Code
-    """
-\end_layout
-
-\begin_layout LyX-Code
-   
-\end_layout
-
-\begin_layout LyX-Code
-    def __init__(self, processFunction = None, title = "Video Capture Player",
- show=True)
-\end_layout
-
-\begin_layout LyX-Code
-        t_begin = time.time()
-\end_layout
-
-\begin_layout LyX-Code
-        self.processFunction = processFunction
-\end_layout
-
-\begin_layout LyX-Code
-        self.title = title
-\end_layout
-
-\begin_layout LyX-Code
-        self.show = show
-\end_layout
-
-\begin_layout LyX-Code
-        if self.show is True:
-\end_layout
-
-\begin_layout LyX-Code
-            self.display = hg.cvNamedWindow(self.title)
-\end_layout
-
-\begin_layout LyX-Code
-        try:
-\end_layout
-
-\begin_layout LyX-Code
-            self.camera = hg.cvCreateCameraCapture(0)
-\end_layout
-
-\begin_layout LyX-Code
-        except:
-\end_layout
-
-\begin_layout LyX-Code
-            print("Couldn't open camera device, is it connected?")
-\end_layout
-
-\begin_layout LyX-Code
-            hg.cvDestroyWindow(title)
-\end_layout
-
-\begin_layout LyX-Code
-            raise SystemExit
-\end_layout
-
-\begin_layout LyX-Code
-        
-\end_layout
-
-\begin_layout LyX-Code
-        # Take a frame to get props and use in testing
-\end_layout
-
-\begin_layout LyX-Code
-        self.snapshot = cv.cvCloneMat( hg.cvQueryFrame( self.camera ) )
-\end_layout
-
-\begin_layout LyX-Code
-        # check that we got an image, otherwise try again.
-\end_layout
-
-\begin_layout LyX-Code
-        for i in xrange(100):
-\end_layout
-
-\begin_layout LyX-Code
-            if self.snapshot is not None: break
-\end_layout
-
-\begin_layout LyX-Code
-            self.snapshot = hg.cvQueryFrame( self.camera )
-\end_layout
-
-\begin_layout LyX-Code
-        
-\end_layout
-
-\begin_layout LyX-Code
-    def process(self, take_new_image=True):
-\end_layout
-
-\begin_layout LyX-Code
-        """We will take a snapshot, optionally do some arbitrary process
- (eg in numpy/scipy)
-\end_layout
-
-\begin_layout LyX-Code
-        then display it.
-\end_layout
-
-\begin_layout LyX-Code
-        """
-\end_layout
-
-\begin_layout LyX-Code
-        try:
-\end_layout
-
-\begin_layout LyX-Code
-            if take_new_image:
-\end_layout
-
-\begin_layout LyX-Code
-                logging.debug("capturing an image")
-\end_layout
-
-\begin_layout LyX-Code
-                self.snapshot = cv.cvCloneMat( hg.cvQueryFrame( self.camera)
- )
-\end_layout
-
-\begin_layout LyX-Code
-       
-\end_layout
-
-\begin_layout LyX-Code
-            if self.processFunction is not None:
-\end_layout
-
-\begin_layout LyX-Code
-                logging.debug("Sending image to process function")
-\end_layout
-
-\begin_layout LyX-Code
-                res = self.processFunction(self.snapshot)
-\end_layout
-
-\begin_layout LyX-Code
-                logging.debug("Received result from processing function")
-\end_layout
-
-\begin_layout LyX-Code
-                assert isinstance(res,cv.CvMat), "Not CvMat"
-\end_layout
-
-\begin_layout LyX-Code
-                self.snapshot = res
-\end_layout
-
-\begin_layout LyX-Code
-                       
-\end_layout
-
-\begin_layout LyX-Code
-            if self.show:
-\end_layout
-
-\begin_layout LyX-Code
-                hg.cvShowImage( self.title, self.snapshot )
-\end_layout
-
-\begin_layout LyX-Code
-        except Exception, e:
-\end_layout
-
-\begin_layout LyX-Code
-            # If something goes wrong make sure we close the window
-\end_layout
-
-\begin_layout LyX-Code
-            logging.error("Error in processing image: %s" % e)
-\end_layout
-
-\begin_layout LyX-Code
-            hg.cvDestroyWindow(self.title)
-\end_layout
-
-\begin_layout LyX-Code
-            raise SystemExit
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-    def main(self):
-\end_layout
-
-\begin_layout LyX-Code
-        """
-\end_layout
-
-\begin_layout LyX-Code
-        Run and time the main loop.
-\end_layout
-
-\begin_layout LyX-Code
-        """
-\end_layout
-
-\begin_layout LyX-Code
-        logging.info("Starting main video capture loop now, press 'q' to
- quit")
-\end_layout
-
-\begin_layout LyX-Code
-        key = hg.cvWaitKey(1)
-\end_layout
-
-\begin_layout LyX-Code
-        
-\end_layout
-
-\begin_layout LyX-Code
-        num_frames = 0
-\end_layout
-
-\begin_layout LyX-Code
-        start_time = time.time()
-\end_layout
-
-\begin_layout LyX-Code
-        
-\end_layout
-
-\begin_layout LyX-Code
-        while(key is not "q" and key != '
-\backslash
-x1b'):
-\end_layout
-
-\begin_layout LyX-Code
-            num_frames +=1
-\end_layout
-
-\begin_layout LyX-Code
-            self.process()
-\end_layout
-
-\begin_layout LyX-Code
-            key = hg.cvWaitKey(5)
-\end_layout
-
-\begin_layout LyX-Code
-            
-\end_layout
-
-\begin_layout LyX-Code
-        total_time = float(time.time()) - float(start_time)
-\end_layout
-
-\begin_layout LyX-Code
-        
-\end_layout
-
-\begin_layout LyX-Code
-        logging.debug("Main loop complete")
-\end_layout
-
-\begin_layout LyX-Code
-        logging.debug("Total time took %e" % total_time)
-\end_layout
-
-\begin_layout LyX-Code
-        
-\end_layout
-
-\begin_layout LyX-Code
-        logging.info("Average time per frame: %e" % (total_time/num_frames)
- )
-\end_layout
-
-\begin_layout LyX-Code
-        logging.info("Average frames per second: %f" % (num_frames/total_time)
- )
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-def drawBox(x):
-\end_layout
-
-\begin_layout LyX-Code
-    """
-\end_layout
-
-\begin_layout LyX-Code
-    This is a template for a function that can be fed into VideoCapturePlayer
-\end_layout
-
-\begin_layout LyX-Code
-    It must take a CvMat, and return a CvMat.
-\end_layout
-
-\begin_layout LyX-Code
-    It draws a rectangle on the screen."""
-\end_layout
-
-\begin_layout LyX-Code
-    pt1, pt2 = cv.CvPoint(), cv.CvPoint()
-\end_layout
-
-\begin_layout LyX-Code
-    pt1.x = pt1.y = 200
-\end_layout
-
-\begin_layout LyX-Code
-    pt2.x = pt2.y = 250
-\end_layout
-
-\begin_layout LyX-Code
-    cv.cvRectangle( x, pt1, pt2, cv.CV_RGB(30,0,200) )
-\end_layout
-
-\begin_layout LyX-Code
-    return x
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-if __name__ == "__main__":
-\end_layout
-
-\begin_layout LyX-Code
-    logging.info("Starting the example VideoCapturePlayer")
-\end_layout
-
-\begin_layout LyX-Code
-    #vcp = VideoCapturePlayer(processFunction=drawBox)
-\end_layout
-
-\begin_layout LyX-Code
-    vcp = VideoCapturePlayer()
-\end_layout
-
-\begin_layout LyX-Code
-    vcp.main()
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Python implementaiton of the VideoCaptureClass
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
