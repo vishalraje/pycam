@@ -371,11 +371,8 @@ loop, introspect all variables, plot any signal or image, call any
 function, accuratly time any function. Two lines of Python code can
 be put anywhere in a computer vision program and it will pause execution
 and drop into a live interactive shell with full plotting capabilities.
-\begin{lyxcode}
-from~IPython.Shell~import~IPShellEmbed~
+{}``\emph{from IPython.Shell import IPShellEmbed}'' and {}``\emph{IPShellEmbed()()}''
 
-IPShellEmbed()()
-\end{lyxcode}
 %
 \begin{figure}[h]
 \begin{centering}
@@ -408,25 +405,6 @@ Examples}
 
 \end{figure}
 %
-\begin{table}
-\caption{\label{tab:Gaussian-Results}CPU bound test results - Gaussian Blur
-filtering on webcam stream (in fps)}
-
-
-\centering{}\begin{tabular}{|c|c|c|}
-\hline 
-Language & Mean & Std Dev\tabularnewline
-\hline
-\hline 
-Python & 14.427 & 0.318\tabularnewline
-\hline 
-C++ & 14.653 & 0.049\tabularnewline
-\hline 
-SciPy & 7.4640 & 0.120\tabularnewline
-\hline
-\end{tabular}
-\end{table}
-%
 \begin{figure}[H]
 \begin{centering}
 \includegraphics[width=0.8\columnwidth]{report_data/gaussian_blur}
@@ -443,21 +421,13 @@ Blur}
 
 \subsection{Background subtraction}
 
-To detect movement in a video, a comparison of a frame to a previous
-frame must be undertaken\cite{gao2006robust}. This can be done quite
-straighforwardly by simply taking the absolute intensity difference
-between those frames, pixel for pixel, across all channels. This gives
-a difference image, which contains specific colour information about
-the change of state. We need to filter this information, to only look
-at points which have changed more than a set minimum. We do this by
-applying a threshold, then removing salt and pepper noise with a median
-filter, the output from this is a multichannel binary image. Then
-create a new black image, to render the movement data on. Then for
-every point in the binary difference image, if any of the channels
-are true, copy the original point data from the current frame onto
-the black image. And thus we have a colour image of only what has
-changed. The response is shown in Figure \ref{fig:Adding-a-single}
-after adding a cellphone to the scene for the Python implementation
+A common task in security surveillance, human interaction, and CV
+in general is to detect movement in a video. This is done in its simplest
+form by a comparison of one frame to another previous frame\cite{gao2006robust}.
+If there is more than a threshold of differance, something changed.
+
+The response is shown in Figure \ref{fig:Adding-a-single} after adding
+a cellphone to the scene for the \noun{Python\_CV} implementation
 in algorithm \ref{alg:back-Python-imple}. 
 
 %
@@ -501,35 +471,34 @@ at the changes applied in the same way to the original image. The
 Figures in \ref{fig:back-Proces-clutter} show how the algorithm deals
 with a combination of changes. 
 
-While creating this program I found algorithm \ref{alg:drop-to-shell}
-particuly helpfull, it allows for interactive, inplace trialing, timing
-and plotting as shown in algorithm \ref{alg:Interactive,-inplace-timing}.
+While creating this program I found IPython particuly helpfull, it
+allows for interactive, inplace trialing, timing and plotting as shown
+in algorithm \ref{alg:Interactive,-inplace-timing}.
 
 %
-\begin{algorithm*}
-\begin{lyxcode}
-\noindent In~{[}1{]}:~from~opencv~import~cv
+\begin{algorithm}
+\noindent In {[}1{]}: from opencv import cv
 
-\noindent In~{[}2{]}:~cv.cvAnd(differenceImage,image,~temp)
+\noindent In {[}2{]}: cv.cvAnd(diffImage,image, temp)
 
-\noindent In~{[}3{]}:~timeit~cv.cvAnd(differenceImage,image,~temp)
+\noindent In {[}3{]}: timeit cv.cvAnd(diffImage,image, temp)
 
-\noindent 1000~loops,~best~of~3:~229~\textmu{}s~per~loop
+\noindent 1000 loops, best of 3: 229 \textmu{}s per loop
 
-\noindent In~{[}4{]}:~from~pylab~import~imshow,~show
+\noindent In {[}4{]}: from pylab import imshow, show
 
-\noindent In~{[}5{]}:~imshow(temp)~
+\noindent In {[}5{]}: imshow(temp) 
 
-\noindent Out{[}5{]}:~<matplotlib.image.AxesImage~object~at~0x42489d0>
+\noindent Out{[}5{]}: <AxesImage object at 0x42489d0>
 
-\noindent In~{[}6{]}:~show()
-\end{lyxcode}
+\noindent In {[}6{]}: show()
+
 \caption{\label{alg:Interactive,-inplace-timing}Using IPython, the interactive
 shell can be used from deep inside a nested loop in a running program.
 Inplace timing and plotting with access to local variables and functions
 like this example speeds up development time.}
 
-\end{algorithm*}
+\end{algorithm}
 
 
 
@@ -591,16 +560,18 @@ Algorithm \ref{alg:SciPy-Harris-Corner} modified an existing implementation
 in SciPy by \cite{Sol09} which produced Figure \ref{fig:A-SciPy-harris}.
 The algorithm was timed by executing it on lena 300 times per sample:
 
-\begin{tabular}{|c|c|c|c|}
+\begin{center}
+\begin{tabular}{|c|c|c|}
 \hline 
-Sample: & 1 & 2 & 3\tabularnewline
+Sample: & Mean & Std\tabularnewline
 \hline
 \hline 
-SciPy & 621 ms & 620 ms & 626 ms\tabularnewline
+SciPy & 622.3 ms & 2.62 ms\tabularnewline
 \hline 
-OpenCv & 64.3 ms & 65.6 ms & 67.4 ms\tabularnewline
+OpenCv & 65.7 ms & 1.27 ms\tabularnewline
 \hline
 \end{tabular}
+\par\end{center}
 
 The same concept but in a different implementation is shown in Figure
 \ref{fig:OpenCV-harris} for OpenCV in algorithm \ref{alg:Harris-Detection-opencv}.
@@ -706,30 +677,65 @@ of computer vision.
 
 \section{Related Works}
 
+A feature of SciPy that has previously gone unmentioned, is the Weave
+module for inlining C and C++ code. This can easily produce code 100x\cite{ramachandran-performance}
+faster than pure Python. \cite{cai2005performance} showed that for
+parrallel programming, mixed language solutions exhibit the same performance
+gains from parralization as native language solutions.
+
 
 \begin{itemize}
+\item \cite{cai2005performance}
 \item GPUCV\cite{farrugia2006gpucv}\cite{allusse2008gpucv}
 \item Pyro - \cite{blank2003pyro} introduced Pyro, a robotics simulation
 environment
 \item Pygame - a game making package for Python, aimed at new programmers.
 It has a camera module and is able to do basic computer vision tasks,
 or call on SciPy/NumPy. http://pygame.org
-\item Pycam - All code from this project, including framework linking OpenCV
-to Pygame and NumPy. http://pycam.googlecode.com
+\item Pycam - All test and example code from this project, including framework
+linking OpenCV to Pygame and NumPy. http://pycam.googlecode.com
 \end{itemize}
 
-\section{Concluding Messages}
+\section{Conclusion}
 
-Having an interactive interpretter, and using these prototypes in
-the final product is a big argument in favor of Python. Most of the
-time the reason for slow performance comes down to naive implementations,
-which every language is prone to.
+We found that calling OpenCV from a Python wrapper was slower in general
+than natively using the library. In getting these results we can't
+help but note that the Python implementations were shorter, easier
+to create and debug, and easier to test. Having and using an interactive
+interpreter, to come to a solution prototype and being able to use
+these prototypes in the final product is a big argument in favor of
+Python. 
+
+For the scholar of Computer Vision research we find that using Python
+can help in trying out new algorithms, very quickly. The breadth of
+the additional tools and libraries available ..... 
+
+Support for these packages, is almost entirely reliant on experianced
+members of the community responding to message boards or mailing lists.
+When one of the authors asked a question regarding the gaussian image
+filtering function to the SciPy mailing list it spurred not only an
+immediate response pointing out the solution to the direct query but
+also a disscussion on finite approximations to gaussian kernals, how
+OpenCV might do it differantly, and a user even went as far as to
+test an IIR filter against the various implementations. This kind
+of support is quite common in the open source world, where a package
+like SciPy prides itself on its very rigorous and open tests. 
+
+For those newer to computer vision, we recommend Python for many reasons,
+mainly it is much more forgiving than C or C++, it can be used interactively
+so you can happily make 10 mistakes in a row, without having to recompile
+for each attempted fix. 
+
+Most of the time the reason for slow performance comes down to naive
+implementations, which every language is prone to. 
+
+
 
 A major limitations of using Python would be when the application
-is being developed for embedded hardware. 
+is being developed for special or embedded hardware. 
 
-I would like to thank Rob Ramsey for help with profiling the exectution
-of C++ code to ensure acurate timing results were used. Thanks also
+I would like to thank Rob Ramsey for help with profiling the execution
+of C++ code to ensure accurate timing results were used. Thanks also
 to all the developers investing time helping work on the open source
 projects OpenCV, Python and SciPy.
 
