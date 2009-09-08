@@ -34,117 +34,147 @@
 
 \@ifundefined{showcaptionsetup}{}{%
  \PassOptionsToPackage{caption=false}{subfig}}
+
 \usepackage{subfig}
+%\usepackage{subfloat}
 \makeatother
 
 \usepackage{babel}
 
 \begin{document}
 
-\title{Comparing Python and C for Computer Vision}
-
+\title{Using Python in Computer Vision: Approach, Performance and Usability}
 
 \author{Brian Thorne, Raphael Grasset, Richard Green\\
 HIT Lab NZ, University of Canterbury, Private Bag 4800, Christchurch\\
 Email: \{brian.thorne|raphael.grasset|richard.green\}@hitlabnz.org}
 \maketitle
+
+%matlab + pygpu
+%importance of well written code, multi-thread optimization
+%development and implementation time, documentation quality library, support
+%declared and typed variable
+%high level language, easy to read and understand (memory management, data storage format)
+%PyPy py2exe, freeze
+%GBLAS, GSL, Numerical Recipes in C
+%http://old.scipy.org/documentation/weave/weaveperformance.html
+%scientific/numerical computing
+
 \begin{abstract}
-An introduction to and argument for programming computer vision applications
-and scripts in Python in place of the C/C++ programming language.
-From the general concept to its implementation with some current open-source
-libraries (OpenCV, NumPy/SciPy, Pygame). We found that that Python
-was consistently a fraction slower than C, but for many applications
-fast enough not to notice. Having an interactive interpreter and being
-a dynamic language makes it significantly easier and faster to modify
-and experiment for quick prototyping of new algorithms, or to debug
-and tweak existing ones.\end{abstract}
+Python is a popular language widely used by the scientific community due
+to its clear syntax and an extensive number of specialized packages. For image 
+processing or computer vision development, two libraries are prominently used:
+\textit{NumPy/SciPy} and a python wrapper of \textit{OpenCV}. In this paper, we present a comparative 
+evaluation of both libraries, assessing their performance as their usability. We also 
+describe how Python implementation of OpenCV performs in comparison of the C++ implementation.
+Our lessons learnt as a list of recommendations for the scholar community are also presented.
+\end{abstract}
+
 \begin{keywords}
-Computer Vision, OpenCV, Python, C++
+Computer Vision, Python, OpenCV, SciPy
 \end{keywords}
 
 \section{Introduction}
 
-The purpose of this paper is an introduction to computer vision (CV)
-and image processing using the multipurpose programming language Python.
-At present the bulk of computer vision applications are programmed
-in C or C++. There a significant benefits to developer time if Python
-is a viable alternative. This paper aims to show what is possible
-with current libraries, demonstrate their usability, explore their
-limitations, compare performance and cover elements of best coding
-practice.
+Python \cite{} has been growing of interest by the academic community over the last decade.
+The increase of computational science as a scientific method drives the need for scientists
+to implement different mathematical models or simulation processes. The simple syntax of python, the absence
+of data typed or management of hardware resources (e.g. memory management) has retained their attention
+and forged it as a popular tool for the research community.
 
-The goal of this paper is to compare performance between C++ and Python
-for computer vision, the OpenCV library is used to show different
-examples of computer vision. Examples analyzed include displaying
-a video image, filtering algorithms (dilation, gaussian blur), feature
-detection and how to implement facial recognition. We describe how
-these and other computer vision related tasks can be achieved with
-other Python tools such as SciPy\cite{oliphant2007python} and will
-show how these libraries can be used in conjunction to perform video
-capturing, image processing and video feedback.
+Differently, the field of image processing and computer vision (CV) has been driven for the last
+decade by C/C++ implementation or the usage of MATLAB \cite{}. As MATLAB offers a really efficient 
+high level platform for prototyping and testing algorithms, its performances doesn't compete with a well
+designed and optimized C++ implementation. More recently, we have seen the emergence of potential
+and valuable solution for developing image processing and computer vision algorithms in Python.
 
+The goal of this paper is to evaluate the quality of the most common solution for developing 
+CV algorithms and CV applications in Python. The outcomes of this evaluation aim to help on any decisional process
+for shifting to future CV development in Python from the traditional approach. 
 
-\section{Background}
+We were particularly interested to learn how Python performs in comparison of the native C implementation. We also focused our attention on the performances of two widely used CV libraries in Python: \textit{OpenCV}\cite{} and \textit{NumPy/SciPy}\cite{oliphant2007python}. For this matter, we analyzed their performances through a list of common tasks and processes regularly employed in 
+computer vision (e.g. video capture, filtering algorithms, feature detection, etc). 
 
+After an introduction of our experimental process, we will describe the list of tested CV tasks and algorithms
+and finally discuss our findings and provide recommendations.
 
-\subsection{Python}
+\section{Experimental Process}
 
-Python is a general purpose dynamic programming language\cite{entry-0}.
+In this section, we briefly introduce the different libraries we tested as our 
+experimental protocol.
+
+\subsection{Background}
+
+\textbf{Python}
+
+\textit{Python} is a general purpose dynamic programming language\cite{entry-0}.
 It is highly regarded due in no small part for its fast development
-time and the ease of integrating packages\cite{sanner1999python}.
+time and easiness for integrating third-parties packages\cite{sanner1999python}.
 Python's performance makes it a viable programming language for scientific
-work\cite{cai2005performance}. It has been used by a few people in
-Computer Vision for many years\cite{doakPyCV}.
+work \cite{cai2005performance}. It has been used by a few people in
+Computer Vision for many years \cite{doakPyCV}.
 
 
-\subsection{OpenCV}
 
-Originally an Intel research initiative, this cross-platform open
-source computer vision library is widly used in real time image processing.
-It aims to provide well tested, optimized and open code for image
-processing. The library is written in C, this ensures it is both fast
-and portable, even onto embeded platforms. If found the Intel's Integrated
-Performance Primitives are used extensively by the library to accelerate
-performance. Multiple bindings exist for the library, including multiple
-for Python, the one used here is the swig\cite{beazley1996swig} wrapper
-included with the library source%
-\footnote{For the tests carried out in this paper the latest tested snapshot
-of the OpenCV library was used; version 1.1.1, rev 1978.%
-}.
+\textbf{OpenCV}
 
+Originally an Intel research initiative, \textit{OpenCV} cross-platform open
+source computer vision library is widely used for real time image processing.
+It aims to provide well tested, optimized and open source code for image
+processing and computer vision. 
 
-\subsection{NumPy}
+The library is written in C, ensuring both fast and portable code (optionally
+to embedded platforms). The library is using a base layer related to image structure
+and basic image manipulation. A software implementation is provided freely whilst an accelerated
+version (\textit{IPP, Integrated Performance Primitives}\cite{}) can be optionally acquired 
+from Intel. This latter takes benefit of extended multimedia instruction set available on 
+Intel Processors.
 
-NumPy gives N-dimensional arrays to Python\cite{oliphant2006guide}.
-Has very fast raw data crunching, iterating. Much easier to use than
-multidimensional matrices in C. A CvMat from OpenCV can be converted
-into a NumPy array. 
+Nowadays, multiple language bindings are available for OpenCV, as XX, XX and multiple
+for Python (\cite{}, \cite{}).
 
 
-\subsection{SciPy}
 
-SciPy\cite{jones2001scipy} is a set of Python libraries and tools
-for scientific and mathematical work build on top of NumPy\cite{oliphant2007python}.
-SciPy has filters and convolution etc much like Matlab. This leads
-to much simpler higher level code, usually without any significant
-performance loss over C. Two tools that are usually distributed with
-SciPy that are very usefull for comptuer vision work are matplotlib
-and ipython. Matplotlib\cite{hunter2007matplotlib} is a matrix plotting
-library, and Ipython is an improved interactive shell for Python\cite{perez2007ipython}.
+\textbf{NumPy/SciPy}
 
+\textit{NumPy} package delivers N-dimensional arrays support for Python\cite{oliphant2006guide}.It's a well
+recognized library offering very fast raw data crunching, iterating, and an easier approach
+for multidimensional matrices manipulation than in C language.
 
-\section{Theory of operation}
+\textit{SciPy} \cite{jones2001scipy} is a set of Python libraries and tools
+for scientific and mathematical work built on top of NumPy \cite{oliphant2007python}.
+SciPy offers different filters algorithms, XX, XX. This leads to much elegant code, usually recognized as not impacting
+significantly a performance loss over C. Two major tools usually distributed with
+SciPy are very useful for computer vision development:  matplotlib and ipython. 
+Matplotlib\cite{hunter2007matplotlib} is a matrix plotting library, and Ipython is an improved interactive shell for Python\cite{perez2007ipython}.
 
+\subsection{Evaluation}
+
+We conducted our test on a XXX MACHINE, XXX RAM, with XXX OS XXX version. For the test we compared:
+\begin{itemize}
+	\item OpenCV Native Language (ACRONYM): we used snapshot built version 1.1.1, rev 1978. The code
+	has been compiled with XXX and in mode XXX.
+	\item OpenCV Python Wrapper (ACRONYM): we used the swig\cite{beazley1996swig} wrapper. We used 
+	similar version as the native language.
+	\item SciPy/NumPy (ACRONYM):we used XXX.
+\end{itemize}
+
+The list of tests we are not only covering different standard algorithms traditionally used in a
+CV application but also some standard operations used in CV as video grabbing or image recording. For each
+of the test we describe the process, the difference in term of syntax as the performance and usability.
+
+Notice that for some tests we were only able to compare 2 of the 3 libraries (REWRITE THAT).
+
+\section{Tests}
 
 \subsection{Image Acquisition}
 
 The first thing to think about in computer vision programs is where
-the image data comes from. In this report mostely just live data from
+the image data comes from. In this report mostly just live data from
 a web-cam is under consideration. The main difference in using a live
 system is the time available for processing is very constrained to
 allow a frame rate sufficient for live viewing. Processing on static
 images or recorded video data doesn't have this constraint.
-
 
 \subsubsection{Acquiring and displaying an image in C with OpenCV}
 
@@ -189,20 +219,6 @@ in C. }
 
 \end{algorithm}
 
-
-
-\subsubsection{Acquiring and displaying an image in Python with OpenCV}
-
-Algorithm \ref{alg:Python-Image-capture} does the same basic task
-of accessing a webcam and displaying one image in Python. The code
-is almost entirely identical in C and Python. The main difference
-being in the Python code no variables types are declared, this shows
-the dynamic nature of the language. As with C++, an object orientated
-version of this acquisition loop with error checking is used in further
-tests. The \noun{VideoCapturePlayer} classes in both C++ and Python
-optionally take a function as an argument. This function takes the
-raw image, does some process on it, and returns an image for display. 
-
 %
 \begin{algorithm}[h]
 \begin{lyxcode}
@@ -221,12 +237,24 @@ hg.cvShowImage(\textquotedbl{}Snapshot\textquotedbl{},~frame)
 \end{algorithm}
 
 
+\subsubsection{Acquiring and displaying an image in Python with OpenCV}
+
+Algorithm \ref{alg:Python-Image-capture} does the same basic task
+of accessing a webcam and displaying one image in Python. The code
+is almost entirely identical in C and Python. The main difference
+being in the Python code no variables types are declared, this shows
+the dynamic nature of the language. As with C++, an object orientated
+version of this acquisition loop with error checking is used in further
+tests. The \noun{VideoCapturePlayer} classes in both C++ and Python
+optionally take a function as an argument. This function takes the
+raw image, does some process on it, and returns an image for display. 
+
 
 \subsubsection{Comparison}
 
 Table \ref{tab:IO-bound-Webcam} shows results for taking an image
 from a webcam and displaying the image with OpenCV. The average frames
-per second are taken over 3 runs each averaging over a 2 minute period.
+per second are taken over 3 trials each averaging over a 2 minute period.
 
 %
 \begin{table}
