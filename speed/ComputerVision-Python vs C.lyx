@@ -918,21 +918,37 @@ reference "fig:Difference-in-Python"
  is worth a mention, because it shows a 3 way sub plot of a single image
  made inplace with the Python plotting package matplotlib directly on the
  data from OpenCV.
- This means that as a researcher to debug a misbehaving programmer you can
- just jump right into the middle of a deeply nested loop, introspect all
- variables, plot any signal or image, call any function, accuratly time
- any function.
+ This means that as developers, to debug a misbehaving program, we can just
+ jump right into the middle of a deeply nested loop, introspect all variables,
+ plot any signal or image, call any function, accuratly time any function.
  Two lines of Python code can be put anywhere in a computer vision program
  and it will pause execution and drop into a live interactive shell with
  full plotting capabilities.
-\end_layout
+ 
+\begin_inset Quotes eld
+\end_inset
 
-\begin_layout LyX-Code
-from IPython.Shell import IPShellEmbed 
-\end_layout
 
-\begin_layout LyX-Code
+\emph on
+from IPython.Shell import IPShellEmbed
+\emph default
+
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+
+\emph on
 IPShellEmbed()()
+\emph default
+
+\begin_inset Quotes erd
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1116,163 +1132,6 @@ Output Images from Gaussian Blur Examples
 \end_inset
 
 
-\begin_inset Float table
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "tab:Gaussian-Results"
-
-\end_inset
-
-CPU bound test results - Gaussian Blur filtering on webcam stream (in fps)
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="3">
-<features>
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Language
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Mean
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Std Dev
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Python
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-14.427
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.318
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-C++
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-14.653
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.049
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-SciPy
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-7.4640
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0.120
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
 \begin_inset Float figure
 placement H
 wide false
@@ -1323,8 +1182,10 @@ Background subtraction
 \end_layout
 
 \begin_layout Standard
-To detect movement in a video, a comparison of a frame to a previous frame
- must be undertaken
+A common task in security surveillance, human interaction, and CV in general
+ is to detect movement in a video.
+ This is done in its simplest form by a comparison of one frame to another
+ previous frame
 \begin_inset CommandInset citation
 LatexCommand cite
 key "gao2006robust"
@@ -1332,28 +1193,22 @@ key "gao2006robust"
 \end_inset
 
 .
- This can be done quite straighforwardly by simply taking the absolute intensity
- difference between those frames, pixel for pixel, across all channels.
- This gives a difference image, which contains specific colour information
- about the change of state.
- We need to filter this information, to only look at points which have changed
- more than a set minimum.
- We do this by applying a threshold, then removing salt and pepper noise
- with a median filter, the output from this is a multichannel binary image.
- Then create a new black image, to render the movement data on.
- Then for every point in the binary difference image, if any of the channels
- are true, copy the original point data from the current frame onto the
- black image.
- And thus we have a colour image of only what has changed.
- The response is shown in Figure 
+ If there is more than a threshold of differance, something changed.
+\end_layout
+
+\begin_layout Standard
+The response is shown in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Adding-a-single"
 
 \end_inset
 
- after adding a cellphone to the scene for the Python implementation in
- algorithm 
+ after adding a cellphone to the scene for the 
+\noun on
+Python_CV
+\noun default
+ implementation in algorithm 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "alg:back-Python-imple"
@@ -1663,15 +1518,9 @@ reference "fig:back-Proces-clutter"
 \end_layout
 
 \begin_layout Standard
-While creating this program I found algorithm 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "alg:drop-to-shell"
-
-\end_inset
-
- particuly helpfull, it allows for interactive, inplace trialing, timing
- and plotting as shown in algorithm 
+While creating this program I found IPython particuly helpfull, it allows
+ for interactive, inplace trialing, timing and plotting as shown in algorithm
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "alg:Interactive,-inplace-timing"
@@ -1683,46 +1532,46 @@ reference "alg:Interactive,-inplace-timing"
 
 \begin_layout Standard
 \begin_inset Float algorithm
-wide true
+wide false
 sideways false
 status open
 
-\begin_layout LyX-Code
+\begin_layout Plain Layout
 \noindent
 In [1]: from opencv import cv
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Plain Layout
 \noindent
-In [2]: cv.cvAnd(differenceImage,image, temp)
+In [2]: cv.cvAnd(diffImage,image, temp)
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Plain Layout
 \noindent
-In [3]: timeit cv.cvAnd(differenceImage,image, temp)
+In [3]: timeit cv.cvAnd(diffImage,image, temp)
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Plain Layout
 \noindent
 1000 loops, best of 3: 229 µs per loop
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Plain Layout
 \noindent
 In [4]: from pylab import imshow, show
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Plain Layout
 \noindent
 In [5]: imshow(temp) 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Plain Layout
 \noindent
-Out[5]: <matplotlib.image.AxesImage object at 0x42489d0>
+Out[5]: <AxesImage object at 0x42489d0>
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Plain Layout
 \noindent
 In [6]: show()
 \end_layout
@@ -1973,10 +1822,10 @@ reference "fig:A-SciPy-harris"
 \end_layout
 
 \begin_layout Standard
+\align center
 \begin_inset Tabular
-<lyxtabular version="3" rows="3" columns="4">
+<lyxtabular version="3" rows="3" columns="3">
 <features>
-<column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -1994,16 +1843,7 @@ Sample:
 \begin_inset Text
 
 \begin_layout Plain Layout
-1
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-2
+Mean
 \end_layout
 
 \end_inset
@@ -2012,7 +1852,7 @@ Sample:
 \begin_inset Text
 
 \begin_layout Plain Layout
-3
+Std
 \end_layout
 
 \end_inset
@@ -2032,16 +1872,7 @@ SciPy
 \begin_inset Text
 
 \begin_layout Plain Layout
-621 ms
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-620 ms
+622.3 ms
 \end_layout
 
 \end_inset
@@ -2050,7 +1881,7 @@ SciPy
 \begin_inset Text
 
 \begin_layout Plain Layout
-626 ms
+2.62 ms
 \end_layout
 
 \end_inset
@@ -2070,16 +1901,7 @@ OpenCv
 \begin_inset Text
 
 \begin_layout Plain Layout
-64.3 ms
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-65.6 ms
+65.7 ms
 \end_layout
 
 \end_inset
@@ -2088,7 +1910,7 @@ OpenCv
 \begin_inset Text
 
 \begin_layout Plain Layout
-67.4 ms
+1.27 ms
 \end_layout
 
 \end_inset
@@ -2191,6 +2013,8 @@ reference "fig:Angled-opencv-face"
 .
  But in ideal conditions, with good lighting and unobscured faces directly
  facing the camera the algorithm produces very good results.
+ In this example we did not find corrosponding high level functionality
+ in SciPy, so no comparison is done.
 \end_layout
 
 \begin_layout Standard
@@ -2198,7 +2022,7 @@ reference "fig:Angled-opencv-face"
 placement h
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Float figure
@@ -2389,14 +2213,14 @@ OpenCV Face Detection
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -2432,7 +2256,7 @@ detecting face objects
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -2523,6 +2347,28 @@ Related Works
 \end_layout
 
 \begin_layout Standard
+A feature of SciPy that has previously gone unmentioned, is the Weave module
+ for inlining C and C++ code.
+ This can easily produce code 100x
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ramachandran-performance"
+
+\end_inset
+
+ faster than pure Python.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "cai2005performance"
+
+\end_inset
+
+ showed that for parrallel programming, mixed language solutions exhibit
+ the same performance gains from parralization as native language solutions.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Note Note
 status open
 
@@ -2533,6 +2379,16 @@ Part 2 should be "related works" as referencing people comparing: different
  in Python, etc.
  Thanks...? IE: Rob for the profiling help
 \end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset CommandInset citation
+LatexCommand cite
+key "cai2005performance"
 
 \end_inset
 
@@ -2576,31 +2432,83 @@ Pygame - a game making package for Python, aimed at new programmers.
 \end_layout
 
 \begin_layout Itemize
-Pycam - All code from this project, including framework linking OpenCV to
- Pygame and NumPy.
+Pycam - All test and example code from this project, including framework
+ linking OpenCV to Pygame and NumPy.
  http://pycam.googlecode.com
 \end_layout
 
 \begin_layout Section
-Concluding Messages
+Conclusion
 \end_layout
 
 \begin_layout Standard
-Having an interactive interpretter, and using these prototypes in the final
- product is a big argument in favor of Python.
- Most of the time the reason for slow performance comes down to naive implementa
-tions, which every language is prone to.
-\end_layout
-
-\begin_layout Standard
-A major limitations of using Python would be when the application is being
- developed for embedded hardware.
+We found that calling OpenCV from a Python wrapper was slower in general
+ than natively using the library.
+ In getting these results we can't help but note that the Python implementations
+ were shorter, easier to create and debug, and easier to test.
+ Having and using an interactive interpreter, to come to a solution prototype
+ and being able to use these prototypes in the final product is a big argument
+ in favor of Python.
  
 \end_layout
 
 \begin_layout Standard
-I would like to thank Rob Ramsey for help with profiling the exectution
- of C++ code to ensure acurate timing results were used.
+For the scholar of Computer Vision research we find that using Python can
+ help in trying out new algorithms, very quickly.
+ The breadth of the additional tools and libraries available .....
+ 
+\end_layout
+
+\begin_layout Standard
+Support for these packages, is almost entirely reliant on experianced members
+ of the community responding to message boards or mailing lists.
+ When one of the authors asked a question regarding the gaussian image filtering
+ function to the SciPy mailing list it spurred not only an immediate response
+ pointing out the solution to the direct query but also a disscussion on
+ finite approximations to gaussian kernals, how OpenCV might do it differantly,
+ and a user even went as far as to test an IIR filter against the various
+ implementations.
+ This kind of support is quite common in the open source world, where a
+ package like SciPy prides itself on its very rigorous and open tests.
+ 
+\end_layout
+
+\begin_layout Standard
+For those newer to computer vision, we recommend Python for many reasons,
+ mainly it is much more forgiving than C or C++, it can be used interactively
+ so you can happily make 10 mistakes in a row, without having to recompile
+ for each attempted fix.
+ 
+\end_layout
+
+\begin_layout Standard
+Most of the time the reason for slow performance comes down to naive implementat
+ions, which every language is prone to.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Code test coverage of SciPy
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A major limitations of using Python would be when the application is being
+ developed for special or embedded hardware.
+ 
+\end_layout
+
+\begin_layout Standard
+I would like to thank Rob Ramsey for help with profiling the execution of
+ C++ code to ensure accurate timing results were used.
  Thanks also to all the developers investing time helping work on the open
  source projects OpenCV, Python and SciPy.
 \end_layout
