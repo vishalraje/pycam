@@ -1,4 +1,4 @@
-#summary Project Homepage for using Python in CV
+#summary Project Homepage for "Using Python in Computer Vision"
 #labels Featured
 
 = Introduction =
