@@ -118,7 +118,8 @@ class ObjectDetector(object):
     def detectObject(self,img):
         """
         This should be pure opencv and reasonably quick.
-        It carrys out the actual detection, and returns a list of objects found
+        It carrys out the actual detection, and returns a list of objects found, 
+        the positions, widths, height etc that are output are downscaled by self.image_scale...
         """
         # Could this go into init?
         gray = cvCreateImage( cvSize(img.width,img.height), 8, 1 )

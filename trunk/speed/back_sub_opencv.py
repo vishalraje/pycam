@@ -6,7 +6,7 @@ from opencv import cv
 
 
 def threshold_image(image, n=[]):
-    """Record the first 5 images
+    """Record the first 5 images, then diff current frame with the saved frame.
     """
     if len(n) < 5:
         # n[4] will be our background
@@ -29,20 +29,19 @@ def threshold_image(image, n=[]):
     temp  = cv.cvCloneMat( image)
     cv.cvSetZero(temp)
     
-    cv.cvAnd(differenceImage,image, temp)
+    #cv.cvAnd(differenceImage,image, temp)
 
-    from IPython.Shell import IPShellEmbed 
-    IPShellEmbed()()
+    #from IPython.Shell import IPShellEmbed 
+    #IPShellEmbed()()
     
     # Need to do this faster...
-    """for row_n in xrange(image.rows):
+    
+    for row_n in xrange(image.rows):
         for col_n in xrange(image.cols):
             if differenceImage[row_n,col_n][0] > 0 or differenceImage[row_n,col_n][1] > 0 or differenceImage[row_n,col_n][2] > 0:
                 temp[row_n,col_n] = image[row_n,col_n]
-    """
-    #from IPython.Shell import IPShellEmbed
-    #ipshell = IPShellEmbed()
-    #ipshell()
+    
+
     return temp
 
 if __name__ == "__main__":
