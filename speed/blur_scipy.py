@@ -94,7 +94,7 @@ def mlGaussianBlur(image):
     """Method using code from Sturla on the SciPy-User@scipy.org"""
     img = array(image)
     sigma = opencvFilt2sigma(43.0)
-    gain = gaussian2D(np.ones((512,512)), sigma) # corrects edges
+    gain = gaussian2D(np.ones(image.shape[0:2]), sigma) # corrects edges
     
     for i in range(3):
        img[:,:,i] = gaussian2D(img[:,:,i], sigma) / gain
@@ -177,13 +177,13 @@ def testGaussianBlur():
 
 def main():
     title = "SciPy Guassian Filtered Output"
-    #VCP(mlGaussianBlur,title=title).main()
+    #VCP(mlGaussianBlur,title=title).main()     # IIR filter implementation
     VCP(gaussianBlur,title=title).main()
     #VCP(slowGaussianBlur,title=title).main()
 
 if __name__ == "__main__": 
-    testGaussianBlur()
-    #main()
+    #testGaussianBlur()
+    main()
     #import cProfile
     #cProfile.run("main()",'python_profile_data')
 

@@ -123,7 +123,7 @@ void VideoCapturePlayer::main()
 
 //  Example Usage Follows
 
-/*
+
 
 // This is a template for a function that can be fed into VideoCapturePlayer
 // It must take a CvMat, and return a CvMat.
@@ -150,4 +150,4 @@ int main( int argc, char** argv )
     
     return 0;
 }
-*/
+
