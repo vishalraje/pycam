@@ -41,8 +41,7 @@
 
 \begin{document}
 
-\title{Using Python in Computer Vision: Approach, Performance and Usability
-}
+\title{Using Python in Computer Vision: Approach, Performance and Usability }
 
 
 \author{Brian Thorne, Raphael Grasset, Richard Green\\
@@ -55,9 +54,9 @@ due to its clear syntax and an extensive number of specialized packages.
 For image processing or computer vision development, two libraries
 are prominently used: \textit{NumPy/SciPy} and a python wrapper of
 \textit{OpenCV}. In this paper, we present a comparative evaluation
-of both libraries, assessing their performance as their usability.
+of both libraries, assessing their performance as well as their usability.
 We also describe how Python implementation of OpenCV performs in comparison
-of the C++ implementation. Our lessons learnt as a list of recommendations
+to the nativie C++ implementation. Our lessons learnt and recommendations
 for the scholar community are also presented. \end{abstract}
 \begin{keywords}
 Computer Vision, Python, SciPy, OpenCV
@@ -65,18 +64,18 @@ Computer Vision, Python, SciPy, OpenCV
 
 \section{Introduction}
 
-Python \cite{van1994python} has been growing of interest by the academic
+Python \cite{van1994python} has been of growing interest to the academic
 community over the last decade. The increase of computational science
 as a scientific method drives the need for scientists to implement
 different mathematical models or simulation processes. The simple
-syntax of python, the absence of strongly typed data, or hardware
-resources management (e.g. memory management) has retained their attention
-and forged it as a popular tool for the research community.
+syntax of Python, high level dynamic data types, and automated memory
+management has retained their attention and forged it as a popular
+tool for the research community.
 
 Differently, the field of image processing and computer vision (CV)
 has been driven for the last decade by C/C++ implementation or the
-usage of MATLAB \cite{}. As MATLAB offers a really efficient high
-level platform for prototyping and testing algorithms, its performances
+usage of MATLAB\cite{kovesi-matlab}. As MATLAB offers a really efficient
+high level platform for prototyping and testing algorithms, its performances
 doesn't compete with a well designed and optimized C++ implementation.
 More recently, we have seen the emergence of potential and valuable
 solution for developing image processing and computer vision algorithms
@@ -88,13 +87,14 @@ The outcomes of this evaluation aim to help on any decisional process
 for shifting to future CV development in Python from the traditional
 approach.
 
-We were particularly interested to learn how Python performs in comparison
-with the native C implementation. We also focused our attention on
-the performances of two widely used CV libraries in Python: \textit{OpenCV}\cite{bradski2000opencv}
-and \textit{NumPy/SciPy}\cite{oliphant2007python}. For this matter,
-we analyzed their performances through a list of common tasks and
-processes regularly employed in computer vision (e.g. video capture,
-filtering algorithms, feature detection, etc).
+We also focused our attention on the performances of two widely used
+CV libraries in Python: \textit{OpenCV}\cite{bradski2000opencv} and
+\textit{NumPy/SciPy}\cite{oliphant2007python}. For this matter, we
+analyzed their performances through a list of common tasks and processes
+regularly employed in computer vision (e.g. video capture, filtering
+algorithms, feature detection, etc). We were particularly interested
+to learn how Python performs in comparison with the native C implementation
+of OpenCV.
 
 After an introduction of our experimental process, we will describe
 the list of tested CV tasks and algorithms and finally discuss our
@@ -125,7 +125,7 @@ processing. It aims to provide well tested, optimized and open source
 code for image processing and computer vision.
 
 The library is written in C, ensuring both fast and portable code
-(optionally to embedded platforms). The library is using a base layer
+(optionally to embedded platforms). The library uses a base layer
 related to image structure and basic image manipulation. A software
 implementation is provided freely whilst an accelerated version (\textit{IPP,
 Integrated Performance Primitives}\cite{taylor2004intel}) can be
@@ -133,29 +133,32 @@ optionally acquired from Intel. This latter option takes advantage
 of the extended multimedia instruction set available on Intel Processors.
 
 Nowadays, multiple language bindings are available for OpenCV, such
-as OpenCV DotNet ( OpenCVDotNet, .NET Framework Wrapper for Intel's
-OpenCV Package), the cross platform C\# EmguCV (http://www.emgu.com/wiki/index.php/Main\_Page),
-GPUCV\cite{farrugia2006gpucv} and multiple for Python (automatically
-Swig\cite{beazley1996swig} wrapped, OpenCV Python).
+as OpenCVDotNet and EmguCV. Additional tools using graphics hardware
+to accelerate Computer Vision performance have been made for OpenCV,
+GPUCV\cite{farrugia2006gpucv}. Multiple bindings to OpenCV such as
+OpenCV Python, and PyCV\cite{tri2009principled} have been created
+for Python, as well as the automatically Swig\cite{beazley1996swig}
+wrapped bindings included with the source.
 
 
 \subsection*{NumPy/SciPy}
 
 \emph{NumPy} gives strongly typed N-dimensional array support to Python\cite{oliphant2006guide}.
-It's a well recognized library, much of the lower level algorithms
-are implemented in C and Fortran, offering very fast raw data crunching,
-iterating, ande an easier approach for multidimensional array manipulation
-than in the C programming language. 
+It's a well recognized library, offering an easier approach for multidimensional
+array manipulation than in the C programming language. Much of the
+lower level algorithms are implemented in highly optimized C and FORTRAN
+libraries, resulting in very fast raw data crunching and iterating.
 
 \emph{SciPy}\cite{jones2001scipy} is a set of Python libraries and
 tools for scientific and mathematical work built on top of NumPy\cite{oliphant2007python}.
-SciPy offers many different filters, routines for numerical integration
-and optimization. This leads to much more elegant code, usually achieved
-without any significant performance loss over C. Two major tools that
-are usually distributed with SciPy that are very usefull for computer
-vision work are matplotlib and ipython. Matplotlib\cite{hunter2007matplotlib}
-is a matrix plotting library, and IPython\cite{perez2007ipython}
-is an improved interactive shell for Python.
+SciPy offers many different modules including, many filters, routines
+for numerical integration and optimization. This leads to much more
+elegant code, usually achieved without any significant performance
+loss over C. Two major tools that are usually distributed with SciPy
+that are very use full for computer vision work are matplotlib and
+IPython. Matplotlib\cite{hunter2007matplotlib} is an array and image
+plotting library, and IPython\cite{perez2007ipython} is an improved
+interactive shell for Python.
 
 
 \subsection{Evaluation}
@@ -164,28 +167,35 @@ We conducted our test on a Intel Core 2 Duo 6600 machine, with 3.8
 RAM, running Ubuntu 9.04. For the test we compared: 
 \begin{itemize}
 \item OpenCV Native Language (OPENCV\_C): we used snapshot built version
-1.1.1, rev 1978. The code has been compiled with the GNU toolchain
-version (4.3.3), and in Release mode with O3 compiler optimisations,
+1.1.1, rev 1978. The code has been compiled with the GNU tool chain
+version (4.3.3), and in Release mode with O3 compiler optimizations,
 MMX, fast math, SSE3. All additional packages, EXCEPT 1393, are turned
-on, eg png, jpg, gtk, gstreamer, unicap, V4L turned on. 
+on, for example: png, jpg, gtk, gstreamer, unicap, V4L turned on. 
 \item OpenCV Python Wrapper (OPENCV\_PY): we used the swig\cite{beazley1996swig}
 wrapper version 1.3.36. We used the same build of OpenCV as the native
 language. 
-\item SciPy/NumPy (SCIPY):we used the stable versions from the ubuntu repositories;
+\item SciPy/NumPy (SCIPY):we used the stable versions from the Ubuntu repositories;
 SciPy version 0.7.0 and NumPy 1.2.1
 \end{itemize}
 
 \subsection{Tests}
 
 We cover different standard algorithms traditionally used in a CV
-application and also some standard operations used in CV such as video
-grabbing or image recording. For each of the tests we describe the
-process, the difference in term of the syntax, the performance and
-the usability.
+application and also some standard operations used in CV such as image
+acquisition. For each of the tests we describe the process, the difference
+in terms of the syntax, the performance and the usability. All of
+the testing code is made available open source at the project website.
 
-Notice that for some tests we only compare the Python OpenCV implementation
-against the SciPy libraries, as disscussed later, the performance
-of the wrapped code alone, made more testing redundant.
+
+\subsubsection*{Limitations in testing}
+
+Note that for some tests we only compare the Python OpenCV implementation
+against the SciPy library. Early results showed performance of OpenCV
+called from Python performs similar to the native code making further
+testing redundant. 
+
+In some cases there was no analogous function in both OpenCV and SciPy,
+in which case we simply recommend to use the tool for the job.
 
 
 \section{Theory of operation}
@@ -195,7 +205,8 @@ of the wrapped code alone, made more testing redundant.
 
 Since live image acquisition is such a crucial role in the majority
 of CV applications, we tested just getting and showing a frame as
-the most basic, but nessasary test.
+a most basic, but necessary test. This also serves to compare the
+syntax of the languages.
 
 
 \subsubsection{Acquiring and displaying an image in C with OpenCV}
@@ -275,14 +286,15 @@ hg.cvShowImage(\textquotedbl{}Snapshot\textquotedbl{},~frame)
 
 \subsubsection{Comparison}
 
-Figure \ref{fig:Streaming-comparison} shows results for taking an
-image from a webcam and displaying the image with OpenCV. The average
-frames per second were taken with 3 iterations, each averaging the
-framerate over a 2 minute period. Error bars are showing standard
+Figure \ref{fig:Streaming-comparison} shows performance results for
+taking an image from a webcam and displaying the image with OpenCV.
+The average frames per second were taken with 3 iterations, each averaging
+the framerate over a 2 minute period. Error bars are showing standard
 deviation of sampled data. As Figure \ref{fig:Streaming-comparison}
 shows, Python and C++ perform at very similar rates whilst carrying
 out an I/O bound task. C++ having the expected result of a marginally
-higher frame rate output than Python. 
+higher frame rate output than Python. The SciPy package does not currently
+have a direct method for image capture.
 
 %
 \begin{figure}[h]
@@ -315,29 +327,19 @@ window size. SciPy has a n-dimensional Gaussian filter that acts on
 a NumPy array. Both libraries use the 1 dimensional case, as it requires
 less calculations.
 
+In all implementations of this test an object oriented approach is
+used, this ensures timing consistency between tests, and reduces code
+duplication. 
 
-\subsubsection{C++}
-
-Algorithm \ref{alg:Gaussian-C} shows calling the OpenCV function
-\noun{cvSmooth} to carry out gaussian blur with a filter size of 43. 
-
-
-\subsubsection{Python}
-
-Algorithm \ref{alg:Gaussian-Python-OpenCV} shows Python taking advantage
-of VideoCapturePlayer, the Python class introduced earlier in this
-document, to do the same blurring operation with OpenCV%
-\footnote{A helper function here calculates the sigma value to use in the convolution,
-this is usually done automatically in OpenCV, but to port to SciPy
-the parameters must all be known.%
-}. Algorithm \ref{alg:Gaussian-Python-SciPy} is also using the VideoCapturePlayer
-but this time using SciPy instead of OpenCV to do the convolution.
-To continue using the OpenCV camera capture, the image data must be
-converted into NumPy arrays; this has been achieved here by creating
+The algorithms differ in that in order for the SciPy implementation
+to work, the image data must be converted into NumPy arrays before
+blurring. To continue using the OpenCV camera capture, the image data
+must be converted into NumPy arrays. This has been achieved by creating
 and using a Python decorator which converts before and after calling
 a Python function using NumPy. A (640x480) RGB image takes less than
 2ms to convert either way on the testing platform used throughout
-this report. Also the filter parameters need converted to be compatible
+this report. Also to ensure the same level of filtering is carried
+out in all tests, the filter parameters need converted to be compatible
 with OpenCV's \noun{cvSmooth} defaults\cite{bradski2008learning}.
 
 
@@ -348,30 +350,31 @@ As expected the images produced by this are blurred as shown in Figure
 input image was used. What is not immediately obvious without further
 investigation is how similar the results are. The OpenCV images produced
 by C++ and Python are exactly the same pixel for pixel, this is expected
-because the same function is doing the filtering. More interesting
+because the same library is doing the filtering. More interesting
 is Figure \ref{fig:Difference-in-Python} which shows that the SciPy
 and OpenCV Python code doing the filtering produces very similar but
-slightly different results. This could be caused by the discretization
-at the precission limit of the image, or the floating point nature
-of the convolution as the difference is very small. It may be due
-to a type difference or another possible small effect would be caused
-by a difference in the algorithms. Possibly since SciPy uses the sigma
-parameter, the filter is created by direct sampling of the Gaussian
-function. OpenCV on the other hand, uses the size of the filter, this
-is a good indication it probably uses the pascal triangle which is
-another good approximation for the Gaussian kernel\cite{ben1991image}.
-Whatever the reasons, the differences are negligible.
+slightly different results. 
 
-The graph itself in Figure \ref{fig:Difference-in-Python} is worth
-a mention, because it shows a 3 way sub plot of a single image made
-inplace with the Python plotting package matplotlib directly on the
-data from OpenCV. This means that as developers, to debug a misbehaving
-program, we can just jump right into the middle of a deeply nested
-loop, introspect all variables, plot any signal or image, call any
-function, accuratly time any function. Two lines of Python code can
-be put anywhere in a computer vision program and it will pause execution
+This could be caused by a difference in the implementation of the
+gaussian kernel approximations. Since SciPy uses the sigma parameter,
+the filter is created by a direct sampling of the gaussian function.
+OpenCV on the other hand, uses the size of the filter, this is a good
+indication it probably uses the pascal triangle as a good approximation
+for the Gaussian kernel\cite{ben1991image}.
+
+The graph in Figure \ref{fig:Difference-in-Python} shows a 3 way
+sub plot of a single image. This graph was created interactively using
+the Python plotting package Matplotlib from IPython acting directly
+on the data from OpenCV. With just two lines of Python code, which
+can be put anywhere in a computer vision program, we can pause execution
 and drop into a live interactive shell with full plotting capabilities.
 {}``\emph{from IPython.Shell import IPShellEmbed}'' and {}``\emph{IPShellEmbed()()}''
+
+This means that as developers, to debug a misbehaving program, we
+can just jump right into the middle of a deeply nested loop, introspect
+all variables, plot any signal or image, call any function, and accurately
+time the execution of any function. This is massively in favor of
+using Python.
 
 %
 \begin{figure}[h]
@@ -424,7 +427,7 @@ Blur}
 A common task in security surveillance, human interaction, and CV
 in general is to detect movement in a video. This is done in its simplest
 form by a comparison of one frame to another previous frame\cite{gao2006robust}.
-If there is more than a threshold of differance, something changed.
+If there is more than a threshold of difference, something changed.
 
 The response is shown in Figure \ref{fig:Adding-a-single} after adding
 a cellphone to the scene for the \noun{Python\_CV} implementation
@@ -471,9 +474,9 @@ at the changes applied in the same way to the original image. The
 Figures in \ref{fig:back-Proces-clutter} show how the algorithm deals
 with a combination of changes. 
 
-While creating this program I found IPython particuly helpfull, it
-allows for interactive, inplace trialing, timing and plotting as shown
-in algorithm \ref{alg:Interactive,-inplace-timing}.
+While creating this program I found IPython particularly helpful,
+it allows for interactive, in place trialing, timing and plotting
+as shown in algorithm \ref{alg:Interactive,-inplace-timing}.
 
 %
 \begin{algorithm}
@@ -495,7 +498,7 @@ in algorithm \ref{alg:Interactive,-inplace-timing}.
 
 \caption{\label{alg:Interactive,-inplace-timing}Using IPython, the interactive
 shell can be used from deep inside a nested loop in a running program.
-Inplace timing and plotting with access to local variables and functions
+In place timing and plotting with access to local variables and functions
 like this example speeds up development time.}
 
 \end{algorithm}
@@ -558,7 +561,7 @@ feature detection algorithm}
 
 Algorithm \ref{alg:SciPy-Harris-Corner} modified an existing implementation
 in SciPy by \cite{Sol09} which produced Figure \ref{fig:A-SciPy-harris}.
-The algorithm was timed by executing it on lena 300 times per sample:
+The algorithm was timed by executing it on Lena 300 times per sample:
 
 \begin{center}
 \begin{tabular}{|c|c|c|}
@@ -568,7 +571,7 @@ Sample: & Mean & Std\tabularnewline
 \hline 
 SciPy & 622.3 ms & 2.62 ms\tabularnewline
 \hline 
-OpenCv & 65.7 ms & 1.27 ms\tabularnewline
+OpenCV & 65.7 ms & 1.27 ms\tabularnewline
 \hline
 \end{tabular}
 \par\end{center}
@@ -579,7 +582,7 @@ Note care has not been taken to get the exact same output in OpenCV
 as in SciPy, it is assumed that one could get the same output as shown
 earlier with the gaussian blur example. Also note the algorithms are
 working on different dimensional images, OpenCV is running on a 3
-channel image whereas the SciPy version is only working on a grayscale
+channel image whereas the SciPy version is only working on a gray-scale
 image. Even so, OpenCV clearly runs a magnitude faster than the unoptimized
 SciPy code. The main difference between algorithms \ref{alg:SciPy-Harris-Corner}
 and \ref{alg:Harris-Detection-opencv} is the filtering and display
@@ -593,18 +596,17 @@ Face detection is the task of locating any number of faces in an image,
 this is a specific case of general object detection. Before locating
 an object, one must be able to describe it. Many object detection
 algorithms use a classifier which is a collection of feature patterns
-made by scanning a database of images with known content. Algorithm
-\ref{alg:OpenCV-Haar-detect} shows how to use the OpenCV library
-to detect the location of any object provided a Haar Classifier describing
-that object is provided. Figure \ref{fig:OpenCV-Face-Detection} shows
-the output under different conditions when using the face Haar-cascade
-classifier that comes with OpenCV. The method gave a mean framerate
-of 7.16 \textpm{} 0.02 Hz. The detection process itself gave very
-consistent timings of 107 \textpm{} 1 ms. The detection method used
-has limitations as shown in Figures \ref{fig:Obscured-opencv-face}
+made by scanning a database of images with known content. Figure \ref{fig:OpenCV-Face-Detection}
+shows the output from our tests running under different conditions
+when using the face Haar-cascade classifier that comes with OpenCV.
+The method gave a mean framerate of 7.16 \textpm{} 0.02 Hz. The detection
+process itself gave very consistent timings of 107 \textpm{} 1 ms.
+The detection method used has limitations as shown in Figures \ref{fig:Obscured-opencv-face}
 and \ref{fig:Angled-opencv-face}. But in ideal conditions, with good
-lighting and unobscured faces directly facing the camera the algorithm
-produces very good results.
+lighting and un-obscured faces directly facing the camera the algorithm
+produces very good results. In this example we did not find corresponding
+high level functionality in SciPy, so no performance comparison is
+possible.
 
 %
 \begin{figure}[h]
@@ -669,8 +671,8 @@ Figure \ref{fig:Pygame-object} shows an alternative setup; using
 the Pygame camera module for image capture, OpenCV for the object
 detection and Pygame surfaces for the box rendering and display. Python
 really shows its strengths as a glue language here, as the different
-libraries are easily used in conjunction with each other. The benifits
-from this can be huge, it is very easy for a developer to incorperate
+libraries are easily used in conjunction with each other. The benefits
+from this can be huge, it is very easy for a developer to incorporate
 different computer vision tools, even with very limited knowledge
 of computer vision.
 
@@ -678,14 +680,15 @@ of computer vision.
 \section{Related Works}
 
 A feature of SciPy that has previously gone unmentioned, is the Weave
-module for inlining C and C++ code. This can easily produce code 100x\cite{ramachandran-performance}
-faster than pure Python. \cite{cai2005performance} showed that for
-parrallel programming, mixed language solutions exhibit the same performance
-gains from parralization as native language solutions.
+module for in-lining C and C++ code. This can easily produce code
+100x\cite{ramachandran-performance} faster than pure Python. \cite{cai2005performance}
+showed that for parallel programming, mixed language solutions exhibit
+the same performance gains as native language solutions from moving
+to parallel solutions
 
 
 \begin{itemize}
-\item \cite{cai2005performance}
+\item Performance speed ups with NumPy\cite{cai2005performance}
 \item GPUCV\cite{farrugia2006gpucv}\cite{allusse2008gpucv}
 \item Pyro - \cite{blank2003pyro} introduced Pyro, a robotics simulation
 environment
@@ -698,716 +701,52 @@ linking OpenCV to Pygame and NumPy. http://pycam.googlecode.com
 
 \section{Conclusion}
 
-We found that calling OpenCV from a Python wrapper was slower in general
-than natively using the library. In getting these results we can't
-help but note that the Python implementations were shorter, easier
+We found that calling OpenCV from a Python wrapper was only slightly
+slower in general than natively using the library. In getting these
+results we note that the Python implementations were shorter, easier
 to create and debug, and easier to test. Having and using an interactive
 interpreter, to come to a solution prototype and being able to use
 these prototypes in the final product is a big argument in favor of
 Python. 
 
+The documentation was found to be complete, but not as extensive as
+for a professional package like Matlab. Support for these open source
+packages is almost entirely reliant on experienced members of the
+community responding to message boards or mailing lists. When one
+of the authors asked a question regarding the gaussian image filtering
+function to the SciPy mailing list it spurred not only an immediate
+response pointing out the solution to the direct query but also a
+discussion on finite approximations to gaussian kernels, how OpenCV
+might do it differently, and a user even went as far as to test an
+IIR filter against the various implementations. This kind of support
+is quite common in the open source world, where a package like SciPy
+prides itself on its very rigorous and open tests. 
+
 For the scholar of Computer Vision research we find that using Python
 can help in trying out new algorithms, very quickly. The breadth of
-the additional tools and libraries available ..... 
-
-Support for these packages, is almost entirely reliant on experianced
-members of the community responding to message boards or mailing lists.
-When one of the authors asked a question regarding the gaussian image
-filtering function to the SciPy mailing list it spurred not only an
-immediate response pointing out the solution to the direct query but
-also a disscussion on finite approximations to gaussian kernals, how
-OpenCV might do it differantly, and a user even went as far as to
-test an IIR filter against the various implementations. This kind
-of support is quite common in the open source world, where a package
-like SciPy prides itself on its very rigorous and open tests. 
+the additional libraries available and the ease of integrating make
+new and novel solutions quickly realizable. 
 
 For those newer to computer vision, we recommend Python for many reasons,
 mainly it is much more forgiving than C or C++, it can be used interactively
 so you can happily make 10 mistakes in a row, without having to recompile
 for each attempted fix. 
 
-Most of the time the reason for slow performance comes down to naive
-implementations, which every language is prone to. 
+A major limitation of using Python would be when the application is
+being developed for special or embedded hardware. 
 
 
+\subsection*{Acknowledgments}
 
-A major limitations of using Python would be when the application
-is being developed for special or embedded hardware. 
-
-I would like to thank Rob Ramsey for help with profiling the execution
-of C++ code to ensure accurate timing results were used. Thanks also
-to all the developers investing time helping work on the open source
-projects OpenCV, Python and SciPy.
+First and foremost I would like to thank Raphael Grasset for his mentoring
+and guidance throughout this project. I would also like to thank Rob
+Ramsey for help with profiling the execution of C++ code to ensure
+accurate timing results were used. Thanks to all the tireless developers
+investing time to work on open source projects OpenCV, Python and
+SciPy.
 
 
 \section{Appendix}
-
-%
-\begin{algorithm*}
-\begin{lyxcode}
-\#include~<iostream>~
-
-\#include~\textquotedbl{}videoCapturePlayer.h\textquotedbl{}
-
-
-
-CvMat~{*}~gaussianBlur(CvMat~{*}x)\{
-
-//~Filter~with~gaussian~smoothing
-
-~~~~int~filterSize~=~43;
-
-~~~~cvSmooth(x,~x,~CV\_GAUSSIAN,~filterSize);
-
-~~~~return~x;
-
-\}
-
-
-
-int~main(~int~argc,~char{*}{*}~argv~)\{
-
-~~~~VideoCapturePlayer~vcp~=~VideoCapturePlayer(\&gaussianBlur);
-
-~~~~vcp.init();~vcp.main();
-
-~~~~return~0;
-
-\}
-\end{lyxcode}
-\caption{\label{alg:Gaussian-C}Applying Gaussian Blur to web-cam stream from
-C++}
-
-\end{algorithm*}
-
-
-%
-\begin{algorithm*}
-\begin{lyxcode}
-from~VideoCapturePlayer~import~VideoCapturePlayer~as~VCP
-
-from~opencv~import~cv
-
-
-
-def~opencvFilt2sigma(size):
-
-~~~~return~((~size{*}0.5~)~-~1){*}0.30~+~0.80
-
-
-
-def~gaussianBlur(image):
-
-~~~~\textquotedbl{}\textquotedbl{}\textquotedbl{}Blur~an~image\textquotedbl{}\textquotedbl{}\textquotedbl{}~~~~~
-
-~~~~result~=~cv.cvCreateMat(image.rows,~image.cols,~image.type)
-
-~~~~filterSize~=~43;~sigma~=~opencvFilt2sigma(filterSize)
-
-~~~~cv.cvSmooth(image,~result,~cv.CV\_GAUSSIAN,~filterSize,0,~sigma)
-
-~~~~return~result
-
-
-
-
-
-VCP(gaussianBlur,~\textquotedbl{}Gaussian~Filtered~Output\textquotedbl{}).main()
-\end{lyxcode}
-\caption{\label{alg:Gaussian-Python-OpenCV}Gaussian Blurring in Python using
-OpenCV}
-
-\end{algorithm*}
-
-
-%
-\begin{algorithm*}
-\begin{lyxcode}
-from~numpy~import~array,~uint8
-
-from~scipy~import~signal,~ndimage~
-
-from~VideoCapturePlayer~import~VideoCapturePlayer~as~VCP~
-
-from~misc~import~scipyFromOpenCV
-
-
-
-def~opencvFilt2sigma(size):
-
-~~~~\textquotedbl{}\textquotedbl{}\textquotedbl{}OpenCV~defaults~to~making~sigma~up~with~this~formula\textquotedbl{}\textquotedbl{}\textquotedbl{}
-
-~~~~return~((~size/2~)~-~1){*}0.30~+~0.80
-
-
-
-@scipyFromOpenCV
-
-def~gaussianBlur(np\_image):
-
-~~~~\textquotedbl{}\textquotedbl{}\textquotedbl{}Blur~an~image~with~scipy\textquotedbl{}\textquotedbl{}\textquotedbl{}
-
-~~~~filterSize~=~opencvFilt2sigma(43)
-
-~~~~result~=~ndimage.filters.gaussian\_filter(np\_image,~(filterSize,~filterSize,~1))
-
-~~~~return~result
-
-
-
-if~\_\_name\_\_~==~\textquotedbl{}\_\_main\_\_\textquotedbl{}:
-
-~~~~title~=~\textquotedbl{}Gaussian~Filtered~Output\textquotedbl{}
-
-~~~~VCP(gaussianBlur,title=title).main()
-\end{lyxcode}
-\caption{\label{alg:Gaussian-Python-SciPy}Gaussian Blurring in Python using
-SciPy}
-
-\end{algorithm*}
-
-
-%
-\begin{algorithm*}
-\begin{lyxcode}
-def~gauss\_derivatives(im,~n,~ny=None):
-
-~~~~~\textquotedbl{}\textquotedbl{}\textquotedbl{}~returns~x~and~y~derivatives~of~an~image~using~gaussian
-
-~~~~~~~~~~derivative~filters~of~size~n.~The~optional~argument
-
-~~~~~~~~~~ny~allows~for~a~different~size~in~the~y~direction.\textquotedbl{}\textquotedbl{}\textquotedbl{}
-
-~~~~gx,gy~=~gauss\_derivative\_kernels(n,~sizey=ny)
-
-~~~~imx~=~signal.convolve(im,gx,~mode='same')
-
-~~~~imy~=~signal.convolve(im,gy,~mode='same')
-
-~~~~return~imx,imy
-
-
-
-~~~def~compute\_harris\_response(image):
-
-~~~~~~~\textquotedbl{}\textquotedbl{}\textquotedbl{}~compute~the~Harris~corner~detector~response~function
-
-~~~~~~~~for~each~pixel~in~the~image\textquotedbl{}\textquotedbl{}\textquotedbl{}
-
-~~~~~~~~imx,imy~=~gauss\_derivatives(image,~3)
-
-~~~~~~~~gauss~=~gauss\_kern(3)
-
-~~~~~~~~Wxx~=~signal.convolve(imx{*}imx,gauss,~mode='same')
-
-~~~~~~~~Wxy~=~signal.convolve(imx{*}imy,gauss,~mode='same')
-
-~~~~~~~~Wyy~=~signal.convolve(imy{*}imy,gauss,~mode='same')
-
-~~~~~~~~Wdet~=~Wxx{*}Wyy~-~Wxy{*}{*}2
-
-~~~~~~~~Wtr~=~Wxx~+~Wyy
-
-~~~~~~~~return~Wdet~/~Wtr
-\end{lyxcode}
-\caption{\label{alg:SciPy-Harris-Corner}SciPy Harris Corner Detection}
-
-\end{algorithm*}
-
-
-%
-\begin{algorithm*}
-\begin{lyxcode}
-def~detectObject(self,img):
-
-~~~~gray~=~cvCreateImage(~cvSize(img.width,img.height),~8,~1~)
-
-~~~~small\_img~=~cvCreateImage(~cvSize(~cvRound~(img.width/self.image\_scale),~
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~cvRound~(img.height/self.image\_scale)),~8,~1~)
-
-~~~~cvCvtColor(~img,~gray,~CV\_BGR2GRAY~)
-
-~~~~cvResize(~gray,~small\_img,~CV\_INTER\_LINEAR~)
-
-~~~~cvEqualizeHist(~small\_img,~small\_img~)
-
-~~~~cvClearMemStorage(~self.storage~)
-
-~~~~if(~self.cascade~):
-
-~~~~~~~~t~=~cvGetTickCount()
-
-~~~~~~~~objects~=~cvHaarDetectObjects(~small\_img,~self.cascade,~self.storage,
-
-~~~~~~~~~~~~~~~~~~~self.haar\_scale,~self.min\_neighbors,~self.haar\_flags,~self.min\_size~)
-
-~~~~~~~~t~=~cvGetTickCount()~-~t
-
-~~~~~~~~if~verbose:
-
-~~~~~~~~~~~~print~\textquotedbl{}\%i~objects~found,~detection~time~=~\%gms\textquotedbl{}~\%~(objects.total,t/(cvGetTickFrequency(){*}1000.))
-
-~~~~~~~~return~objects
-\end{lyxcode}
-\caption{\label{alg:OpenCV-Haar-detect}Using the OpenCV Haar Detect Objects
-Function}
-
-\end{algorithm*}
-
-
-%
-\begin{algorithm*}
-\begin{lyxcode}
-\#!/usr/bin/env~python
-
-from~VideoCapturePlayer~import~VideoCapturePlayer~as~VCP
-
-import~numpy
-
-from~scipy.ndimage~import~gaussian\_filter,maximum\_filter
-
-from~numpy~import~array,ones,zeros,nonzero
-
-from~opencv~import~cv
-
-
-
-def~harrisResponse(image,~n~=~15):
-
-~~\textquotedbl{}\textquotedbl{}\textquotedbl{}Modified~from~PyVision~example
-
-~~\textquotedbl{}\textquotedbl{}\textquotedbl{}
-
-~~gray~=~cv.cvCreateImage(~cv.cvGetSize(image),~8,~1~)
-
-~~corners~=~cv.cvCreateImage(~cv.cvGetSize(image),~32,~1~)
-
-~~cv.cvCvtColor(~image,~gray,~cv.CV\_BGR2GRAY~)
-
-~~cv.cvCornerHarris(gray,corners,~n)
-
-~~
-
-~~\#~Filter~the~response~and~draw~points
-
-~~buffer~=~corners.imageData
-
-~~corners~=~numpy.frombuffer(buffer,numpy.float32)
-
-~~corners~=~corners.reshape(corners.height,corners.width)
-
-~~corners~=~corners.transpose()
-
-~~
-
-~~footprint~=~ones((n,n))
-
-~~mx~=~maximum\_filter(corners,~footprint~=~footprint)
-
-~~local\_maxima~=~(corners~==~mx)~{*}~(corners~!=~zeros(corners.shape))
-
-~~points~=~nonzero(local\_maxima)
-
-~~del~local\_maxima
-
-~~points~=~array({[}points{[}0{]},points{[}1{]}{]}).transpose()
-
-~~L~=~{[}{]}
-
-~~for~each~in~points:
-
-~~~~L.append((corners{[}each{[}0{]},each{[}1{]}{]},each{[}0{]},each{[}1{]},None))
-
-~~~~i~=~cv.cvPoint(int(each{[}0{]}),int(each{[}1{]}))
-
-~~~~cv.cvCircle(image,~i,~2,~cv.CV\_RGB(0,0,200),3~)
-
-
-
-~~return~image
-
-
-
-title~=~\textquotedbl{}Harris~Feature~Detection\textquotedbl{}
-
-VCP(harrisResponse,~title).main()
-\end{lyxcode}
-\caption{\label{alg:Harris-Detection-opencv}Harris Detection in OpenCV}
-
-\end{algorithm*}
-
-
-%
-\begin{algorithm*}
-\begin{lyxcode}
-
-
-~~~~differenceImage~~=~cv.cvCloneMat(~image~)
-
-~~~~cv.cvAbsDiff(~image,~original,~differenceImage~)
-
-~~~~
-
-~~~~cv.cvThreshold(~differenceImage,~differenceImage,~32,~255,~cv.CV\_THRESH\_BINARY~)
-
-~~~~cv.cvSmooth(differenceImage,~differenceImage,~cv.CV\_MEDIAN,~15)
-
-
-
-~~~~temp~~=~cv.cvCloneMat(~image)
-
-~~~~cv.cvSetZero(temp)
-
-~~~~
-
-~~~~for~row\_n~in~xrange(image.rows):
-
-~~~~~~~~for~col\_n~in~xrange(image.cols):
-
-~~~~~~~~~~~~if~differenceImage{[}row\_n,col\_n{]}{[}0{]}~>~0~\textbackslash{}
-
-~~~~~~~~~~~~or~differenceImage{[}row\_n,col\_n{]}{[}1{]}~>~0~\textbackslash{}
-
-~~~~~~~~~~~~or~differenceImage{[}row\_n,col\_n{]}{[}2{]}~>~0:
-
-~~~~~~~~~~~~~~~~temp{[}row\_n,col\_n{]}~=~image{[}row\_n,col\_n{]}
-
-~~~~
-
-~~~~return~temp
-
-
-\end{lyxcode}
-\caption{\label{alg:back-Python-imple}Python implementaition of background
-subtraction}
-
-\end{algorithm*}
-
-
-%
-\begin{algorithm*}
-/{*} g++ -O3 -Wall
-
-`pkg-config --cflags opencv` 
-
-`pkg-config --libs opencv` -o bg\_sub 
-
-bg\_sub.cxx videoCapturePlayer.cxx
-
-{*}/
-
-\#include <iostream>
-
-\#include \textquotedbl{}videoCapturePlayer.h\textquotedbl{}
-
-CvMat {*}original;
-
-CvMat {*} bg\_subtract(CvMat {*}x)
-
-\{
-
-static int n = 0;
-
-++n;
-
-if( n == 3) original = cvCloneMat( x );
-
-if( n < 4) return x;
-
-if(n\%100 == 0) std::cout <\textcompwordmark{}< \textquotedbl{}100
-frames\textquotedbl{} <\textcompwordmark{}< std::endl;
-
-CvMat {*} differenceImage = cvCloneMat( x );
-
-cvAbsDiff( x, original, differenceImage );
-
-//CV\_THRESH\_TOZERO
-
-CvMat {*} temp = cvCloneMat( x );
-
-cvSetZero(temp);
-
-cvThreshold( differenceImage, temp, 32, 255, CV\_THRESH\_BINARY );
-
-// median filter out the salt \& pepper noise in the difference image
-
-cvSmooth(temp, temp, CV\_MEDIAN, 5);
-
-cvSetZero(differenceImage);
-
-cvAnd(x, temp, differenceImage ); // NOTE DIFF FROM PYTHON
-
-return differenceImage;
-
-\}
-
-VideoCapturePlayer vcp = VideoCapturePlayer(\&bg\_subtract);
-
-vcp.init(); vcp.main();
-
-
-
-\caption{C++ Background Subtraction}
-
-
-
-\end{algorithm*}
-
-
-%
-\begin{algorithm*}
-\begin{lyxcode}
-\#!/usr/bin/env~python
-
-from~\_\_future\_\_~import~division
-
-from~opencv~import~cv,~highgui~as~hg
-
-import~time
-
-import~logging
-
-verbosity~=~logging.INFO
-
-profiling~=~False
-
-logging.basicConfig(filename=None,level=verbosity,)
-
-class~VideoCapturePlayer(object):
-
-~~~~\textquotedbl{}\textquotedbl{}\textquotedbl{}
-
-~~~~A~VideoCapturePlayer~object~is~an~encapsulation~of~
-
-~~~~the~display~of~a~video~stream.~
-
-~~~~
-
-~~~~A~process~can~be~given~(as~a~function)~that~is~run
-
-~~~~on~every~frame~between~capture~and~display.
-
-~~~~
-
-~~~~For~example~a~filter~function~that~takes~and~returns~a~
-
-~~~~cvMat~can~be~given.~This~player~will~take~the~webcam~image,~
-
-~~~~pass~it~through~the~filter~then~display~the~result.
-
-~~~~
-
-~~~~>\textcompwordmark{}>\textcompwordmark{}>~vcp~=~VideoCapturePlayer()~~\#~Open~the~webcam.
-
-~~~~>\textcompwordmark{}>\textcompwordmark{}>~vcp.main()~~\#~should~start~capturing~and~showing~the~webcam
-
-~~~~
-
-~~~~And~defining~and~giving~a~process~function~to~the~player:
-
-~~~~
-
-~~~~>\textcompwordmark{}>\textcompwordmark{}>~def~drawBox(x):
-
-~~~~....~~~~pt1,~pt2~=~cv.CvPoint(),~cv.CvPoint()
-
-~~~~....~~~~pt1.x~=~pt1.y~=~200
-
-~~~~....~~~~pt2.x~=~pt2.y~=~250
-
-~~~~....~~~~cv.cvRectangle(~x,~pt1,~pt2,~cv.CV\_RGB(30,0,200)~)
-
-~~~~....~~~~return~x
-
-~~~~>\textcompwordmark{}>\textcompwordmark{}>~vcp~=~VideoCapturePlayer(processFunction=drawBox)
-
-~~~~>\textcompwordmark{}>\textcompwordmark{}>~vcp.main()
-
-~~~~
-
-~~~~\textquotedbl{}\textquotedbl{}\textquotedbl{}
-
-~~~
-
-~~~~def~\_\_init\_\_(self,~processFunction~=~None,~title~=~\textquotedbl{}Video~Capture~Player\textquotedbl{},~show=True)
-
-~~~~~~~~t\_begin~=~time.time()
-
-~~~~~~~~self.processFunction~=~processFunction
-
-~~~~~~~~self.title~=~title
-
-~~~~~~~~self.show~=~show
-
-~~~~~~~~if~self.show~is~True:
-
-~~~~~~~~~~~~self.display~=~hg.cvNamedWindow(self.title)
-
-~~~~~~~~try:
-
-~~~~~~~~~~~~self.camera~=~hg.cvCreateCameraCapture(0)
-
-~~~~~~~~except:
-
-~~~~~~~~~~~~print(\textquotedbl{}Couldn't~open~camera~device,~is~it~connected?\textquotedbl{})
-
-~~~~~~~~~~~~hg.cvDestroyWindow(title)
-
-~~~~~~~~~~~~raise~SystemExit
-
-~~~~~~~~
-
-~~~~~~~~\#~Take~a~frame~to~get~props~and~use~in~testing
-
-~~~~~~~~self.snapshot~=~cv.cvCloneMat(~hg.cvQueryFrame(~self.camera~)~)
-
-~~~~~~~~\#~check~that~we~got~an~image,~otherwise~try~again.
-
-~~~~~~~~for~i~in~xrange(100):
-
-~~~~~~~~~~~~if~self.snapshot~is~not~None:~break
-
-~~~~~~~~~~~~self.snapshot~=~hg.cvQueryFrame(~self.camera~)
-
-~~~~~~~~
-
-~~~~def~process(self,~take\_new\_image=True):
-
-~~~~~~~~\textquotedbl{}\textquotedbl{}\textquotedbl{}We~will~take~a~snapshot,~optionally~do~some~arbitrary~process~(eg~in~numpy/scipy)
-
-~~~~~~~~then~display~it.
-
-~~~~~~~~\textquotedbl{}\textquotedbl{}\textquotedbl{}
-
-~~~~~~~~try:
-
-~~~~~~~~~~~~if~take\_new\_image:
-
-~~~~~~~~~~~~~~~~logging.debug(\textquotedbl{}capturing~an~image\textquotedbl{})
-
-~~~~~~~~~~~~~~~~self.snapshot~=~cv.cvCloneMat(~hg.cvQueryFrame(~self.camera)~)
-
-~~~~~~~
-
-~~~~~~~~~~~~if~self.processFunction~is~not~None:
-
-~~~~~~~~~~~~~~~~logging.debug(\textquotedbl{}Sending~image~to~process~function\textquotedbl{})
-
-~~~~~~~~~~~~~~~~res~=~self.processFunction(self.snapshot)
-
-~~~~~~~~~~~~~~~~logging.debug(\textquotedbl{}Received~result~from~processing~function\textquotedbl{})
-
-~~~~~~~~~~~~~~~~assert~isinstance(res,cv.CvMat),~\textquotedbl{}Not~CvMat\textquotedbl{}
-
-~~~~~~~~~~~~~~~~self.snapshot~=~res
-
-~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~if~self.show:
-
-~~~~~~~~~~~~~~~~hg.cvShowImage(~self.title,~self.snapshot~)
-
-~~~~~~~~except~Exception,~e:
-
-~~~~~~~~~~~~\#~If~something~goes~wrong~make~sure~we~close~the~window
-
-~~~~~~~~~~~~logging.error(\textquotedbl{}Error~in~processing~image:~\%s\textquotedbl{}~\%~e)
-
-~~~~~~~~~~~~hg.cvDestroyWindow(self.title)
-
-~~~~~~~~~~~~raise~SystemExit
-
-
-
-~~~~def~main(self):
-
-~~~~~~~~\textquotedbl{}\textquotedbl{}\textquotedbl{}
-
-~~~~~~~~Run~and~time~the~main~loop.
-
-~~~~~~~~\textquotedbl{}\textquotedbl{}\textquotedbl{}
-
-~~~~~~~~logging.info(\textquotedbl{}Starting~main~video~capture~loop~now,~press~'q'~to~quit\textquotedbl{})
-
-~~~~~~~~key~=~hg.cvWaitKey(1)
-
-~~~~~~~~
-
-~~~~~~~~num\_frames~=~0
-
-~~~~~~~~start\_time~=~time.time()
-
-~~~~~~~~
-
-~~~~~~~~while(key~is~not~\textquotedbl{}q\textquotedbl{}~and~key~!=~'\textbackslash{}x1b'):
-
-~~~~~~~~~~~~num\_frames~+=1
-
-~~~~~~~~~~~~self.process()
-
-~~~~~~~~~~~~key~=~hg.cvWaitKey(5)
-
-~~~~~~~~~~~~
-
-~~~~~~~~total\_time~=~float(time.time())~-~float(start\_time)
-
-~~~~~~~~
-
-~~~~~~~~logging.debug(\textquotedbl{}Main~loop~complete\textquotedbl{})
-
-~~~~~~~~logging.debug(\textquotedbl{}Total~time~took~\%e\textquotedbl{}~\%~total\_time)
-
-~~~~~~~~
-
-~~~~~~~~logging.info(\textquotedbl{}Average~time~per~frame:~\%e\textquotedbl{}~\%~(total\_time/num\_frames)~)
-
-~~~~~~~~logging.info(\textquotedbl{}Average~frames~per~second:~\%f\textquotedbl{}~\%~(num\_frames/total\_time)~)
-
-
-
-def~drawBox(x):
-
-~~~~\textquotedbl{}\textquotedbl{}\textquotedbl{}
-
-~~~~This~is~a~template~for~a~function~that~can~be~fed~into~VideoCapturePlayer
-
-~~~~It~must~take~a~CvMat,~and~return~a~CvMat.
-
-~~~~It~draws~a~rectangle~on~the~screen.\textquotedbl{}\textquotedbl{}\textquotedbl{}
-
-~~~~pt1,~pt2~=~cv.CvPoint(),~cv.CvPoint()
-
-~~~~pt1.x~=~pt1.y~=~200
-
-~~~~pt2.x~=~pt2.y~=~250
-
-~~~~cv.cvRectangle(~x,~pt1,~pt2,~cv.CV\_RGB(30,0,200)~)
-
-~~~~return~x
-
-
-
-if~\_\_name\_\_~==~\textquotedbl{}\_\_main\_\_\textquotedbl{}:
-
-~~~~logging.info(\textquotedbl{}Starting~the~example~VideoCapturePlayer\textquotedbl{})
-
-~~~~\#vcp~=~VideoCapturePlayer(processFunction=drawBox)
-
-~~~~vcp~=~VideoCapturePlayer()
-
-~~~~vcp.main()
-
-
-
-
-\end{lyxcode}
-\caption{Python implementaiton of the VideoCaptureClass}
-
-
-
-\end{algorithm*}
-
 
 \bibliographystyle{ieeetr}
 \bibliography{report_data/database}
