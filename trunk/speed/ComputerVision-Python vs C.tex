@@ -3,11 +3,17 @@
 \documentclass[english]{IEEEtran}
 \usepackage[T1]{fontenc}
 \usepackage[latin9]{inputenc}
+\usepackage{babel}
+
 \usepackage{float}
 \usepackage{textcomp}
 \usepackage{amsthm}
 \usepackage{amsmath}
 \usepackage{graphicx}
+\usepackage[unicode=true, pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
 
 \makeatletter
 
@@ -37,8 +43,6 @@
 \usepackage{subfig}
 \makeatother
 
-\usepackage{babel}
-
 \begin{document}
 
 \title{Using Python in Computer Vision: Approach, Performance and Usability }
@@ -64,7 +68,7 @@ Computer Vision, Python, SciPy, OpenCV
 
 \section{Introduction}
 
-Python \cite{van1994python} has been of growing interest to the academic
+Python\cite{van1994python} has been of growing interest to the academic
 community over the last decade. The increase of computational science
 as a scientific method drives the need for scientists to implement
 different mathematical models or simulation processes. The simple
@@ -73,8 +77,8 @@ management has retained their attention and forged it as a popular
 tool for the research community.
 
 Differently, the field of image processing and computer vision (CV)
-has been driven for the last decade by C/C++ implementation or the
-usage of MATLAB\cite{kovesi-matlab}. As MATLAB offers a really efficient
+has been driven for the last decade by C/C++ implementation and the
+usage of MATLAB\cite{kovesi-matlab}. Although MATLAB offers an efficient
 high level platform for prototyping and testing algorithms, its performances
 doesn't compete with a well designed and optimized C++ implementation.
 More recently, we have seen the emergence of potential and valuable
@@ -83,11 +87,11 @@ in Python.
 
 The goal of this paper is to evaluate the quality of the most common
 solution for developing CV algorithms and CV applications in Python.
-The outcomes of this evaluation aim to help on any decisional process
+The outcomes of this evaluation aim to help with any decisional process
 for shifting to future CV development in Python from the traditional
 approach.
 
-We also focused our attention on the performances of two widely used
+We have focused our attention on the performances of two widely used
 CV libraries in Python: \textit{OpenCV}\cite{bradski2000opencv} and
 \textit{NumPy/SciPy}\cite{oliphant2007python}. For this matter, we
 analyzed their performances through a list of common tasks and processes
@@ -184,7 +188,9 @@ We cover different standard algorithms traditionally used in a CV
 application and also some standard operations used in CV such as image
 acquisition. For each of the tests we describe the process, the difference
 in terms of the syntax, the performance and the usability. All of
-the testing code is made available open source at the project website.
+the testing code is made available open source at the project's website
+\href{http://code.google.com/p/pycam/wiki/PythonComputerVision}{http://code.google.com/p/pycam/wiki/PythonComputerVision}.
+
 
 
 \subsubsection*{Limitations in testing}
@@ -430,8 +436,7 @@ form by a comparison of one frame to another previous frame\cite{gao2006robust}.
 If there is more than a threshold of difference, something changed.
 
 The response is shown in Figure \ref{fig:Adding-a-single} after adding
-a cellphone to the scene for the \noun{Python\_CV} implementation
-in algorithm \ref{alg:back-Python-imple}. 
+a cellphone to the scene for the \noun{Python\_CV} implementation. 
 
 %
 \begin{figure}[h]
@@ -559,9 +564,9 @@ feature detection algorithm}
 \end{figure}
 
 
-Algorithm \ref{alg:SciPy-Harris-Corner} modified an existing implementation
-in SciPy by \cite{Sol09} which produced Figure \ref{fig:A-SciPy-harris}.
-The algorithm was timed by executing it on Lena 300 times per sample:
+We took and modified an existing implementation in SciPy by \cite{Sol09}
+which produced Figure \ref{fig:A-SciPy-harris}. The algorithm was
+timed by executing it on Lena 300 times per sample:
 
 \begin{center}
 \begin{tabular}{|c|c|c|}
@@ -577,17 +582,16 @@ OpenCV & 65.7 ms & 1.27 ms\tabularnewline
 \par\end{center}
 
 The same concept but in a different implementation is shown in Figure
-\ref{fig:OpenCV-harris} for OpenCV in algorithm \ref{alg:Harris-Detection-opencv}.
-Note care has not been taken to get the exact same output in OpenCV
-as in SciPy, it is assumed that one could get the same output as shown
-earlier with the gaussian blur example. Also note the algorithms are
-working on different dimensional images, OpenCV is running on a 3
-channel image whereas the SciPy version is only working on a gray-scale
-image. Even so, OpenCV clearly runs a magnitude faster than the unoptimized
-SciPy code. The main difference between algorithms \ref{alg:SciPy-Harris-Corner}
-and \ref{alg:Harris-Detection-opencv} is the filtering and display
-of the corner response. Another limitation is that the OpenCV response
-in C++ is not implemented here.
+\ref{fig:OpenCV-harris} for OpenCV. Note care has not been taken
+to get the exact same output in OpenCV as in SciPy, it is assumed
+that one could get the same output as shown earlier with the gaussian
+blur example. Also note the algorithms are working on different dimensional
+images, OpenCV is running on a 3 channel image whereas the SciPy version
+is only working on a gray-scale image. Even so, OpenCV clearly runs
+a magnitude faster than the unoptimized SciPy code. The main difference
+between the algorithms is the threshold filtering and display of the
+corner response. Another limitation is that the OpenCV response in
+C++ is not implemented here.
 
 
 \subsection{Face Detection}

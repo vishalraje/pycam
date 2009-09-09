@@ -92,7 +92,7 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-Python 
+Python
 \begin_inset CommandInset citation
 LatexCommand cite
 key "van1994python"
@@ -110,7 +110,7 @@ key "van1994python"
 
 \begin_layout Standard
 Differently, the field of image processing and computer vision (CV) has
- been driven for the last decade by C/C++ implementation or the usage of
+ been driven for the last decade by C/C++ implementation and the usage of
  MATLAB
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -119,7 +119,7 @@ key "kovesi-matlab"
 \end_inset
 
 .
- As MATLAB offers a really efficient high level platform for prototyping
+ Although MATLAB offers an efficient high level platform for prototyping
  and testing algorithms, its performances doesn't compete with a well designed
  and optimized C++ implementation.
  More recently, we have seen the emergence of potential and valuable solution
@@ -129,12 +129,12 @@ key "kovesi-matlab"
 \begin_layout Standard
 The goal of this paper is to evaluate the quality of the most common solution
  for developing CV algorithms and CV applications in Python.
- The outcomes of this evaluation aim to help on any decisional process for
- shifting to future CV development in Python from the traditional approach.
+ The outcomes of this evaluation aim to help with any decisional process
+ for shifting to future CV development in Python from the traditional approach.
 \end_layout
 
 \begin_layout Standard
-We also focused our attention on the performances of two widely used CV
+We have focused our attention on the performances of two widely used CV
  libraries in Python: 
 \shape italic
 OpenCV
@@ -163,6 +163,16 @@ key "oliphant2007python"
  video capture, filtering algorithms, feature detection, etc).
  We were particularly interested to learn how Python performs in comparison
  with the native C implementation of OpenCV.
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+need to rewrite last sentance.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -401,7 +411,27 @@ We cover different standard algorithms traditionally used in a CV application
  and also some standard operations used in CV such as image acquisition.
  For each of the tests we describe the process, the difference in terms
  of the syntax, the performance and the usability.
- All of the testing code is made available open source at the project website.
+ All of the testing code is made available open source at the project's
+ website 
+\begin_inset CommandInset href
+LatexCommand href
+name "http://code.google.com/p/pycam/wiki/PythonComputerVision"
+target "http://code.google.com/p/pycam/wiki/PythonComputerVision"
+
+\end_inset
+
+.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Change this to hitlab project site later?
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection*
@@ -1151,14 +1181,7 @@ reference "fig:Adding-a-single"
 \noun on
 Python_CV
 \noun default
- implementation in algorithm 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "alg:back-Python-imple"
-
-\end_inset
-
-.
+ implementation.
  
 \end_layout
 
@@ -1739,14 +1762,7 @@ OpenCV implementation of the Harris & Stephens feature detection algorithm
 \end_layout
 
 \begin_layout Standard
-Algorithm 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "alg:SciPy-Harris-Corner"
-
-\end_inset
-
- modified an existing implementation in SciPy by 
+We took and modified an existing implementation in SciPy by 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Sol09"
@@ -1874,14 +1890,7 @@ reference "fig:OpenCV-harris"
 
 \end_inset
 
- for OpenCV in algorithm 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "alg:Harris-Detection-opencv"
-
-\end_inset
-
-.
+ for OpenCV.
  Note care has not been taken to get the exact same output in OpenCV as
  in SciPy, it is assumed that one could get the same output as shown earlier
  with the gaussian blur example.
@@ -1890,23 +1899,21 @@ reference "alg:Harris-Detection-opencv"
  on a gray-scale image.
  Even so, OpenCV clearly runs a magnitude faster than the unoptimized SciPy
  code.
- The main difference between algorithms 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "alg:SciPy-Harris-Corner"
-
-\end_inset
-
- and 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "alg:Harris-Detection-opencv"
-
-\end_inset
-
- is the filtering and display of the corner response.
+ The main difference between the algorithms is the threshold filtering and
+ display of the corner response.
  Another limitation is that the OpenCV response in C++ is not implemented
  here.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+I would like to have the SciPy code doing the exact same thing...
+ and have meaningful results
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
