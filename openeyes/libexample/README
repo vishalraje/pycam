@@ -1,0 +1,10 @@
+This directory contains an example program using the eye tracker lib.
+
+This example project relies on the cvEyeTrack library and on opencv
+both must be installed and in the right path before trying to build this.
+
+There are two build files, one for scons, one for make.
+
+To use scons to build the system, type "scons" in the directory. 
+To clean up the build, type "scons -c"
+
