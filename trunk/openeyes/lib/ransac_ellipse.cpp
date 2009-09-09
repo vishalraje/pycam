@@ -66,14 +66,10 @@ void starburst_pupil_contour_detection(UINT8* pupil_image, int width, int height
   double cy = start_point.y;
   int first_ep_num;
 
-
   while (edge_thresh > 5 && loop_count <= 10) {
     edge_intensity_diff.clear();
     destroy_edge_point();
-    
-    unsigned int edge_point_size = edge_point.size();
-        
-    while (edge_point_size < minimum_cadidate_features && edge_thresh > 5) {
+    while (edge_point.size() < minimum_cadidate_features && edge_thresh > 5) {
       edge_intensity_diff.clear();
       destroy_edge_point();
       locate_edge_points(pupil_image, width, height, cx, cy, dis, angle_step, 0, 2*PI, edge_thresh);

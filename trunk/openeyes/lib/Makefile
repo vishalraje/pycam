@@ -45,15 +45,17 @@ LIBSRC = cvEyeTracker.c
 
 default:
 	@echo ""
-	@echo "Build and install the cvEyeTracker library to /usr/local/lib"
-	@echo "with the command: 'sudo make install'"
-	@echo "Or build inplace with 'make build'"
+	@echo "Building the cvEyeTracker library...   "
+	@echo "to install call 'make' with the command:"
+	@echo "    'sudo make install'                "
+	@echo "Or build inplace with 'make build'     "
 	@echo ""
 	
 install: build $(LIB)
 	@echo lib Makefile - installing $(LIB)
 	@install -m 444 $(LIB) $(LIBDEST)
 	@install -m 444 $(LIBHEADER) $(INCDEST)
+	ldconfig -n $(LIBDEST)  # Might have to execute this in the dest?
 	@echo "Install Complete."
 	
 	
@@ -63,17 +65,19 @@ $(LIB): $(libObj)
 
 build: $(OBJS)
 	@echo "Linking" 
-	$(CXX) -shared -o $(LIB) *.o
+	#$(CXX) -shared -Wl,-soname,$(LIB) -Wl,-export-dynamic -o $(LIB) \
+	$(CXX) -shared -Wl,-soname,$(LIB) -o $(LIB) \
+	*.o -lc $(LIBS)
 	@echo "Library Built."
 
-cvEyeTracker.o: cvEyeTracker.c $(HEADDERS)
-	$(CXX) $(CXXFLAGS)  $(DEFINES) $(INCLUDES)  -c cvEyeTracker.c 
+cvEyeTracker.o: cvEyeTracker.c ransac_ellipse.o $(HEADDERS)
+	$(CXX) $(CXXFLAGS) $(DEFINES) $(INCLUDES)  -c cvEyeTracker.c 
 
 remove_corneal_reflection.o: remove_corneal_reflection.c $(HEADDERS)
 	$(CXX) $(CXXFLAGS)  $(DEFINES) $(INCLUDES)  -c remove_corneal_reflection.c 
 
 ransac_ellipse.o: ransac_ellipse.cpp $(HEADDERS)
-	$(CXX) $(CXXFLAGS)  $(DEFINES)  -c ransac_ellipse.cpp
+	$(CXX) $(CXXFLAGS)  $(DEFINES) $(INCLUDES) -c ransac_ellipse.cpp
 
 svd.o: svd.c $(HEADDERS)
 	$(CXX) $(CXXFLAGS)  $(DEFINES)  -c svd.c

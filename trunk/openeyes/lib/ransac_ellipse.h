@@ -63,7 +63,7 @@ void denormalize_ellipse_param(double* par, double* normailized_par, double dis_
 void destroy_edge_point();
 
 
-void starburst_pupil_contour_detection(UINT8* pupil_image, int width, int height, int edge_thresh, int N, int minimum_cadidate_features, int *valid_point_calc);
+void starburst_pupil_contour_detection(UINT8* pupil_image, int width, int height, int edge_thresh, int N, unsigned int minimum_cadidate_features, int *valid_point_calc);
 void locate_edge_points(UINT8* image, int width, int height, double cx, double cy, int dis, double angle_step, double angle_normal, double angle_spread, int edge_thresh);
 stuDPoint get_edge_mean();
 
