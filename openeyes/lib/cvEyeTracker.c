@@ -1253,6 +1253,7 @@ CvPoint eyetracker_get_gaze_target(void)
 // as a lib system. 
 void eyetracker_setup(int argc, char **argv)
 {
+  printf("Starting eyetracker setup\n");
   Open_IEEE1394();
 
   eyetracker_setup_image_buffs();
@@ -1262,6 +1263,7 @@ void eyetracker_setup(int argc, char **argv)
   Open_Ellipse_Log();
 
   Start_Timer();
+  printf("Eyetracker is ready and setup\n");
 }
 
 
@@ -1320,7 +1322,6 @@ void eyetracker_cleanup_image_buffs(void)
   cvReleaseImage(&original_eye_image);
   cvReleaseImage(&ellipse_image);
   cvReleaseImage(&scene_image);
-
 }
 
 
