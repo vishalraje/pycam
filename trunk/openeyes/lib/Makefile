@@ -30,12 +30,16 @@ OBJS 		= 	remove_corneal_reflection.o \
 				svd.o \
 				timing.o \
 				cvEyeTracker.o \
+				firewire_camera.o \
+				colour_conversions.o
 			  	
 			  	  
 HEADDERS 	=	remove_corneal_reflection.h \
 				ransac_ellipse.h \
 				svd.h \
 				timing.h \
+				firewire_camera.h \
+				colour_conversions.h \
 				$(LIBHEADER)
 				
 LIBSRC = cvEyeTracker.c
@@ -43,12 +47,11 @@ LIBSRC = cvEyeTracker.c
 #LIBOBJ = $(LIBSRC:.c=.o)
 
 
-default:
+default: build
 	@echo ""
-	@echo "Building the cvEyeTracker library...   "
-	@echo "to install call 'make' with the command:"
+	@echo "Finished building the cvEyeTracker library.   "
+	@echo "to install:"
 	@echo "    'sudo make install'                "
-	@echo "Or build inplace with 'make build'     "
 	@echo ""
 	
 install: build $(LIB)
@@ -65,26 +68,30 @@ $(LIB): $(libObj)
 
 build: $(OBJS)
 	@echo "Linking" 
-	#$(CXX) -shared -Wl,-soname,$(LIB) -Wl,-export-dynamic -o $(LIB) \
 	$(CXX) -shared -Wl,-soname,$(LIB) -o $(LIB) \
 	*.o -lc $(LIBS)
 	@echo "Library Built."
 
 cvEyeTracker.o: cvEyeTracker.c ransac_ellipse.o $(HEADDERS)
-	$(CXX) $(CXXFLAGS) $(DEFINES) $(INCLUDES)  -c cvEyeTracker.c 
+	$(CXX) $(CXXFLAGS) $(DEFINES) $(INCLUDES) -c cvEyeTracker.c 
 
 remove_corneal_reflection.o: remove_corneal_reflection.c $(HEADDERS)
-	$(CXX) $(CXXFLAGS)  $(DEFINES) $(INCLUDES)  -c remove_corneal_reflection.c 
+	$(CXX) $(CXXFLAGS) $(DEFINES) $(INCLUDES) -c remove_corneal_reflection.c 
 
 ransac_ellipse.o: ransac_ellipse.cpp $(HEADDERS)
-	$(CXX) $(CXXFLAGS)  $(DEFINES) $(INCLUDES) -c ransac_ellipse.cpp
+	$(CXX) $(CXXFLAGS) $(DEFINES) $(INCLUDES) -c ransac_ellipse.cpp
+
+firewire_camera.o: firewire_camera.cpp $(HEADDERS)
+	$(CXX) $(CXXFLAGS) $(DEFINES) $(INCLUDES) -c firewire_camera.cpp
 
 svd.o: svd.c $(HEADDERS)
-	$(CXX) $(CXXFLAGS)  $(DEFINES)  -c svd.c
+	$(CXX) $(CXXFLAGS) $(DEFINES) -c svd.c
 
 timing.o: timing.c $(HEADDERS)
-	$(CXX) $(CXXFLAGS)  $(DEFINES)  -c timing.c
-
+	$(CXX) $(CXXFLAGS) $(DEFINES) -c timing.c
+	
+colour_conversions.o: colour_conversions.c $(HEADERS)
+	$(CXX) $(CXXFLAGS) $(DEFINES) -c colour_conversions.c
 
 clean:
 	rm -f *.o
