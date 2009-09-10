@@ -134,10 +134,10 @@ def static_test():
 @scipyFromOpenCV
 def process_image(np_image):
     """Carry out harris detection on an image with scipy"""
-    im = np_image.astype(uint8).mean(2) #convert to grayscale... we can do this better?
-    harrisim = compute_harris_response(im)  # This takes AGES! ... 698 ms per loop!
-    filtered_coords = get_harris_points(harrisim, 6)        # 144 ms per loop
-    render_harris_points(np_image, filtered_coords) #~12ms
+    im = np_image.astype(uint8).mean(2) #convert to grayscale.     21ms
+    harrisim = compute_harris_response(im)                      # 150ms
+    filtered_coords = get_harris_points(harrisim, 6)            # 106ms 
+    render_harris_points(np_image, filtered_coords)             #   8ms
     #IPShellEmbed()()
     return np_image
 
