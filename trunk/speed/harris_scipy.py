@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 """
-Show an image and detect harris features with scipy in python
+Show an image and detect harris features with scipy in python.
+
+Original source from:
 http://jesolem.blogspot.com/2009/01/harris-corner-detector-in-python.html
+
 Brian Thorne - July 09
 Compile/Run with: python harris_scipy.py
 """
@@ -13,7 +16,9 @@ from numpy import array, uint8
 from scipy import signal, ndimage, misc
 from VideoCapturePlayer import VideoCapturePlayer as VCP
 from misc import scipyFromOpenCV, opencvFilt2sigma, gauss_kern
+from IPython.Shell import IPShellEmbed
 
+from opencv import cv
 
 def gauss_derivative_kernels(size, sizey=None):
     """ returns x and y derivatives of a 2D 
@@ -36,12 +41,11 @@ def gauss_derivatives(im, n, ny=None):
     """ returns x and y derivatives of an image using gaussian 
         derivative filters of size n. The optional argument 
         ny allows for a different size in the y direction."""
-
+    
     gx,gy = gauss_derivative_kernels(n, sizey=ny)
-
-    imx = signal.convolve(im,gx, mode='same')
-    imy = signal.convolve(im,gy, mode='same')
-
+  
+    imx = ndimage.filters.convolve(im,gx)
+    imy = ndimage.filters.convolve(im,gy)
     return imx, imy
     
 def compute_harris_response(image):
@@ -50,19 +54,20 @@ def compute_harris_response(image):
 
     #derivatives
     imx,imy = gauss_derivatives(image, 3)
-
+    
     #kernel for blurring
     gauss = gauss_kern(3)
 
     #compute components of the structure tensor
-    Wxx = signal.convolve(imx*imx,gauss, mode='same')
-    Wxy = signal.convolve(imx*imy,gauss, mode='same')
-    Wyy = signal.convolve(imy*imy,gauss, mode='same')
+    Wxx = ndimage.filters.convolve(imx*imx,gauss)
+    Wxy = ndimage.filters.convolve(imx*imy,gauss)
+    Wyy = ndimage.filters.convolve(imy*imy,gauss)
 
     #determinant and trace
     Wdet = Wxx*Wyy - Wxy**2
     Wtr = Wxx + Wyy
-
+    
+    
     return Wdet / Wtr
    
    
@@ -76,10 +81,12 @@ def get_harris_points(harrisim, min_distance=10, threshold=0.1):
     harrisim_t = (harrisim > corner_threshold) * 1
 
     #get coordinates of candidates
-    candidates = harrisim_t.nonzero()
-    coords = [ (candidates[0][c],candidates[1][c]) for c in range(len(candidates[0]))]
+    candidates = array(harrisim_t.nonzero())
+    
+    coords = candidates.T
+    
     #...and their values
-    candidate_values = [harrisim[c[0]][c[1]] for c in coords]
+    candidate_values = harrisim[coords[:,0],coords[:,1]]
 
     #sort candidates
     index = argsort(candidate_values)
@@ -88,10 +95,11 @@ def get_harris_points(harrisim, min_distance=10, threshold=0.1):
     allowed_locations = zeros(harrisim.shape)
     allowed_locations[min_distance:-min_distance,min_distance:-min_distance] = 1
 
-    #select the best points taking min_distance into account
+    # select the best points taking min_distance into account
+    
     filtered_coords = []
     for i in index:
-        if allowed_locations[coords[i][0]][coords[i][1]] == 1:
+        if allowed_locations[coords[i][0],coords[i][1]] == 1:
             filtered_coords.append(coords[i])
             allowed_locations[(coords[i][0]-min_distance):(coords[i][0]+min_distance),(coords[i][1]-min_distance):(coords[i][1]+min_distance)] = 0
 
@@ -107,15 +115,13 @@ def plot_harris_points(image, filtered_coords):
     savefig("static_harris_file.png", transparent=True)  
     show()
 
+
 def render_harris_points(image, filtered_coords):
-    imshow(image)
-    axis('off')
-    plot([p[1] for p in filtered_coords],[p[0] for p in filtered_coords],'*')
-    savefig("temp_harris_file_%i_points.png" % len(filtered_coords), transparent=True)
-    show()
-    i = imread("temp_harris_file_%i_points.png" % len(filtered_coords))
-    return i
-    
+    """This function renders points directly on an image with opencv"""
+    pnts = [cv.cvPoint(int(i[1]),int(i[0])) for i in filtered_coords]
+    for pnt in pnts:
+        cv.cvCircle(image, pnt , 2, cv.CV_RGB(0,200,0),3 )
+
     
     
 def static_test():
@@ -128,10 +134,11 @@ def static_test():
 @scipyFromOpenCV
 def process_image(np_image):
     """Carry out harris detection on an image with scipy"""
-    im = np_image.astype(uint8).mean(2) #convert to grayscale
-    harrisim = compute_harris_response(im)
-    filtered_coords = get_harris_points(harrisim, 6)
-    render_harris_points(np_image, filtered_coords)
+    im = np_image.astype(uint8).mean(2) #convert to grayscale... we can do this better?
+    harrisim = compute_harris_response(im)  # This takes AGES! ... 698 ms per loop!
+    filtered_coords = get_harris_points(harrisim, 6)        # 144 ms per loop
+    render_harris_points(np_image, filtered_coords) #~12ms
+    #IPShellEmbed()()
     return np_image
 
 

@@ -2406,6 +2406,16 @@ d members of the community responding to message boards or mailing lists.
  finite approximations to gaussian kernels, how OpenCV might do it differently,
  and a user even went as far as to test an IIR filter against the various
  implementations.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Days later, a new implemtaition of the IIR filter was proposed.
+ Sturla
+\end_layout
+
+\end_inset
+
  This kind of support is quite common in the open source world, where a
  package like SciPy prides itself on its very rigorous and open tests.
  
