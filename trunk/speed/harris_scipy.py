@@ -17,8 +17,11 @@ from scipy import signal, ndimage, misc
 from VideoCapturePlayer import VideoCapturePlayer as VCP
 from misc import scipyFromOpenCV, opencvFilt2sigma, gauss_kern
 from IPython.Shell import IPShellEmbed
+from opencv import adaptors
+
 
 from opencv import cv
+
 
 def gauss_derivative_kernels(size, sizey=None):
     """ returns x and y derivatives of a 2D 
@@ -131,15 +134,21 @@ def static_test():
     plot_harris_points(im, filtered_coords)  
     
 
-@scipyFromOpenCV
-def process_image(np_image):
-    """Carry out harris detection on an image with scipy"""
+
+def process_image(image):
+    """Carry out harris detection on a cvMat image with scipy"""
+    np_image = adaptors.Ipl2NumPy(image)
     im = np_image.astype(uint8).mean(2) #convert to grayscale.     21ms
     harrisim = compute_harris_response(im)                      # 150ms
-    filtered_coords = get_harris_points(harrisim, 6)            # 106ms 
-    render_harris_points(np_image, filtered_coords)             #   8ms
+    
+    #filtered_coords = get_harris_points(harrisim, 6)            # 106ms 
+    #render_harris_points(np_image, filtered_coords)             #   8ms
     #IPShellEmbed()()
-    return np_image
+    
+    from harris import filter_and_render_numpy
+    return filter_and_render_numpy(np_image,harrisim)
+
+    #return np_image
 
 
 def main():
