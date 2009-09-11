@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 
 """
-Load, Filter then Show an image with opencv in python
+Load, Calculate the harris response then Show an image with opencv in python
 Brian Thorne 2009
 """
 
 from VideoCapturePlayer import VideoCapturePlayer as VCP
 import numpy
-from scipy.ndimage import gaussian_filter,maximum_filter
-from numpy import array,ones,zeros,nonzero
+
 from opencv import cv
+from IPython.Shell import IPShellEmbed
+from harris import filter_and_render_cv
 
 
 def harrisResponse(image):
@@ -20,29 +21,14 @@ def harrisResponse(image):
     corners = cv.cvCreateImage( cv.cvGetSize(image), 32, 1 )
     cv.cvCvtColor( image, gray, cv.CV_BGR2GRAY )
 
-    cv.cvCornerHarris(gray,corners,15)
+    cv.cvCornerHarris(gray,corners,25)
     
-    # Filter the response and draw points
-    buffer = corners.imageData
-    corners = numpy.frombuffer(buffer,numpy.float32).reshape(corners.height,corners.width).transpose()
-    n = 15
-    footprint = ones((n,n))
-    mx = maximum_filter(corners, footprint = footprint)
-    local_maxima = (corners == mx) * (corners != zeros(corners.shape)) # make sure to remove completly dark points
-
-    points = nonzero(local_maxima)
-    del local_maxima
-
-    points = array([points[0],points[1]]).transpose()
-    L = []
+    image = filter_and_render_cv(image,corners)
     
-    for each in points:
-        L.append((corners[each[0],each[1]],each[0],each[1],None))
-        i = cv.cvPoint(int(each[0]),int(each[1]))
-        cv.cvCircle(image, i, 2, cv.CV_RGB(0,0,200),3 )
-    
-    #cv.cvCvtColor(grayimage, image, cv.CV_GRAY2RGB)
     return image
+    
+
+    
 
 if __name__ == "__main__":
     title = "Harris Feature Detection"
