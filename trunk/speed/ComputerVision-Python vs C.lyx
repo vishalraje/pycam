@@ -187,7 +187,88 @@ Experimental Process
 
 \begin_layout Standard
 In this section, we briefly introduce the different libraries we tested
- as our experimental protocol.
+ as our experimental protocol, the testing setup used as well as the tests
+ themselves.
+ We cover different standard algorithms traditionally used in a CV application
+ and also some standard operations used in CV such as image acquisition.
+ For each of the tests we describe the process, the difference in terms
+ of the syntax, the performance and the usability.
+ All of the testing code is made available open source at the project's
+ website 
+\begin_inset CommandInset href
+LatexCommand href
+name "http://code.google.com/p/pycam/wiki/PythonComputerVision"
+target "http://code.google.com/p/pycam/wiki/PythonComputerVision"
+
+\end_inset
+
+.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Change this to hitlab project site later?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Limitations in testing
+\end_layout
+
+\begin_layout Standard
+Note that for some tests we only compare the Python OpenCV implementation
+ against the SciPy library.
+ Early results showed that the performance of OpenCV when called from Python
+ performs similar to the native code making further testing redundant.
+ 
+\end_layout
+
+\begin_layout Standard
+In some cases there was no analogous function in both OpenCV and SciPy,
+ in which case we simply recommend to use the tool for the job.
+\end_layout
+
+\begin_layout Subsection
+Apparatus
+\end_layout
+
+\begin_layout Standard
+We conducted our test on a Intel Core 2 Duo 6600 machine, with 3.8 RAM, running
+ Ubuntu 9.04.
+ For the test we compared: 
+\end_layout
+
+\begin_layout Itemize
+OpenCV Native Language (OPENCV_C): we used snapshot built version 1.1.1, rev
+ 1978.
+ The code has been compiled with the GNU tool chain version (4.3.3), and in
+ Release mode with O3 compiler optimizations, MMX, fast math, SSE3.
+ All additional packages, EXCEPT 1393, are turned on, for example: png,
+ jpg, gtk, gstreamer, unicap, V4L turned on.
+ 
+\end_layout
+
+\begin_layout Itemize
+OpenCV Python Wrapper (OPENCV_PY): we used the swig
+\begin_inset CommandInset citation
+LatexCommand cite
+key "beazley1996swig"
+
+\end_inset
+
+ wrapper version 1.3.36.
+ We used the same build of OpenCV as the native language.
+ 
+\end_layout
+
+\begin_layout Itemize
+SciPy/NumPy (SCIPY):we used the stable versions from the Ubuntu repositories;
+ SciPy version 0.7.0 and NumPy 1.2.1
 \end_layout
 
 \begin_layout Subsection*
@@ -364,95 +445,8 @@ key "perez2007ipython"
  is an improved interactive shell for Python.
 \end_layout
 
-\begin_layout Subsection
-Evaluation
-\end_layout
-
-\begin_layout Standard
-We conducted our test on a Intel Core 2 Duo 6600 machine, with 3.8 RAM, running
- Ubuntu 9.04.
- For the test we compared: 
-\end_layout
-
-\begin_layout Itemize
-OpenCV Native Language (OPENCV_C): we used snapshot built version 1.1.1, rev
- 1978.
- The code has been compiled with the GNU tool chain version (4.3.3), and in
- Release mode with O3 compiler optimizations, MMX, fast math, SSE3.
- All additional packages, EXCEPT 1393, are turned on, for example: png,
- jpg, gtk, gstreamer, unicap, V4L turned on.
- 
-\end_layout
-
-\begin_layout Itemize
-OpenCV Python Wrapper (OPENCV_PY): we used the swig
-\begin_inset CommandInset citation
-LatexCommand cite
-key "beazley1996swig"
-
-\end_inset
-
- wrapper version 1.3.36.
- We used the same build of OpenCV as the native language.
- 
-\end_layout
-
-\begin_layout Itemize
-SciPy/NumPy (SCIPY):we used the stable versions from the Ubuntu repositories;
- SciPy version 0.7.0 and NumPy 1.2.1
-\end_layout
-
-\begin_layout Subsection
-Tests
-\end_layout
-
-\begin_layout Standard
-We cover different standard algorithms traditionally used in a CV application
- and also some standard operations used in CV such as image acquisition.
- For each of the tests we describe the process, the difference in terms
- of the syntax, the performance and the usability.
- All of the testing code is made available open source at the project's
- website 
-\begin_inset CommandInset href
-LatexCommand href
-name "http://code.google.com/p/pycam/wiki/PythonComputerVision"
-target "http://code.google.com/p/pycam/wiki/PythonComputerVision"
-
-\end_inset
-
-.
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Change this to hitlab project site later?
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection*
-Limitations in testing
-\end_layout
-
-\begin_layout Standard
-Note that for some tests we only compare the Python OpenCV implementation
- against the SciPy library.
- Early results showed performance of OpenCV called from Python performs
- similar to the native code making further testing redundant.
- 
-\end_layout
-
-\begin_layout Standard
-In some cases there was no analogous function in both OpenCV and SciPy,
- in which case we simply recommend to use the tool for the job.
-\end_layout
-
 \begin_layout Section
-Theory of operation
+Quantitative Tests
 \end_layout
 
 \begin_layout Subsection
@@ -461,8 +455,8 @@ Image Acquisition
 
 \begin_layout Standard
 Since live image acquisition is such a crucial role in the majority of CV
- applications, we tested just getting and showing a frame as a most basic,
- but necessary test.
+ applications, we tested getting and showing a frame as a most basic, but
+ necessary test.
  This also serves to compare the syntax of the languages.
 \end_layout
 
@@ -591,8 +585,8 @@ reference "alg:Python-Image-capture"
  The code is almost entirely identical in C and Python.
  The main difference being in the Python code no variables types are declared,
  this shows the dynamic nature of the language.
- As with C++, an object orientated version of this acquisition loop with
- error checking is used in further tests.
+ As with C++, an object oriented version of this acquisition loop with error
+ checking is used in further tests.
  The 
 \noun on
 VideoCapturePlayer
@@ -650,40 +644,6 @@ Image capture and display in Python
 \end_inset
 
 
-\end_layout
-
-\begin_layout Subsubsection
-Comparison
-\end_layout
-
-\begin_layout Standard
-Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Streaming-comparison"
-
-\end_inset
-
- shows performance results for taking an image from a webcam and displaying
- the image with OpenCV.
- The average frames per second were taken with 3 iterations, each averaging
- the framerate over a 2 minute period.
- Error bars are showing standard deviation of sampled data.
- As Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Streaming-comparison"
-
-\end_inset
-
- shows, Python and C++ perform at very similar rates whilst carrying out
- an I/O bound task.
- C++ having the expected result of a marginally higher frame rate output
- than Python.
- The SciPy package does not currently have a direct method for image capture.
-\end_layout
-
-\begin_layout Standard
 \begin_inset Float figure
 placement h
 wide false
@@ -721,6 +681,37 @@ Comparison of Python and C++ performance using OpenCV for webcam capture
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsubsection
+Comparison
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Streaming-comparison"
+
+\end_inset
+
+ shows performance results for taking an image from a webcam and displaying
+ the image with OpenCV.
+ The average frames per second were taken with 3 iterations, each averaging
+ the framerate over a 2 minute period.
+ The error bars show standard deviation of the sampled data.
+ As Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Streaming-comparison"
+
+\end_inset
+
+ shows, Python and C++ perform at very similar rates whilst carrying out
+ an I/O bound task.
+ C++ having the expected result of a marginally higher frame rate output
+ than Python.
+ The SciPy package does not currently have a direct method for image capture.
 \end_layout
 
 \begin_layout Subsection
@@ -849,87 +840,17 @@ reference "fig:Gaussian-Output-Images"
  More interesting is Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "fig:Difference-in-Python"
+reference "fig:Difference-of-each"
 
 \end_inset
 
  which shows that the SciPy and OpenCV Python code doing the filtering produces
  very similar but slightly different results.
  
-\end_layout
-
-\begin_layout Standard
-This could be caused by a difference in the implementation of the gaussian
- kernel approximations.
- Since SciPy uses the sigma parameter, the filter is created by a direct
- sampling of the gaussian function.
- OpenCV on the other hand, uses the size of the filter, this is a good indicatio
-n it probably uses the pascal triangle as a good approximation for the Gaussian
- kernel
-\begin_inset CommandInset citation
-LatexCommand cite
-key "ben1991image"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-The graph in Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Difference-in-Python"
-
-\end_inset
-
- shows a 3 way sub plot of a single image.
- This graph was created interactively using the Python plotting package
- Matplotlib from IPython acting directly on the data from OpenCV.
- With just two lines of Python code, which can be put anywhere in a computer
- vision program, we can pause execution and drop into a live interactive
- shell with full plotting capabilities.
- 
-\begin_inset Quotes eld
-\end_inset
-
-
-\emph on
-from IPython.Shell import IPShellEmbed
-\emph default
-
-\begin_inset Quotes erd
-\end_inset
-
- and 
-\begin_inset Quotes eld
-\end_inset
-
-
-\emph on
-IPShellEmbed()()
-\emph default
-
-\begin_inset Quotes erd
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-This means that as developers, to debug a misbehaving program, we can just
- jump right into the middle of a deeply nested loop, introspect all variables,
- plot any signal or image, call any function, and accurately time the execution
- of any function.
- This is massively in favor of using Python.
-\end_layout
-
-\begin_layout Standard
 \begin_inset Float figure
-placement h
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -958,10 +879,6 @@ C++
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Plain Layout
 
 \end_layout
 
@@ -996,10 +913,6 @@ Python OpenCV
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
@@ -1024,54 +937,6 @@ status collapsed
 
 \begin_layout Plain Layout
 Python SciPy
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename report_data/gaussian_diffs.png
-	lyxscale 60
-	width 95col%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Difference-in-Python"
-
-\end_inset
-
-Difference of each channel after gaussian blur in OpenCV and SciPy.
- Note full scale is 255, Pixel for pixel difference image stats: maximum
- intensity difference = 20, average difference = 2.1.
- with std dev = 1.4
 \end_layout
 
 \end_inset
@@ -1105,6 +970,107 @@ Output Images from Gaussian Blur Examples
 \end_inset
 
 
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename report_data/gaussian_diffs.png
+	lyxscale 60
+	width 95col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Difference-of-each"
+
+\end_inset
+
+Difference of each channel after gaussian blur in OpenCV and SciPy.
+ Note full scale is 255, Pixel for pixel difference image stats: maximum
+ intensity difference = 20, average difference = 2.1, std dev = 1.4
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This could be caused by a difference in the implementation of the gaussian
+ kernel approximations.
+ Since SciPy uses the sigma parameter, the filter is created by a direct
+ sampling of the gaussian function.
+ OpenCV on the other hand, uses the size of the filter, this is a good indicatio
+n it probably uses the pascal triangle as a good approximation for the Gaussian
+ kernel
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ben1991image"
+
+\end_inset
+
+.The graph in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Difference-of-each"
+
+\end_inset
+
+ shows a 3 way sub plot of a single image.
+ This graph was created interactively using the Python plotting package
+ Matplotlib from IPython acting directly on the data from OpenCV.
+ With just two lines of Python code, which can be put anywhere in a computer
+ vision program, we can pause execution and drop into a live interactive
+ shell with full plotting capabilities.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+
+\emph on
+from IPython.Shell import IPShellEmbed
+\emph default
+
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+
+\emph on
+IPShellEmbed()()
+\emph default
+
+\begin_inset Quotes erd
+\end_inset
+
+ This means that as developers, to debug a misbehaving program, we can just
+ jump right into the middle of a deeply nested loop, introspect all variables,
+ plot any signal or image, call any function, and accurately time the execution
+ of any function.
+ This is massively in favor of using Python.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 placement H
 wide false
@@ -1167,10 +1133,7 @@ key "gao2006robust"
 
 .
  If there is more than a threshold of difference, something changed.
-\end_layout
-
-\begin_layout Standard
-The response is shown in Figure 
+ The response is shown in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Adding-a-single"
@@ -1190,7 +1153,7 @@ Python_CV
 placement h
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Float figure
@@ -1446,47 +1409,9 @@ Background subtraction response on a cluttered scene where a cellphone is
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-Regions of the same colour, like pieces of paper make it more difficult
- for this algorithm to work, the noise around the USB device in Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Adding-another-item,"
-
-\end_inset
-
- is caused by moving the paper underneath it.
- Only the edges are detected as having changed.
- Another issue is shown in Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:remove-laptop"
-
-\end_inset
-
-, although from visual inspection one can see that something has changed
- to the right of the added wallet and cellphone, it is almost impossible
- to identify that a laptop was removed.
- This method could be improved by having a second view looking at the changes
- applied in the same way to the original image.
- The Figures in 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:back-Proces-clutter"
-
-\end_inset
-
- show how the algorithm deals with a combination of changes.
- 
-\end_layout
-
-\begin_layout Standard
-While creating this program I found IPython particularly helpful, it allows
- for interactive, in place trialing, timing and plotting as shown in algorithm
- 
+ While creating this program, we found IPython particularly helpful, it
+ allows for interactive, in place trialing, timing and plotting as shown
+ in algorithm 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "alg:Interactive,-inplace-timing"
@@ -1500,7 +1425,7 @@ reference "alg:Interactive,-inplace-timing"
 \begin_inset Float algorithm
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \noindent
@@ -1641,8 +1566,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename static_harris_file.png
-	lyxscale 30
+	filename harris_scipy_static.png
+	lyxscale 40
 	width 45col%
 
 \end_inset
@@ -1654,7 +1579,13 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-static image processing
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:harris_scipy_static"
+
+\end_inset
+
+SciPy
 \end_layout
 
 \end_inset
@@ -1668,25 +1599,22 @@ static image processing
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename temp_harris_file_248_points.png
-	lyxscale 30
+	filename harris_response_lena_opencv.jpg
+	lyxscale 40
 	width 45col%
 
 \end_inset
 
 
-\end_layout
-
-\begin_layout Plain Layout
 \begin_inset Caption
 
 \begin_layout Plain Layout
-processing from webcam
+OpenCV
 \end_layout
 
 \end_inset
@@ -1705,11 +1633,12 @@ processing from webcam
 \begin_layout Plain Layout
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:A-SciPy-harris"
+name "fig:harris_compare_static"
 
 \end_inset
 
-A SciPy implementation of the Harris & Stephens feature detection algorithm.
+Running the Harris & Stephens feature detection algorithm on the Lena test
+ image.
 \end_layout
 
 \end_inset
@@ -1724,14 +1653,20 @@ A SciPy implementation of the Harris & Stephens feature detection algorithm.
 placement h
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
 \begin_inset Graphics
-	filename report_data/opencv_python_harris.png
+	filename report_data/feature_detect/scipy_harris.png
 	lyxscale 30
-	width 90col%
+	width 45col%
 
 \end_inset
 
@@ -1744,11 +1679,66 @@ status collapsed
 \begin_layout Plain Layout
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:OpenCV-harris"
+name "fig:harris_webcam_scipy"
 
 \end_inset
 
-OpenCV implementation of the Harris & Stephens feature detection algorithm
+SciPy (~4fps)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename report_data/feature_detect/opencv_harris.png
+	lyxscale 30
+	width 45col%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+OpenCV (~9fps)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:harris_compare_webcam"
+
+\end_inset
+
+Feature detection running on webcam stream
 \end_layout
 
 \end_inset
@@ -1769,10 +1759,17 @@ key "Sol09"
 
 \end_inset
 
- which produced Figure 
+ which produced Figures 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "fig:A-SciPy-harris"
+reference "fig:harris_webcam_scipy"
+
+\end_inset
+
+ & 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:harris_scipy_static"
 
 \end_inset
 
@@ -1831,7 +1828,7 @@ SciPy
 \begin_inset Text
 
 \begin_layout Plain Layout
-622.3 ms
+191.5 ms
 \end_layout
 
 \end_inset
@@ -1840,7 +1837,7 @@ SciPy
 \begin_inset Text
 
 \begin_layout Plain Layout
-2.62 ms
+0.87 ms
 \end_layout
 
 \end_inset
@@ -1886,34 +1883,19 @@ OpenCV
 The same concept but in a different implementation is shown in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "fig:OpenCV-harris"
+reference "fig:harris_compare_webcam"
 
 \end_inset
 
  for OpenCV.
- Note care has not been taken to get the exact same output in OpenCV as
- in SciPy, it is assumed that one could get the same output as shown earlier
- with the gaussian blur example.
- Also note the algorithms are working on different dimensional images, OpenCV
- is running on a 3 channel image whereas the SciPy version is only working
- on a gray-scale image.
- Even so, OpenCV clearly runs a magnitude faster than the unoptimized SciPy
- code.
- The main difference between the algorithms is the threshold filtering and
- display of the corner response.
+ An aperture size of 3 pixels was used when computing the harris response,
+ the authors did note that with a larger aperture SciPy seemed to slow down
+ more than OpenCV.
+ To reduce differences between the algorithms the threshold filtering and
+ display of the corner response is done just in OpenCV, the SciPy implementaiton
+ therefore has to convert the data before this stage.
  Another limitation is that the OpenCV response in C++ is not implemented
  here.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-I would like to have the SciPy code doing the exact same thing...
- and have meaningful results
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Subsection
@@ -2281,6 +2263,62 @@ reference "fig:Pygame-object"
  The benefits from this can be huge, it is very easy for a developer to
  incorporate different computer vision tools, even with very limited knowledge
  of computer vision.
+ We found that calling OpenCV from a Python wrapper was only slightly slower
+ in general than natively using the library.
+ 
+\end_layout
+
+\begin_layout Section
+Qualitative Comparison
+\end_layout
+
+\begin_layout Standard
+In getting these quantitative results we noticed that the Python implementations
+ were shorter, easier to create, easier to debug, and easier to test.
+ Having the use of an interactive interpreter, to come to a solution prototype
+ and being able to use these prototypes in the final product is a big argument
+ in favor of using Python.
+ 
+\end_layout
+
+\begin_layout Standard
+The documentation in both SciPy and OpenCV was found to be complete, but
+ not as extensive as for a professional package like Matlab.
+ Support for these open source packages is almost entirely reliant on experience
+d members of the community responding to requests on message boards or mailing
+ lists.
+ When one of the authors asked a question regarding the gaussian image filtering
+ function to the SciPy mailing list it spurred not only an immediate response
+ pointing out the solution to the direct query but also a discussion on
+ finite approximations to gaussian kernels, how OpenCV might do it differently,
+ and a user even went as far as to test and propose a new IIR filter implementai
+tion for SciPy that scales better with kernel size than the existing implementat
+ions.
+ This kind of support is quite common in the open source world, where a
+ package like SciPy prides itself on its very rigorous and open tests.
+ 
+\end_layout
+
+\begin_layout Standard
+For the scholar of Computer Vision research we find that using Python can
+ help in trying out new algorithms, very quickly.
+ The breadth of the additional libraries available and the ease of integrating
+ make new and novel solutions quickly realizable.
+ 
+\end_layout
+
+\begin_layout Standard
+For those newer to computer vision, we recommend Python for many reasons,
+ mainly it is much more forgiving than C or C++, it can be used interactively
+ so you can happily make 10 mistakes in a row, without having to recompile
+ for each attempted fix.
+ 
+\end_layout
+
+\begin_layout Standard
+A major limitation of using Python would be when the application is being
+ developed for special or embedded hardware or when the best possible performanc
+e is required.
 \end_layout
 
 \begin_layout Section
@@ -2307,24 +2345,23 @@ key "cai2005performance"
 
  showed that for parallel programming, mixed language solutions exhibit
  the same performance gains as native language solutions from moving to
- parallel solutions
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Part 2 should be "related works" as referencing people comparing: different
- version of CV library in different languages, in different platforms, maybe
- also people using OpenCV+IPL, people having implementing other CV library
- in Python, etc.
- Thanks...? IE: Rob for the profiling help
-\end_layout
+ parallel solutions.
+ Another related area of research is the performance of Python itself.
+ One such project was the Psyco just in time compiler for Python
+\begin_inset CommandInset citation
+LatexCommand cite
+key "rigo2004representation"
 
 \end_inset
 
-
+, unfortunaly Psyco only works on Python 2.6.X and on x86 machines.
+ The developer is currently working on the performance of PyPy, a compliant,
+ flexible and fast implementation of the Python Language.
+ Google is currently midway through their Unladen Swallow project which
+ aims to speed up Python by leveraging the Low Level Virtual Machine (LLVM).
+ All of these projects make Python a safe bet for the future of scientific
+ computing and specifically the often performance capped computer vision
+ domain.
 \end_layout
 
 \begin_layout Itemize
@@ -2370,77 +2407,14 @@ key "blank2003pyro"
 \begin_layout Itemize
 Pygame - a game making package for Python, aimed at new programmers.
  It has a camera module and is able to do basic computer vision tasks, or
- call on SciPy/NumPy.
+ call on any other Python library e.g.
+ SciPy/NumPy.
  http://pygame.org
 \end_layout
 
 \begin_layout Itemize
-Pycam - All test and example code from this project, including framework
- linking OpenCV to Pygame and NumPy.
+Pycam - All test and example code from this project.
  http://pycam.googlecode.com
-\end_layout
-
-\begin_layout Section
-Conclusion
-\end_layout
-
-\begin_layout Standard
-We found that calling OpenCV from a Python wrapper was only slightly slower
- in general than natively using the library.
- In getting these results we note that the Python implementations were shorter,
- easier to create and debug, and easier to test.
- Having and using an interactive interpreter, to come to a solution prototype
- and being able to use these prototypes in the final product is a big argument
- in favor of Python.
- 
-\end_layout
-
-\begin_layout Standard
-The documentation was found to be complete, but not as extensive as for
- a professional package like Matlab.
- Support for these open source packages is almost entirely reliant on experience
-d members of the community responding to message boards or mailing lists.
- When one of the authors asked a question regarding the gaussian image filtering
- function to the SciPy mailing list it spurred not only an immediate response
- pointing out the solution to the direct query but also a discussion on
- finite approximations to gaussian kernels, how OpenCV might do it differently,
- and a user even went as far as to test an IIR filter against the various
- implementations.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Days later, a new implemtaition of the IIR filter was proposed.
- Sturla
-\end_layout
-
-\end_inset
-
- This kind of support is quite common in the open source world, where a
- package like SciPy prides itself on its very rigorous and open tests.
- 
-\end_layout
-
-\begin_layout Standard
-For the scholar of Computer Vision research we find that using Python can
- help in trying out new algorithms, very quickly.
- The breadth of the additional libraries available and the ease of integrating
- make new and novel solutions quickly realizable.
- 
-\end_layout
-
-\begin_layout Standard
-For those newer to computer vision, we recommend Python for many reasons,
- mainly it is much more forgiving than C or C++, it can be used interactively
- so you can happily make 10 mistakes in a row, without having to recompile
- for each attempted fix.
- 
-\end_layout
-
-\begin_layout Standard
-A major limitation of using Python would be when the application is being
- developed for special or embedded hardware.
- 
 \end_layout
 
 \begin_layout Subsection*
@@ -2448,12 +2422,8 @@ Acknowledgments
 \end_layout
 
 \begin_layout Standard
-First and foremost I would like to thank Raphael Grasset for his mentoring
- and guidance throughout this project.
- I would also like to thank Rob Ramsey for help with profiling the execution
- of C++ code to ensure accurate timing results were used.
- Thanks to all the tireless developers investing time to work on open source
- projects OpenCV, Python and SciPy.
+Thanks to all the developers that invest their own valuable time to work
+ on open source projects OpenCV, Python and SciPy.
 \end_layout
 
 \begin_layout Section

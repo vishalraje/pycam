@@ -18,7 +18,7 @@ from VideoCapturePlayer import VideoCapturePlayer as VCP
 from misc import scipyFromOpenCV, opencvFilt2sigma, gauss_kern
 from IPython.Shell import IPShellEmbed
 from opencv import adaptors
-
+from harris import filter_and_render_numpy
 
 from opencv import cv
 
@@ -54,12 +54,13 @@ def gauss_derivatives(im, n, ny=None):
 def compute_harris_response(image):
     """ compute the Harris corner detector response function 
         for each pixel in the image"""
-
+    kern_size = 3
+    
     #derivatives
-    imx,imy = gauss_derivatives(image, 3)
+    imx,imy = gauss_derivatives(image, kern_size)
     
     #kernel for blurring
-    gauss = gauss_kern(3)
+    gauss = gauss_kern(kern_size)
 
     #compute components of the structure tensor
     Wxx = ndimage.filters.convolve(imx*imx,gauss)
@@ -74,7 +75,7 @@ def compute_harris_response(image):
     return Wdet / Wtr
    
    
-def get_harris_points(harrisim, min_distance=10, threshold=0.1):
+def get_harris_points(harrisim, min_distance=40, threshold=0.1):
     """ return corners from a Harris response image
         min_distance is the minimum nbr of pixels separating 
         corners and image boundary"""
@@ -128,32 +129,40 @@ def render_harris_points(image, filtered_coords):
     
     
 def static_test():
-    im = misc.lena().astype(float32)
-    harrisim = compute_harris_response(im)
-    filtered_coords = get_harris_points(harrisim,6)
-    plot_harris_points(im, filtered_coords)  
+    """Takes a full colour numpy image"""
+    from opencv import highgui
+    image = highgui.cvLoadImage("/usr/share/doc/opencv-doc/examples/c/lena.jpg")
     
+    
+    result = adaptors.Ipl2NumPy(process_image(image))
+    imshow(result)
+   
+    savefig("harris_scipy_static.png", transparent=True)
+    show()
 
 
 def process_image(image):
     """Carry out harris detection on a cvMat image with scipy"""
     np_image = adaptors.Ipl2NumPy(image)
-    im = np_image.astype(uint8).mean(2) #convert to grayscale.     21ms
+    
+    im = np_image.astype(uint8).mean(2)
+    
+    
     harrisim = compute_harris_response(im)                      # 150ms
     
     #filtered_coords = get_harris_points(harrisim, 6)            # 106ms 
     #render_harris_points(np_image, filtered_coords)             #   8ms
     #IPShellEmbed()()
     
-    from harris import filter_and_render_numpy
     return filter_and_render_numpy(np_image,harrisim)
-
     #return np_image
 
 
 def main():
-    #static_test()
+   
     
+    #static_test()
+
     title = "Harris Detector Output"
     VCP(process_image,title=title).main()
     
