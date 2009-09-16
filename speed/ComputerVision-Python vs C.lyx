@@ -1888,12 +1888,12 @@ reference "fig:harris_compare_webcam"
 \end_inset
 
  for OpenCV.
- An aperture size of 3 pixels was used when computing the harris response,
- the authors did note that with a larger aperture SciPy seemed to slow down
+ A filter kernel size of 3 pixels was used when computing the harris response,
+ the authors did note that with a larger kernel SciPy seemed to slow down
  more than OpenCV.
- To reduce differences between the algorithms the threshold filtering and
- display of the corner response is done just in OpenCV, the SciPy implementaiton
- therefore has to convert the data before this stage.
+ The threshold filtering and display of the corner response was implemented
+ solely in OpenCV to reduce differences; the SciPy implementation therefore
+ had an extra data conversion stage.
  Another limitation is that the OpenCV response in C++ is not implemented
  here.
 \end_layout
@@ -1903,11 +1903,19 @@ Face Detection
 \end_layout
 
 \begin_layout Standard
-Face detection is the task of locating any number of faces in an image,
- this is a specific case of general object detection.
+Face detection is the task of identifying the presence of any number of
+ faces in an image, this is a specific case of general object detection.
  Before locating an object, one must be able to describe it.
- Many object detection algorithms use a classifier which is a collection
- of feature patterns made by scanning a database of images with known content.
+ Many object detection algorithms use a strong classifier which is built
+ from a collection of weak feature patterns made by scanning a database
+ of images with known contents
+\begin_inset CommandInset citation
+LatexCommand cite
+key "viola2004robust"
+
+\end_inset
+
+.
  Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1933,11 +1941,20 @@ reference "fig:Angled-opencv-face"
 
 \end_inset
 
-.
+, this is caused because the classifier was only trained on straight on
+ face images.
  But in ideal conditions, with good lighting and un-obscured faces directly
- facing the camera the algorithm produces very good results.
- In this example we did not find corresponding high level functionality
- in SciPy, so no performance comparison is possible.
+ facing the camera the algorithm produces very robust results.
+ There is no corresponding high level functionality in SciPy, so a performance
+ comparison was not possible.
+ A recent project PyCV
+\begin_inset CommandInset citation
+LatexCommand cite
+key "tri2009principled"
+
+\end_inset
+
+ improves on the face detection in OpenCV utilizing SciPy.
 \end_layout
 
 \begin_layout Standard
@@ -2291,9 +2308,9 @@ d members of the community responding to requests on message boards or mailing
  function to the SciPy mailing list it spurred not only an immediate response
  pointing out the solution to the direct query but also a discussion on
  finite approximations to gaussian kernels, how OpenCV might do it differently,
- and a user even went as far as to test and propose a new IIR filter implementai
-tion for SciPy that scales better with kernel size than the existing implementat
-ions.
+ and a user even went as far as to test and propose a new IIR filter implementat
+ion for SciPy that scales better with kernel size than the existing implementati
+ons.
  This kind of support is quite common in the open source world, where a
  package like SciPy prides itself on its very rigorous and open tests.
  
@@ -2312,7 +2329,6 @@ For those newer to computer vision, we recommend Python for many reasons,
  mainly it is much more forgiving than C or C++, it can be used interactively
  so you can happily make 10 mistakes in a row, without having to recompile
  for each attempted fix.
- 
 \end_layout
 
 \begin_layout Standard
@@ -2354,7 +2370,7 @@ key "rigo2004representation"
 
 \end_inset
 
-, unfortunaly Psyco only works on Python 2.6.X and on x86 machines.
+, unfortunately Psyco only works on Python 2.6.X and on x86 machines.
  The developer is currently working on the performance of PyPy, a compliant,
  flexible and fast implementation of the Python Language.
  Google is currently midway through their Unladen Swallow project which
@@ -2409,7 +2425,7 @@ Pygame - a game making package for Python, aimed at new programmers.
  It has a camera module and is able to do basic computer vision tasks, or
  call on any other Python library e.g.
  SciPy/NumPy.
- http://pygame.org
+ http://Pygame.org
 \end_layout
 
 \begin_layout Itemize
