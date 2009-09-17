@@ -42,5 +42,5 @@ private:
     int num_frames;
     int64 t_start, t_end;
     float fps;
-        
+
 };

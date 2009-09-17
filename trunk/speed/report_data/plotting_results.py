@@ -72,7 +72,12 @@ def plot_gaussian_results():
     cpp_gaussian = pylab.array([14.7219, 14.6268, 14.6117])    # mean: 14.6534, std: 0.048780
     plot_compare(pylab.array([py_gaussian, cpp_gaussian, scipy_gaussian ]),"_Gaussian Blur", True)
 
-plot_gaussian_results()
+def plot_background():
+    cpp_cv = pylab.array([7.8598, 7.9791, 7.93613, 7.906,7.766])    # mean: 14.6534, std: 0.048780
+    py_cv = pylab.array([7.61715 ,8.044 ,7.8716,8.046,8.047115 ])
+    plot_compare(pylab.array([py_cv, cpp_cv ]),"Background Subtraction", True)
+
+plot_background()
 
 #py_ = pylab.array([ ])
 #scipy_ = pylab.array([])

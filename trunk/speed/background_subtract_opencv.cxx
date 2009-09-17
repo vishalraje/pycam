@@ -6,14 +6,11 @@
  *      Compile with:
  * 
  *   g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o bg_sub background_subtract_opencv.cxx videoCapturePlayer.cxx
- * 
- *  
+ *   
  */
-
 
 #include <iostream>
 #include "videoCapturePlayer.h"
-
 
 CvMat *original;
 
@@ -33,17 +30,29 @@ CvMat * bg_subtract(CvMat *x)
     //CV_THRESH_TOZERO
     CvMat * temp  = cvCloneMat( x );
     cvSetZero(temp);
-    cvThreshold( differenceImage, temp, 32, 255, CV_THRESH_BINARY );
+    cvThreshold( differenceImage, temp, 50, 255, CV_THRESH_BINARY );
     
+    // Convert the image to one channel
+    /* get image properties */
+    int width  = x->width; int height = x->height;
+    /* create new image for the grayscale version */
+    IplImage *gray = cvCreateImage( cvSize( width, height ), IPL_DEPTH_8U, 1 );
     
+    cvCvtColor( temp, gray, CV_RGB2GRAY );  
     
-    // median filter out the salt & pepper noise in the difference image
-    cvSmooth(temp, temp, CV_MEDIAN, 5);
+    // median filter out the salt & pepper noise in the thresholded difference image
+    cvSmooth(gray, gray, CV_MEDIAN, 15);
+    
+    // Carry out a dilate operation to improve the result
+    // but adds a "border" around the object
+    //cvDilate(gray, gray, 0, 9);
+    cvSmooth(gray, gray, CV_GAUSSIAN, 5);
     
     cvSetZero(differenceImage);
+    cvAnd(x, x, differenceImage, gray);
     
-    cvAnd(x, temp, differenceImage ); // NOTE I CANNOT WORK OUT MASK HERE...
-    
+    cvReleaseMat(&x);
+    cvReleaseImage(&gray);
     return differenceImage;
 }
 
