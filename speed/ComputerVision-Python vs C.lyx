@@ -77,9 +77,9 @@ OpenCV
  In this paper, we present a comparative evaluation of both libraries, assessing
  their performance as well as their usability.
  We also describe how Python implementation of OpenCV performs in comparison
- to the nativie C++ implementation.
- Our lessons learnt and recommendations for the scholar community are also
- presented.
+ to the native C++ implementation.
+ Our relevant findings and recommendations for the scholar community are
+ also presented.
  
 \end_layout
 
@@ -167,7 +167,7 @@ key "oliphant2007python"
 status collapsed
 
 \begin_layout Plain Layout
-need to rewrite last sentance.
+need to rewrite last sentence.
 \end_layout
 
 \end_inset
@@ -233,7 +233,7 @@ In some cases there was no analogous function in both OpenCV and SciPy,
  in which case we simply recommend to use the tool for the job.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsection*
 Apparatus
 \end_layout
 
@@ -267,7 +267,7 @@ key "beazley1996swig"
 \end_layout
 
 \begin_layout Itemize
-SciPy/NumPy (SCIPY):we used the stable versions from the Ubuntu repositories;
+SciPy/NumPy (SCIPY): we used the stable versions from the Ubuntu repositories;
  SciPy version 0.7.0 and NumPy 1.2.1
 \end_layout
 
@@ -427,7 +427,7 @@ key "oliphant2007python"
  This leads to much more elegant code, usually achieved without any significant
  performance loss over C.
  Two major tools that are usually distributed with SciPy that are very use
- full for computer vision work are matplotlib and IPython.
+ full for computer vision work are Matplotlib and IPython.
  Matplotlib
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -460,7 +460,7 @@ Since live image acquisition is such a crucial role in the majority of CV
  This also serves to compare the syntax of the languages.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsubsection*
 Acquiring and displaying an image in C with OpenCV
 \end_layout
 
@@ -568,7 +568,7 @@ Image capture and display with OpenCV in C.
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsubsection*
 Acquiring and displaying an image in Python with OpenCV
 \end_layout
 
@@ -683,7 +683,7 @@ Comparison of Python and C++ performance using OpenCV for webcam capture
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsubsection*
 Comparison
 \end_layout
 
@@ -819,7 +819,7 @@ key "bradski2008learning"
 .
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsubsection*
 Comparison
 \end_layout
 
@@ -998,7 +998,7 @@ name "fig:Difference-of-each"
 \end_inset
 
 Difference of each channel after gaussian blur in OpenCV and SciPy.
- Note full scale is 255, Pixel for pixel difference image stats: maximum
+ Note the full scale is 255, Pixel for pixel difference image stats: maximum
  intensity difference = 20, average difference = 2.1, std dev = 1.4
 \end_layout
 
@@ -1145,7 +1145,61 @@ reference "fig:Adding-a-single"
 Python_CV
 \noun default
  implementation.
+ As Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:BackgroundSubtract_graph"
+
+\end_inset
+
+ shows, the performance is very close for Python and C++ versions using
+ OpenCV.
+ Python was faster on average, but more varied.
  
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename report_data/background_subtraction.png
+	lyxscale 50
+	width 95col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:BackgroundSubtract_graph"
+
+\end_inset
+
+Background subtraction performance
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1153,7 +1207,7 @@ Python_CV
 placement h
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Float figure
@@ -1296,7 +1350,7 @@ status collapsed
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -1327,7 +1381,7 @@ before
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -1358,7 +1412,7 @@ program output
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -1660,7 +1714,7 @@ status open
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -2307,34 +2361,44 @@ d members of the community responding to requests on message boards or mailing
  When one of the authors asked a question regarding the gaussian image filtering
  function to the SciPy mailing list it spurred not only an immediate response
  pointing out the solution to the direct query but also a discussion on
- finite approximations to gaussian kernels, how OpenCV might do it differently,
- and a user even went as far as to test and propose a new IIR filter implementat
-ion for SciPy that scales better with kernel size than the existing implementati
-ons.
- This kind of support is quite common in the open source world, where a
- package like SciPy prides itself on its very rigorous and open tests.
+ finite approximations to gaussian kernels, how OpenCV might do it differently.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+A user even went as far as to test and propose a new IIR filter implementation
+ for SciPy that scales better with kernel size than the existing implementations.
+\end_layout
+
+\end_inset
+
+ This kind of support is common in the open source world, where a package
+ like SciPy prides itself on its very rigorous and open tests.
  
 \end_layout
 
 \begin_layout Standard
-For the scholar of Computer Vision research we find that using Python can
- help in trying out new algorithms, very quickly.
+For the scholar of computer vision research we find that using Python can
+ help in trying out new algorithms very quickly.
  The breadth of the additional libraries available and the ease of integrating
  make new and novel solutions quickly realizable.
  
 \end_layout
 
 \begin_layout Standard
-For those newer to computer vision, we recommend Python for many reasons,
- mainly it is much more forgiving than C or C++, it can be used interactively
- so you can happily make 10 mistakes in a row, without having to recompile
- for each attempted fix.
+For those newer to computer vision, we can recommend Python for many reasons,
+ it is much more forgiving than C or C++, it can be used interactively so
+ you can happily make 10 mistakes in a row, without having to recompile
+ and start execution again for each attempted fix.
 \end_layout
 
 \begin_layout Standard
 A major limitation of using Python would be when the application is being
  developed for special or embedded hardware or when the best possible performanc
 e is required.
+ The stability of the packages is also somewhat in question, OpenCV's Python
+ bindings are being rewritten manually to replace the SWIG produced bindings
+ and SciPy is still relatively new.
 \end_layout
 
 \begin_layout Section
@@ -2344,14 +2408,14 @@ Related Works
 \begin_layout Standard
 A feature of SciPy that has previously gone unmentioned, is the Weave module
  for in-lining C and C++ code.
- This can easily produce code 100x
+ This can produce code 100x faster
 \begin_inset CommandInset citation
 LatexCommand cite
 key "ramachandran-performance"
 
 \end_inset
 
- faster than pure Python.
+ than pure Python.
  
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -2362,8 +2426,39 @@ key "cai2005performance"
  showed that for parallel programming, mixed language solutions exhibit
  the same performance gains as native language solutions from moving to
  parallel solutions.
- Another related area of research is the performance of Python itself.
- One such project was the Psyco just in time compiler for Python
+ A different direction for parallel solutions is to harness the power of
+ the graphics card many desktop computers have, the PyGPU and the GPUCV
+ projects both allow using this technology from Python
+\begin_inset CommandInset citation
+LatexCommand cite
+key "lejdfors2006implementing"
+
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "farrugia2006gpucv"
+
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "allusse2008gpucv"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Another related area of research is the performance of Python itself.
+ One such project was the Psyco 
+\emph on
+just in time compiler
+\emph default
+ for Python
 \begin_inset CommandInset citation
 LatexCommand cite
 key "rigo2004representation"
@@ -2371,13 +2466,16 @@ key "rigo2004representation"
 \end_inset
 
 , unfortunately Psyco only works on Python 2.6.X and on x86 machines.
- The developer is currently working on the performance of PyPy, a compliant,
- flexible and fast implementation of the Python Language.
- Google is currently midway through their Unladen Swallow project which
- aims to speed up Python by leveraging the Low Level Virtual Machine (LLVM).
- All of these projects make Python a safe bet for the future of scientific
- computing and specifically the often performance capped computer vision
- domain.
+ The developer of Psyco is currently working on the performance of PyPy,
+ a compliant, flexible and fast implementation of the Python Language.
+ Google is currently midway through their 
+\noun on
+Unladen Swallow
+\noun default
+ project which aims to speed up Python by leveraging the Low Level Virtual
+ Machine (LLVM).
+ All of these projects help make Python a safe bet for the future of scientific
+ computing and specifically for use in the computer vision domain.
 \end_layout
 
 \begin_layout Itemize
@@ -2393,20 +2491,6 @@ key "cai2005performance"
 
 \begin_layout Itemize
 GPUCV
-\begin_inset CommandInset citation
-LatexCommand cite
-key "farrugia2006gpucv"
-
-\end_inset
-
-
-\begin_inset CommandInset citation
-LatexCommand cite
-key "allusse2008gpucv"
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Itemize

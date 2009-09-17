@@ -1,5 +1,5 @@
 /*
-Should be able to compile by uncommenting the main function at the bottom and using:
+Should be able to compile this independantly by uncommenting the main function at the bottom and using:
 g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
 */
 
@@ -15,7 +15,7 @@ g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP vid
 using namespace std;
 
 
-VideoCapturePlayer::VideoCapturePlayer( CvMat *( *processFunction)(CvMat *), int device, bool show ) 
+VideoCapturePlayer::VideoCapturePlayer( CvMat *( *processFunction)(CvMat *), int device, bool show) 
 :show(show), device(device), num_frames(0)
 {
     processFunc = processFunction;
@@ -122,7 +122,7 @@ void VideoCapturePlayer::main()
 }
 
 //  Example Usage Follows
-
+/*
 
 
 // This is a template for a function that can be fed into VideoCapturePlayer
@@ -150,4 +150,4 @@ int main( int argc, char** argv )
     
     return 0;
 }
-
+*/
