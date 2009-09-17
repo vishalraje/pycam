@@ -6,7 +6,7 @@ from opencv import cv
 
 
 def threshold_image(image, n=[]):
-    """Record the first 5 images, then diff current frame with the saved frame.
+    """Record the first 5 images to get a background, then diff current frame with the last saved frame.
     """
     if len(n) < 5:
         # n[4] will be our background
@@ -21,28 +21,18 @@ def threshold_image(image, n=[]):
     original = n[4]
     differenceImage  = cv.cvCloneMat( image )
     cv.cvAbsDiff( image, original, differenceImage )
+    thresholdValue = 50     # 32 
+    cv.cvThreshold( differenceImage, differenceImage, thresholdValue, 255, cv.CV_THRESH_BINARY )
     
-    cv.cvThreshold( differenceImage, differenceImage, 32, 255, cv.CV_THRESH_BINARY )
     cv.cvSmooth(differenceImage, differenceImage, cv.CV_MEDIAN, 15)
-   
+    gray = cv.cvCreateImage( cv.cvGetSize(differenceImage), 8, 1 )
+    cv.cvCvtColor( differenceImage, gray, cv.CV_BGR2GRAY )   
     
-    temp  = cv.cvCloneMat( image)
-    cv.cvSetZero(temp)
+    result  = cv.cvCloneMat( image)
+    cv.cvSetZero(result)
     
-    #cv.cvAnd(differenceImage,image, temp)
-
-    #from IPython.Shell import IPShellEmbed 
-    #IPShellEmbed()()
-    
-    # Need to do this faster...
-    
-    for row_n in xrange(image.rows):
-        for col_n in xrange(image.cols):
-            if differenceImage[row_n,col_n][0] > 0 or differenceImage[row_n,col_n][1] > 0 or differenceImage[row_n,col_n][2] > 0:
-                temp[row_n,col_n] = image[row_n,col_n]
-    
-
-    return temp
+    cv.cvAnd(image,image, result, gray)
+    return result
 
 if __name__ == "__main__":
     title = "Background Subtraction Output"
