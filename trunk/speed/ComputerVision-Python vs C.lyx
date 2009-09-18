@@ -2206,21 +2206,21 @@ OpenCV Face Detection
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
 	filename report_data/pygame-eye-locate.png
 	lyxscale 50
-	width 40col%
+	width 45col%
 
 \end_inset
 
@@ -2249,13 +2249,13 @@ detecting face objects
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename report_data/pygame-face-edge.png
 	lyxscale 40
-	width 40col%
+	width 45col%
 
 \end_inset
 

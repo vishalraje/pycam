@@ -1,0 +1,11 @@
+The directory lib contains the modified cvEyeTracker library.
+It requires OpenCV and Firewire to build.
+
+libexample shows the sample debug application, this uses a system
+copy of the cvEyeTrack library. It shows the scene image, the eye
+image and the starburst algorithm output image.
+
+boxy is an example application, currently it compiles its own
+version of cvEyeTracker.
+
+swiglib is an attempt on wrapping the library for Python.
