@@ -158,6 +158,6 @@ class VideoCapturePlayer(object):
             print "Process ran at %f fps" % self.processClock.get_fps()
 
 if __name__ == "__main__":
-    vcp = VideoCapturePlayer(processFunction=None,forceOpenCv=True)
+    vcp = VideoCapturePlayer(processFunction=None,forceOpenCv=False)
     vcp.main()
     pygame.quit()
