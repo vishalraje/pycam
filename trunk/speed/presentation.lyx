@@ -1,4 +1,4 @@
-#LyX 1.6.3 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -394,12 +394,12 @@ Motivation & Background
 \end_layout
 
 \begin_layout Subsection
-The Basic Problem That Was Studied
+Why Look At Alternative Languages For Computer Vision?
 \begin_inset OptArg
 status open
 
 \begin_layout Plain Layout
-Basic Problem
+Why Change?
 \end_layout
 
 \end_inset
@@ -612,7 +612,7 @@ dynamic OR strongly typed
 \end_layout
 
 \begin_layout Subsection
-Existing Work
+Existing Tools
 \end_layout
 
 \begin_layout BeginFrame
@@ -710,29 +710,13 @@ also serves to compare the syntax of the languages
 
 \begin_layout BeginFrame
 Syntax of C and Python.
- 
 \end_layout
 
-\begin_layout ColumnsTopAligned
-
-\end_layout
-
-\begin_deeper
-\begin_layout Column
-5.5cm
+\begin_layout Subtitle
+C
 \end_layout
 
 \begin_layout Example
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-<1->
-\end_layout
-
-\end_inset
-
 
 \end_layout
 
@@ -776,21 +760,15 @@ int main(){
 }
 \end_layout
 
-\begin_layout Column
-5.5cm
+\begin_layout BeginFrame
+Syntax of C and Python.
+\end_layout
+
+\begin_layout Subtitle
+Python
 \end_layout
 
 \begin_layout Example
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-<2->
-\end_layout
-
-\end_inset
-
 
 \end_layout
 
@@ -812,11 +790,6 @@ frame = hg.cvQueryFrame(capture)
 
 \begin_layout Example
 hg.cvShowImage("Snapshot", frame)
-\end_layout
-
-\end_deeper
-\begin_layout ColumnsTopAligned
-
 \end_layout
 
 \begin_layout BeginFrame
@@ -876,7 +849,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /Users/brian/Projects/pycam/speed/report_data/blurred_imag_cpp_opencv_gaussian.jpg
+	filename report_data/blurred_imag_cpp_opencv_gaussian.jpg
 	lyxscale 20
 	width 30col%
 
@@ -915,7 +888,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /Users/brian/Projects/pycam/speed/report_data/blurred_imag_python_opencv_gaussian.jpg
+	filename report_data/blurred_imag_python_opencv_gaussian.jpg
 	lyxscale 20
 	width 30col%
 
@@ -954,7 +927,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /Users/brian/Projects/pycam/speed/report_data/blurred_imag_python_scipy_gaussian.jpg
+	filename report_data/blurred_imag_python_scipy_gaussian.jpg
 	lyxscale 20
 	width 30col%
 
@@ -989,11 +962,11 @@ Differances In Output Images from Gaussian Blur Examples
 placement h
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /Users/brian/Projects/pycam/speed/report_data/gaussian_diffs.png
+	filename report_data/gaussian_diffs.png
 	lyxscale 60
 	width 75page%
 
@@ -1034,7 +1007,7 @@ status collapsed
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Users/brian/Projects/pycam/speed/report_data/gaussian_blur.png
+	filename report_data/gaussian_blur.png
 	lyxscale 50
 	height 60pheight%
 
@@ -1068,17 +1041,21 @@ Background Subtraction
 Background Subtraction
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Subtitle
+Python Implementation
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /Users/brian/Projects/pycam/speed/report_data/background_python_add_item.png
+	filename report_data/background_python_add_item.png
 	lyxscale 40
-	width 30col%
+	scale 10
 
 \end_inset
 
@@ -1086,7 +1063,7 @@ status collapsed
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Adding item
+Adding an Item
 \end_layout
 
 \end_inset
@@ -1097,19 +1074,16 @@ Adding item
 \end_inset
 
 
-\end_layout
-
-\begin_layout Itemize
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /Users/brian/Projects/pycam/speed/report_data/background_python_add_remove_item.png
+	filename report_data/background_python_add_remove_item.png
 	lyxscale 40
-	width 30col%
+	scale 10
 
 \end_inset
 
@@ -1120,7 +1094,7 @@ status collapsed
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Addition and removal
+Addition and Removal of Items
 \end_layout
 
 \end_inset
@@ -1145,7 +1119,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /Users/brian/Projects/pycam/speed/report_data/background_subtraction.png
+	filename report_data/background_subtraction.png
 	lyxscale 50
 	height 60pheight%
 
@@ -1184,12 +1158,181 @@ OpenCV had a built in function so is being called at a much much lower level
 \end_layout
 
 \begin_layout Itemize
-Yes more graphs would be nice...
- but its 4am
+OpenCV from C or Python was ~3 times faster than SciPy when doing Harris
+ & Stephens feature detection
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename report_data/feature_detect/scipy_harris.png
+	lyxscale 20
+	scale 15
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+SciPy Feature Detection
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Qualitative Comparison
+\end_layout
+
+\begin_layout Subsection
+Additional Tools
+\end_layout
+
+\begin_layout BeginFrame
+IPython & MatPlotLib
 \end_layout
 
 \begin_layout Itemize
-OpenCV from C or Python was ~3 times faster than SciPy
+Using IPython, an interactive shell can be used from deep inside a nested
+ loop in a running program.
+ In place timing and plotting with access to local variables and functions...
+ this speeds up development/debugging time.
+\end_layout
+
+\begin_layout Example
+\noindent
+In [1]: from opencv import cv
+\end_layout
+
+\begin_layout Example
+\noindent
+In [2]: cv.cvAnd(diffImage,image, temp)
+\end_layout
+
+\begin_layout Example
+\noindent
+In [3]: timeit cv.cvAnd(diffImage,image, temp)
+\end_layout
+
+\begin_layout Example
+\noindent
+1000 loops, best of 3: 229 µs per loop
+\end_layout
+
+\begin_layout Example
+\noindent
+In [4]: from pylab import imshow, show
+\end_layout
+
+\begin_layout Example
+\noindent
+In [5]: imshow(temp) 
+\end_layout
+
+\begin_layout Example
+\noindent
+Out[5]: <AxesImage object at 0x42489d0>
+\end_layout
+
+\begin_layout Example
+\noindent
+In [6]: show()
+\end_layout
+
+\begin_layout Subsection
+Comparison
+\end_layout
+
+\begin_layout BeginFrame
+Meaningful Quantifiable Statements
+\end_layout
+
+\begin_layout Subtitle
+Python implementations were:
+\end_layout
+
+\begin_layout Itemize
+shorter than C versions
+\end_layout
+
+\begin_layout Itemize
+easier to create
+\end_layout
+
+\begin_layout Itemize
+easier to debug with the use of an interactive interpreter
+\end_layout
+
+\begin_layout Itemize
+easier to test
+\end_layout
+
+\begin_layout BeginFrame
+Documentation & Support
+\end_layout
+
+\begin_layout Subtitle
+Python is Free.
+\end_layout
+
+\begin_layout Standard
+The documentation in both SciPy and OpenCV was found to be complete.
+\end_layout
+
+\begin_layout AlertBlock
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+Remember Python is Free
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout AlertBlock
+Documentation is not as extensive as for a professional package like Matlab.
+ 
+\end_layout
+
+\begin_layout Standard
+Support for these open source packages is almost entirely reliant on experienced
+ members of the community responding to requests on message boards or mailing
+ lists.
 \end_layout
 
 \begin_layout Section*
@@ -1209,9 +1352,20 @@ Python
 \end_layout
 
 \begin_layout Itemize
-The
-\color none
- ease of integration between packages makes complicated things far easier.
+Python is much more forgiving than C or C++, it can be used interactively
+ so you can happily make 10 mistakes in a row, without having to recompile
+ and start execution again for each attempted fix.
+\end_layout
+
+\begin_layout Itemize
+For the scholar of computer vision research using Python can help in trying
+ out new algorithms very quickly.
+ The breadth of the additional libraries available and the ease of integrating,
+ make new and novel solutions quickly realizable.
+\end_layout
+
+\begin_layout BeginFrame
+Limitations
 \end_layout
 
 \begin_layout Standard
@@ -1244,16 +1398,18 @@ vskip0pt plus.5fill
 \end_layout
 
 \begin_layout Itemize
-Outlook
+Limitations/Future Work
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-What we have not done yet.
+Automated suite of timed tests for benchmarking
 \end_layout
 
 \begin_layout Itemize
-Even more stuff.
+A major limitation of using Python would be when the application is being
+ developed for special embedded hardware or when the best possible performance
+ is required at YOUR expense.
 \end_layout
 
 \end_deeper
@@ -1326,9 +1482,9 @@ key "Author1990"
 
 \end_inset
 
-A.
- Author.
- 
+G.
+ Bradski, A.
+ Kaehler 
 \begin_inset ERT
 status collapsed
 
@@ -1343,7 +1499,7 @@ newblock
 
 
 \emph on
-Handbook of Everything
+Learning OpenCV
 \emph default
 .
 \begin_inset ERT
@@ -1358,7 +1514,7 @@ newblock
 
 \end_inset
 
- Some Press, 1990.
+ O'Reilly Media, September 2008.
 \begin_inset ERT
 status collapsed
 
@@ -1393,8 +1549,8 @@ key "Someone2002"
 
 \end_inset
 
-S.
- Someone.
+T.
+ Oliphant
 \begin_inset ERT
 status collapsed
 
@@ -1407,7 +1563,7 @@ newblock
 
 \end_inset
 
- On this and that
+ Guide to NumPy
 \emph on
 .
 
@@ -1427,10 +1583,9 @@ newblock
 
 
 \emph on
-Journal on This and That
+UT, Trelgol Publishing
 \emph default
-.
- 2(1):50--100, 2000.
+, 2006.
 \end_layout
 
 \begin_layout EndFrame
