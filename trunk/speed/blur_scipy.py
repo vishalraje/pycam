@@ -101,10 +101,12 @@ def mlGaussianBlur(image):
     return img
 ########
 
+sigma = opencvFilt2sigma(43.0)
+
 @scipyFromOpenCV
 def gaussianBlur(np_image):
     """Blur an image with scipy"""
-    sigma = opencvFilt2sigma(43.0)
+    
     
     result = ndimage.filters.gaussian_filter(np_image, 
                             sigma=(sigma, sigma, 0),
