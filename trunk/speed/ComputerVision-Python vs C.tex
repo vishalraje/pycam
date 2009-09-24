@@ -181,8 +181,7 @@ neon lamps at the ceiling and a low amount of ambient light.
 For our testing, we cover different standard algorithms traditionally used in a CV applications as some major process relevant to computer vision (e.g. image acquisition). Our tests were aiming to reproduce general high level processes implied during CV applications development rather than low level function calls. 
 
 For each of the tests we describe the
-process, the difference in terms of syntax between the different libraries, the performance and the usability of each libraries. As we aims to provide implementation of the tests for the 3 tested libraries, some of the tests only focused comparing Python
-OPENCV\_PY vs SCIPY. 
+process, the difference in terms of syntax between the different libraries, the performance and the usability of each libraries. As we aims to provide implementation of the tests for the 3 tested libraries, some of the tests only focused comparing OPENCV\_PY vs SCIPY. 
 Reader can access the source code from the project website
 \footnote{\href{http://code.google.com/p/pycam/wiki/PythonComputerVision}{http://code.google.com/p/pycam/wiki/PythonComputerVision}.}
 
@@ -193,7 +192,7 @@ Reader can access the source code from the project website
 Live Image acquisition is largely utilized in a majority of CV applications.
 We thus tested, frame acquisition and frame display as a first test. Added to performance results, we describe in this section the syntax between the different libraries for implementing this test.
 
-\subsubsection*{Acquiring and displaying an image in C with OpenCV}
+\subsubsection*{Acquiring and displaying an image OpenCV C Version}
 
 Algorithm \ref{alg:C-Image-capture} describes how to open up a new camera capture
 device, capture one frame, open a new window and display the result%
@@ -235,7 +234,7 @@ in C}
 
 
 
-\subsubsection*{Acquiring and displaying an image in Python with OpenCV}
+\subsubsection*{Acquiring and displaying an image with OpenCV Python}
 
 Algorithm \ref{alg:Python-Image-capture} show the equivalent through the python wrapper.
 You can observe a high level of similarity with the previous version.
@@ -267,12 +266,11 @@ hg.cvShowImage(\textquotedbl{}Snapshot\textquotedbl{},~frame)
 
 Figure \ref{fig:Streaming-comparison} shows the performance results for
 the previous algorithms. The measurement was done over a 2 minutes period for 3 iterations, averaging
-the resulting frame rates. Python and C++ perform at very similar rates whilst carrying
-out an I/O bound task. C++ having a marginally higher frame rate output
-than Python. 
+the resulting frame rates. OpenCV Python and OpenCV C perform at very similar frame rates whilst carrying
+out an I/O bound task. OpenCV C having a marginally higher frame rate output than OpenCV Python. 
 
 The SciPy package does not currently have a direct method for image capture, so we couldn't compare live acquisition.
-However, we developed a solution for converting OpenCV camera capture to SciPy: after converting the image data to a NumPy arrays, we achieved that by creating and using a Python decorator which converts the image data before and after calling a Python function that processes on a NumPy image. A 640x480 RGB image takes less than 2ms to convert either way on the testing platform used throughout this report.
+However, we developed a solution for converting OpenCV camera capture to SciPy: after converting the image data to a NumPy arrays, we created a Python decorator which converts the image data before and after calling a Python function that processes on a NumPy image. A 640x480 RGB image takes less than 2ms to convert either way on the testing platform used throughout this report.
 
 \subsection{Image Blur}
 
@@ -354,8 +352,8 @@ has changed. An example is presented in Figure \ref{fig:Adding-a-single}
 after adding a cellphone to a scene for the \noun{OPENCV\_PY} implementation.
 
 As Figure \ref{fig:BackgroundSubtract_graph} shows, the performance
-is very close for Python and C++ versions using OpenCV. Python was
-faster on average, but the performance was more consistent in C++. 
+is very close for Python and C versions using OpenCV. Python was
+faster on average, but the performance was more consistent in OpenCV C. 
 
 %
 \begin{figure}[htbp]
@@ -379,85 +377,58 @@ response after adding and removing items from a scene.}
 
 \end{figure}
 %
-\begin{figure}
-\subfloat[before]{\includegraphics[width=0.3\columnwidth]{report_data/background_python_before}
+%\begin{figure}
+%\subfloat[before]{\includegraphics[width=0.3\columnwidth]{report_data/background_python_before}
 
-}\subfloat[program output]{\includegraphics[width=0.3\columnwidth]{report_data/background_python_add_items_complicated}
+%}\subfloat[program output]{\includegraphics[width=0.3\columnwidth]{report_data/background_python_add_items_complicated}
 
-}\subfloat[after]{\includegraphics[width=0.3\columnwidth]{report_data/background_python_after}
+%}\subfloat[after]{\includegraphics[width=0.3\columnwidth]{report_data/background_python_after}
 
-}
+%}
 
-\caption{\label{fig:back-Proces-clutter}Background subtraction response on
-a cluttered scene where a cellphone is switched for a wallet and a
-contact card is added.}
+%\caption{\label{fig:back-Proces-clutter}Background subtraction response on
+%a cluttered scene where a cellphone is switched for a wallet and a
+%contact card is added.}
 
-\end{figure}
- While creating this program, we found IPython particularly helpful,
-it allows for interactive, in place trialing, timing and plotting
-as shown in algorithm \ref{alg:Interactive,-inplace-timing}.
-
-%
-\begin{algorithm}
-\noindent In {[}1{]}: from opencv import cv
-
-\noindent In {[}2{]}: cv.cvAnd(diffImage,image, temp)
-
-\noindent In {[}3{]}: timeit cv.cvAnd(diffImage,image, temp)
-
-\noindent 1000 loops, best of 3: 229 \textmu{}s per loop
-
-\noindent In {[}4{]}: from pylab import imshow, show
-
-\noindent In {[}5{]}: imshow(temp) 
-
-\noindent Out{[}5{]}: <AxesImage object at 0x42489d0>
-
-\noindent In {[}6{]}: show()
-
-\caption{\label{alg:Interactive,-inplace-timing}Using IPython, the interactive
-shell can be used from deep inside a nested loop in a running program.
-In place timing and plotting with access to local variables and functions
-like this example speeds up development time.}
-
-\end{algorithm}
-
-
+%\end{figure}
 
 \subsection{Feature Point Detection}
 
 Many methods in computer vision for identifying the contents of an
-image relies on extracting \emph{interesting} features. An interesting
-feature point could be corners of intersecting lines, a line ending,
+image relies on extracting \emph{interesting} features. Generally used
+feature point are corners of intersecting lines, a line ending,
 or any isolated point where local image regions have a high degree
-of variation in all directions \cite{harris1988combined}. The features
-must be found algorithmically and have a well-defined position. The
-repeatability of choosing the same points under differing conditions
-is a measure of how good an interesting feature algorithm is. According
+of variation in all directions \cite{harris1988combined}. According
 to \cite{Sol09} the Harris \& Stephens algorithm is in short: 
 \begin{quote}
 A matrix W is created from the outer product of the image gradient,
 this matrix is averaged over a region and then a corner response function
 is defined as the ratio of the determinant to the trace of W.
 \end{quote}
-A threshold is then applied to this corner response image to pick
-the most likely candidates and then these points are plotted. An example
-usage of the algorithm is in the Lucas\textendash{}Kanade Optical
-Flow Method where it can be used to select good feature points \cite{beauchemin1995computation}
-for tracking movement.
+A threshold is then applied to this corner response image to pick the most likely candidates and then these points are plotted. We used this algorithm as the basis test to compare the different libraries.
+%An example of feature point detector is in the Lucas\textendash{}Kanade Optical
+%Flow Method where it can be used to select good feature points \cite{beauchemin1995computation}
+%for tracking movement.
 
+We took and modified an existing implementation in SciPy from \cite{Sol09}. Results
+are visible Figure \ref{fig:harris_scipy_static} on the Lena dataset for SciPy and OpenCV Python. A filter kernel size
+of 3 pixels was used when computing the harris response, the authors
+did note that with a larger kernel SciPy seemed to slow down more
+than OpenCV. The threshold filtering and display of the corner response
+was implemented solely in OpenCV to reduce differences; the SciPy
+implementation therefore had an extra data conversion stage. 
+
+% %\& \ref{fig:harris_webcam_scipy}.
+%The same concept but in a different implementation is shown in Figure
+%\ref{fig:harris_compare_webcam} for OpenCV. 
 %
 \begin{figure}[h]
 \begin{centering}
-\subfloat[\label{fig:harris_scipy_static}SciPy]{\begin{centering}
-\includegraphics[width=0.45\columnwidth]{harris_scipy_static}
-\par\end{centering}
-
-}\subfloat[OpenCV]{\centering{}\includegraphics[width=0.45\columnwidth]{harris_response_lena_opencv}}
-\par\end{centering}
-
+\subfloat[\label{fig:harris_scipy_static}OPENCV\_PY]{\includegraphics[width=0.45\columnwidth]{harris_response_lena_opencv}}
+\subfloat[SCIPY]{\includegraphics[width=0.45\columnwidth]{harris_scipy_static}}
+\end{centering}
 \caption{\label{fig:harris_compare_static}Running the Harris \& Stephens feature
-detection algorithm on the Lena test image.}
+detection algorithm on the Lena test image with OPENCV\_PY and SCIPY.}
 
 \end{figure}
 %
@@ -475,11 +446,7 @@ detection algorithm on the Lena test image.}
 
 %\end{figure}
 
-
-We took and modified an existing implementation in SciPy by \cite{Sol09}
-which produced Figures \ref{fig:harris_scipy_static} \& \ref{fig:harris_webcam_scipy}.
-The algorithm was timed by executing it on Lena 300 times per sample:
-
+Timing performances are available on the table below (measured on average on 300 iterations on the Lena dataset).
 \begin{center}
 \begin{tabular}{|c|c|c|}
 \hline 
@@ -493,36 +460,27 @@ OpenCV & 65.7 ms & 1.27 ms\tabularnewline
 \end{tabular}
 \par\end{center}
 
-The same concept but in a different implementation is shown in Figure
-\ref{fig:harris_compare_webcam} for OpenCV. A filter kernel size
-of 3 pixels was used when computing the harris response, the authors
-did note that with a larger kernel SciPy seemed to slow down more
-than OpenCV. The threshold filtering and display of the corner response
-was implemented solely in OpenCV to reduce differences; the SciPy
-implementation therefore had an extra data conversion stage. Another
-limitation is the OpenCV response in C++ is not implemented here.
-
+%The same concept but in a different implementation is shown in Figure
+%\ref{fig:harris_compare_webcam} for OpenCV. A filter kernel size
+%of 3 pixels was used when computing the harris response, the authors
+%did note that with a larger kernel SciPy seemed to slow down more
+%than OpenCV. The threshold filtering and display of the corner response
+%was implemented solely in OpenCV to reduce differences; the SciPy
+%implementation therefore had an extra data conversion stage. 
 
 \subsection{Face Detection}
 
 Face detection is the task of identifying the presence of any number
 of faces in an image, this is a specific case of general object detection.
-Before locating an object, one must be able to describe it. Many object
-detection algorithms use a strong classifier which is built from a
-collection of weak feature patterns made by scanning a database of
-images with known contents \cite{viola2004robust}. Figure \ref{fig:OpenCV-Face-Detection}
-shows the output from our tests running under different conditions
-when using the face Haar-cascade classifier that comes with OpenCV.
+
+Figure \ref{fig:OpenCV-Face-Detection} shows the output from our tests running on OPENCV Python under different conditions  using the face Haar-cascade classifier that comes with OpenCV.
+
 The method gave an average framerate of 7.16 \textpm{} 0.02 Hz. The
 detection process itself gave very consistent timings of 107 \textpm{}
-1 ms. The detection method used has limitations as shown in Figures
-\ref{fig:Obscured-opencv-face} and \ref{fig:Angled-opencv-face},
-this is caused because the classifier was only trained on straight
-on face images. But in ideal conditions, with good lighting and un-obscured
-faces directly facing the camera the algorithm produces very robust
-results. There is no corresponding high level functionality in SciPy,
-so a performance comparison was not possible. A recent project PyCV \cite{tri2009principled}
-improves on the face detection in OpenCV utilizing SciPy.
+1 ms. There is no corresponding high level functionality for Face deteciton in SciPy,
+so a performance comparison was not possible. 
+
+However, A recent project PyCV \cite{tri2009principled} improves the face detection from OpenCV utilizing SciPy.
 
 %
 \begin{figure}[h]
@@ -554,7 +512,7 @@ improves on the face detection in OpenCV utilizing SciPy.
 
 }
 
-\caption{\label{fig:OpenCV-Face-Detection}OpenCV Face Detection}
+\caption{\label{fig:OpenCV-Face-Detection}Face Detection with OpenCV Python}
 
 \end{figure}
 
@@ -575,13 +533,18 @@ improves on the face detection in OpenCV utilizing SciPy.
 }
 \par\end{centering}
 
+\section{Qualitative Comparison}
+
+In getting te development and results of the test we noticed that the Python implementations
+were shorter, easier to create, easier to debug, and easier to test.
+Having the use of an interactive interpreter to progressively come
+to a solution prototype and being able to use these prototypes in
+the final product is a big argument in favor of using Python. 
+
 \caption{\label{fig:Pygame-object}Pygame can be used to capture and display
 the webcam, while OpenCV does the processing.}
 
-
-
 \end{figure}
-
 
 Figure \ref{fig:Pygame-object} shows an alternative setup; using
 the Pygame camera module for image capture, OpenCV for the object
@@ -593,14 +556,6 @@ different computer vision tools, even with very limited knowledge
 of computer vision. We found that calling OpenCV from a Python wrapper
 was only slightly slower in general than natively using the library. 
 
-
-\section{Qualitative Comparison}
-
-In getting these quantitative results we noticed that the Python implementations
-were shorter, easier to create, easier to debug, and easier to test.
-Having the use of an interactive interpreter to progressively come
-to a solution prototype and being able to use these prototypes in
-the final product is a big argument in favor of using Python. 
 
 The documentation in both SciPy and OpenCV was found to be complete,
 but not as extensive as for a professional package like Matlab. Support
@@ -646,6 +601,37 @@ that as developers, to debug a misbehaving program, we can just jump
 right into the middle of a deeply nested loop, introspect all variables,
 plot any signal or image, call any function, and accurately time the
 execution of any function. This is massively in favor of using Python.
+
+ While creating this program, we found IPython particularly helpful,
+it allows for interactive, in place trialing, timing and plotting
+as shown in algorithm \ref{alg:Interactive,-inplace-timing}.
+
+%
+\begin{algorithm}
+\noindent In {[}1{]}: from opencv import cv
+
+\noindent In {[}2{]}: cv.cvAnd(diffImage,image, temp)
+
+\noindent In {[}3{]}: timeit cv.cvAnd(diffImage,image, temp)
+
+\noindent 1000 loops, best of 3: 229 \textmu{}s per loop
+
+\noindent In {[}4{]}: from pylab import imshow, show
+
+\noindent In {[}5{]}: imshow(temp) 
+
+\noindent Out{[}5{]}: <AxesImage object at 0x42489d0>
+
+\noindent In {[}6{]}: show()
+
+\caption{\label{alg:Interactive,-inplace-timing}Using IPython, the interactive
+shell can be used from deep inside a nested loop in a running program.
+In place timing and plotting with access to local variables and functions
+like this example speeds up development time.}
+
+\end{algorithm}
+
+
 
 \section{Related Works}
 
