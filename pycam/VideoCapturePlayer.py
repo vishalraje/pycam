@@ -4,7 +4,7 @@ import numpy
 import exceptions
 
 import logging
-verbose = True
+verbose = False
 # Todo replace with proper pythonic logging
 
 logging.debug("Pygame Version: %s" % pygame.__version__)
