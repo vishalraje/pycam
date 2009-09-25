@@ -89,7 +89,7 @@ in Python.
 The goal of this paper is to evaluate the performances and usability of the most common
 solutions for developing CV algorithms and CV applications in Python. Indeed, we aim to offer a comprehensive
 overview of the advantages/disadvantages of using Python for computer vision development that can be beneficial
-for any scholar intrigued by the topic.
+for any academic intrigued by the topic.
 
 We have focused our attention on the performances of two widely used
 CV libraries in Python: \textit{OpenCV} \cite{bradski2000opencv} and
@@ -139,6 +139,7 @@ PyCV \cite{tri2009principled} have been created for Python, as well
 as the automatically built wrapped bindings based on SWIG \cite{beazley1996swig}
 which we tested in this paper. Complimentary, additiona tools such as GPUCV \cite{farrugia2006gpucv}
 have been made for OpenCV using graphics hardware to accelerate CV performance on the GPU. 
+\\
 \\
 \\
 \textit{NumPy/SciPy}. \emph{NumPy} gives strongly typed N-dimensional array support to Python \cite{oliphant2006guide}.
@@ -255,7 +256,7 @@ hg.cvShowImage(\textquotedbl{}Snapshot\textquotedbl{},~frame)
 \end{algorithm}
 %
 \begin{figure}[h]
-\centering{}\includegraphics[width=0.95\columnwidth]{report_data/streaming_from_webcam_in_opencv}\caption{\label{fig:Streaming-comparison}Comparison of capture performances between OPENCV\_C, OPENCV\_PY (processing time).}
+\centering{}\includegraphics[width=0.95\columnwidth]{report_data/streaming_from_webcam_in_opencv}\caption{\label{fig:Streaming-comparison}Comparison of capture performances between OPENCV\_C, OPENCV\_PY.}
 
 \end{figure}
 
@@ -330,9 +331,9 @@ The maximim intensity difference at any point was 7.8\%, the mean difference was
 \includegraphics[width=0.9\columnwidth]{report_data/gaussian_blur}
 \par\end{centering}
 
-\caption{\label{fig:performance-gaussian}Comparison of gaussian blur performances between OPENCV\_C, OPENCV\_PY and SCIPY (processing time).}
+\caption{\label{fig:performance-gaussian}Comparison of gaussian blur performances between OPENCV\_C, OPENCV\_PY and SCIPY.}
 \end{figure}
-This could be simply explained by a difference in the implementation of the
+This discrepancy could be simply explained by a difference in the implementation of the
 Gaussian kernel approximations. In SciPy the filter is created by
 a direct sampling of the Gaussian function; OpenCV on the other hand,
 uses the size of the filter, this is a good indication it probably
@@ -348,13 +349,13 @@ A common task in security surveillance, human computer interaction is the detect
 If the difference image is more than a certain threshold, something
 has changed. 
 
-An example is presented in Figure \ref{fig:Adding-a-single}
-after adding a cellphone to a scene for the \noun{OPENCV\_PY} implementation. As Figure \ref{fig:BackgroundSubtract_graph} shows, the performance between Python an C are in the same order of magnitude, no significant difference observable.
+An example is presented in Figure \ref{fig:background-Adding-and-removing}
+after adding a cellphone to a scene for the \noun{OPENCV\_PY} implementation. As Figure \ref{fig:BackgroundSubtract_graph} shows, the performance between Python an C are in the same order of magnitude, no significant difference were observable, where SCIPY offers inferior performances.
 %
 \begin{figure}[htbp]
 \includegraphics[width=0.95\columnwidth]{report_data/background_subtraction}
 
-\caption{\label{fig:BackgroundSubtract_graph} Comparison of background subtraction performances between OPENCV\_C and OPENCV\_PY}
+\caption{\label{fig:BackgroundSubtract_graph} Comparison of background subtraction performances between OPENCV\_C, OPENCV\_PY and SCIPY.}
 
 \end{figure}
 
@@ -405,9 +406,7 @@ A threshold is then applied to this corner response image to pick the most likel
 %Flow Method where it can be used to select good feature points \cite{beauchemin1995computation}
 %for tracking movement.
 
-We took and modified an existing implementation in SciPy from \cite{Sol09}. Results
-are visible Figure \ref{fig:harris_scipy_static} on the Lena dataset for SciPy and OpenCV Python. 
-A filter kernel size of 3 pixels was used when computing the harris response, we noticed that with a larger kernel SciPy seemed to slow down more than OpenCV. The threshold filtering and display of the corner response
+We took and modified an existing implementation in SciPy from \cite{Sol09}. A filter kernel size of 3 pixels was used when computing the harris response. Results are visible Figure \ref{fig:harris_compare_static} on the Lena dataset for OpenCV Python and SciPy. We observed that with a larger kernel SciPy seemed to slow down more than OpenCV. The threshold filtering and display of the corner response
 was implemented solely in OpenCV to reduce differences; the SciPy
 implementation therefore had an extra data conversion stage. 
 
@@ -417,7 +416,7 @@ implementation therefore had an extra data conversion stage.
 %
 \begin{figure}[h]
 \begin{centering}
-\subfloat[\label{fig:harris_scipy_static}OPENCV\_PY]{\includegraphics[width=0.45\columnwidth]{harris_response_lena_opencv}}
+\subfloat[OPENCV\_PY]{\includegraphics[width=0.45\columnwidth]{harris_response_lena_opencv}}
 \subfloat[SCIPY]{\includegraphics[width=0.45\columnwidth]{harris_scipy_static}}
 \end{centering}
 \caption{\label{fig:harris_compare_static}Running the Harris \& Stephens feature
@@ -477,7 +476,7 @@ However, we can note that a recent project PyCV \cite{tri2009principled} improve
 %
 \begin{figure}[h]
 \subfloat[Single face in frame]{\begin{centering}
-\includegraphics[width=0.45\columnwidth]{report_data/face_detect_one}
+\includegraphics[width=0.455\columnwidth]{report_data/face_detect_one}
 \par\end{centering}
 
 
@@ -518,20 +517,19 @@ rapid prototyping tool was also quite discernible  regarding the development of 
 processing/computer vision.
 
 The documentation in both SciPy and OpenCV was found to be complete,
-but not as extensive as for a professional package like MATLAB. Support
-for these open source packages is almost entirely reliant on experienced
+but not as extensive as for a professional package like MATLAB. The support
+for these open source packages relies almost entirely on experienced
 members of the community responding to requests on message boards
 or mailing lists. The community support is however of great response and valuable technical quality.
 
-A major limitation of using Python is portability on embedded platforms and hardware, required
-highly optimized code.  The stability of the packages is also questionable: 
+A major limitation of using Python is the portability on embedded platforms and hardware, generally requiring
+highly optimized C/C++ code.  The stability of the actual packages is also questionable: 
 OpenCV Python bindings are being rewritten manually to replace the SWIG produced bindings and 
 SciPy is still a relatively new library. In some cases, we also noticed the absence of analogous 
 functions in both libraries, generally explained by the actual different orientation of libraries 
 (SciPy more oriented for general scientific computing).
 
-SciPy offers also  valuable tools for development and function monitoring. Graphs can be generated easily with IPython based on the Matplotlib. In overall, IPython delivers pause execution during interpretation and give access to a live interactive shell with full timing and plotting capabilities. 
-Algorithm \ref{alg:Interactive,-inplace-timing} shows ??
+SciPy offers really valuable tools for the development and the monitoring of an application. Graphs can be generated easily with IPython based on the Matplotlib. In overall, IPython delivers pause execution during interpretation and give access to a live interactive shell with full timing and plotting capabilities (see Algorithm \ref{alg:Interactive,-inplace-timing}).
 %
 \begin{algorithm}
 \noindent In {[}1{]}: from opencv import cv
@@ -555,13 +553,13 @@ shell can be used from deep inside a nested loop in a running program.
 }
 \end{algorithm}
 
-Another advantage in favor of Python is easy interoperability with other libraries. For example, PyGame can be combined with OpenCV as illustrated Figure \ref{fig:Pygame-object}.
+Another advantage in favor of Python is its high interoperability with other libraries. For example, PyGame can be combined with OpenCV as illustrated Figure \ref{fig:Pygame-object}.
 
 \begin{figure}
 \begin{centering}
-\subfloat[\label{fig:edge-filtering-face}detecting face objects]{\includegraphics[width=0.45\columnwidth]{report_data/pygame-eye-locate}
+\subfloat[\label{fig:edge-filtering-face}detecting face objects]{\includegraphics[width=0.49\columnwidth]{report_data/pygame-eye-locate}
 }
-\subfloat[edge filtering and face detection]{\includegraphics[width=0.45\columnwidth]{report_data/pygame-face-edge}
+\subfloat[edge filtering and face detection]{\includegraphics[width=0.49\columnwidth]{report_data/pygame-face-edge}
 }
 \caption{\label{fig:Pygame-object}Pygame can be used to capture and display
 the video image, while OpenCV Python does the processing.}
@@ -570,17 +568,16 @@ the video image, while OpenCV Python does the processing.}
 
 \section{Related Works}
 
-Beyond the presented libraries different works have focused to accelerate
+Beyond the presented libraries different works have focused on accelerating
 the performances of Python interpretation.
 
-For example, SciPy proposes the Weave module for in-lining C and C++ code. This can produce code 100x faster 
-\cite{ramachandran-performance} than pure Python. On a different direction a tool named \noun{OMPC} has been created for compiling MATLAB code into Python\cite{jurica2009ompc}.
+For example, SciPy proposes the Weave module for in-lining C and C++ code that can produce code 100x faster 
+than pure Python \cite{ramachandran-performance}. From a different direction a tool named \noun{OMPC} has been created for compiling MATLAB code into Python\cite{jurica2009ompc}.
 
-For parallel programming, mixed language solutions have been shown to exhibit the same performance gains as native language solutions \cite{cai2005performance}. A different direction for parallel implementation is aimed toward the power of the graphics card (GPGPU), PyGPU and the
-GPUCV are two examples of projects leveraging this possibility from Python \cite{lejdfors2006implementing} \cite{farrugia2006gpucv} \cite{allusse2008gpucv}.
+For parallel programming, mixed language solutions have been shown to exhibit the same performance gains as native language solutions \cite{cai2005performance}. A different direction for parallel implementation is aimed toward the power of the graphics card (GPGPU), PyGPU and the GPUCV are two examples of projects leveraging this possibility from Python \cite{lejdfors2006implementing} \cite{farrugia2006gpucv} \cite{allusse2008gpucv}.
 
 Another related area of research is the native performance of Python itself as demonstrated by the Psyco \emph{just in time compiler} for Python \cite{rigo2004representation} (unfortunately technically limited at the time of this writing on Python 2.6.X version for x86 machines only).
-Another projects are aiming in similar direction as:  PyPy \cite{dubois2005nest}, a compliant, flexible and fast implementation
+We can also cite additional projects also aiming in a similar direction as:  PyPy \cite{dubois2005nest}, a compliant, flexible and fast implementation
 of the Python Language, Google's \noun{Unladen
 Swallow} project which aims to speed up Python by leveraging the \noun{Low
 Level Virtual Machine} (LLVM). 
@@ -590,11 +587,9 @@ another example of a platform including computer vision modules.
 
 \section{Conclusion}
 
-For the scholar community, Python offers a valuable platform for experimenting 
+For the CV community, Python offers a valuable platform for experimenting 
 new algorithms very quickly. Our tests demonstrated the quantitative and qualitative
-value of Python. For beginners in computer vision development, we thus recommend Python.
-For advanced development requiring a full real-time support and portability on embedded solution
-OpenCV offers a more reliable approach.
+value of Python especially regarding the OpenCV Python library. For beginners in computer vision development, we thus recommend Python. For advanced project development requiring real-time support and portability on embedded solution OpenCV C offers a more reliable approach.
 
 \bibliographystyle{ieeetr}
 \bibliography{report_data/database}
