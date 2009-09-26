@@ -33,7 +33,7 @@ def threshold_image(np_image, n=[]):
     img = np_image[:]
     
     
-    #IPShellEmbed()()
+    
     differenceImage = abs(np_image.astype(float) - original.astype(float)).astype(uint8)
     # filter out random noise
     #differenceImage = ndimage.median_filter(differenceImage,size=3)
