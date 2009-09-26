@@ -63,7 +63,7 @@ Python is a popular language widely adopted by the scientific community
 due to its clear syntax and an extensive number of specialized packages.
 For image processing or computer vision development, two libraries
 are prominently used: \textit{NumPy/SciPy} and \textit{OpenCV} with a Python wrapper. In this paper, we present a comparative evaluation
-of both libraries, assessing their performance and their usability. We also describe our results regarding the performance of OpenCV accessed through a python wrapper vs the native C implementation.\end{abstract}
+of both libraries, assessing their performance and their usability. We also describe our results regarding the performance of OpenCV accessed through a python wrapper versus the native C implementation.\end{abstract}
 \begin{keywords}
 Computer Vision, Python, SciPy, OpenCV
 \end{keywords}
@@ -73,21 +73,21 @@ Computer Vision, Python, SciPy, OpenCV
 Python\cite{van1994python} has been of growing interest to the academic
 community over the last decade, especially in the area of computational science. 
 The simple syntax of Python, high level dynamic data types, and automated memory management 
-has captured their attention and forged it as a popular tool for the research community.
+has captured the research communities attention and forged it as a popular tool.
 
 The field of image processing and computer vision (CV)
 has been driven for the last decade by development in C/C++ and the
-usage of the MATLAB software \cite{kovesi-matlab}. Although MATLAB offers an efficient
-high level platform for prototyping and testing algorithms, its performances
-doesn't compete with a well designed and optimized C/C++ implementation.
-More recently, we have seen the emergence of potential and valuable
-solutions for developing image processing and computer vision algorithms
-in Python.
+usage of MATLAB software \cite{kovesi-matlab}. Although MATLAB offers an efficient
+high level platform for prototyping and testing algorithms, its performance
+doesn't compete with a well designed and optimized C/C++ implementation\cite{}.
+Recently, potential and valuable solutions have emerged for developing image 
+processing and computer vision algorithms in Python.
 
-The goal of this paper is to evaluate the performances and usability of the most common
-solutions for developing CV algorithms and CV applications in Python. Indeed, we aim to offer a comprehensive
-overview of the advantages/disadvantages of using Python for computer vision development that can be beneficial
-for any academic intrigued by the topic.
+This paper evaluates the performances and usability of the most common
+methods for developing CV algorithms and CV applications in Python. Indeed, we aim to offer a comprehensive
+overview of the advantages/disadvantages of using Python for CV development is given 
+for the benefit of any interested researcher in the field.
+
 
 We have focused our attention on the performances of two widely used
 CV libraries in Python: \textit{OpenCV} \cite{bradski2000opencv} and
@@ -98,34 +98,32 @@ algorithms, feature detection, etc). We were particularly interested
 to learn how Python performs in comparison with the native C implementation
 of OpenCV considering the low level calling of the original OpenCV C functions.
 
-After an introduction of our experimental process, we will describe successively
-the tests employed and the results we obtained, before finally discussing our
-findings and provide recommendations.
+This paper outlines the experimental process and tests employed, and discusses the results of these tests.  From the findings, recommendations are given for academics and novices faced with selecting a setup for CV.
 
 
 \section{Experimental Process}
-
+% Do we need this blurb?
 In this section, we briefly introduce the different libraries we tested
 and our experimental apparatus and protocol.  
 
 \subsection*{Libraries}
 
 \textit{Python}. Python is a general purpose dynamic programming language \cite{entry-0}.
-It is highly regarded due in no small part for its fast development
+Python is highly regarded not least because of its fast development
 time and the ease of integrating packages \cite{sanner1999python}.
 Python's performance makes it a viable programming language for scientific
-work \cite{cai2005performance}, and it has also been used members in the
+work \cite{cai2005performance}, and it has also been used by members in the
 CV community for many years \cite{doakPyCV}.
 \\
 \\
 \textit{OpenCV}. Originally an Intel research initiative, \textit{OpenCV} is a cross-platform
-open source computer vision library mostly employed for its real time image
+open source computer vision library, mostly employed for its real time image
 processing performance. It aims to provide well tested, optimized and open source
-implementation of the state of the art image processing and computer vision algorithms.
+implementation of state of the art image processing and computer vision algorithms.
 
 The library is written in C, ensuring fast and portable code
 (optionally to embedded platforms). The library is built above a core image library, which supports
-image structure and basic image manipulation. This core image library has two forms: a software
+image structure and basic image manipulation. This core image library has two forms; a software
 implementation is provided freely whilst an accelerated version utilizing
 the \textit{Integrated Performance Primitives} \cite{taylor2004intel}
 can be optionally acquired from Intel. This latter option takes advantage
@@ -141,18 +139,18 @@ have been made for OpenCV using graphics hardware to accelerate CV performance o
 \\
 \\
 \textit{NumPy/SciPy}. \emph{NumPy} gives strongly typed N-dimensional array support to Python \cite{oliphant2006guide}.
-It's a well recognized library, offering an easier approach for multidimensional
+The library is well recognised and offers an easier approach for multidimensional
 array manipulation than in the C programming language. A large part of 
-the low level algorithms are implemented in C and FORTRAN (and wrapped around Python), resulting in very fast and optimized raw data crunching and iterating.
+the low level algorithms are implemented in C and FORTRAN (and wrapped around Python), resulting in very fast and optimized raw data processing and iterating.
 
 \emph{SciPy} \cite{jones2001scipy} is a set of Python libraries and
 tools for scientific and mathematical work built on top of NumPy \cite{oliphant2007python}.
 SciPy offers many different modules including routines such as numerical
 integration, optimization, signal processing and image processing/computer vision functions. Two major tools are usually distributed
-with SciPy that and very useful for computer vision development: Matplotlib and IPython.
+with SciPy that are very useful for computer vision development; Matplotlib and IPython.
 Matplotlib \cite{hunter2007matplotlib} is an array and image plotting
 library, and IPython \cite{perez2007ipython} is an improved interactive
-shell for Python. We will describe some of their features in the last section of this paper.
+shell for Python. Some features of Matplotlib and IPython are further described in this paper.
 
 \subsection*{Apparatus}
 
@@ -160,28 +158,33 @@ We conducted our testing on a Intel Core 2 Duo 6600 machine, 4GB RAM, running Ub
 
 For the test we compared these different libraries (all builds were 64-bit version): 
 \begin{itemize}
-\item OpenCV Native Language (OPENCV\_C): we used snapshot built version
+\item OpenCV Native Language (OPENCV\_C): We used snapshot built version
 1.1.1, rev 1978. The code has been compiled with the GNU tool chain
-version (4.3.3), and in Release mode with O3 compiler optimizations,
-MMX, fast math, SSE3. All additional packages, EXCEPT 1393, are turned
+version (4.3.3), in Release mode with O3 compiler optimisations
+MMX, fast math, and SSE3. All additional packages, except 1393, are turned
 on (png, jpg, gtk, gstreamer, unicap, V4L). 
-\item OpenCV Python Wrapper (OPENCV\_PY): we used the SWIG \cite{beazley1996swig}
+\item OpenCV Python Wrapper (OPENCV\_PY): We used the SWIG \cite{beazley1996swig}
 wrapper version 1.3.36. We used a similar OpenCV build as the OpenCV C version.
-\item SciPy/NumPy (SCIPY): we used the stable versions from the Ubuntu repositories:
+\item SciPy/NumPy (SCIPY): We used the stable versions from the Ubuntu repositories:
 SciPy version 0.7.0 and NumPy 1.2.1
 \end{itemize}
  
 For the camera, we conducted our test with an off-the-shelf USB webcam Logitech Quickcam Pro for Notebooks. White balance, focus and exposure have been fixed to a constant value prior to the tests. The test environment was a large room with 
 neon lamps at the ceiling and a low amount of ambient light.
+% Firstly the cameras white balance and focus etc was all just on automatic... not set.
+% second if it "was" set, shouldn't we specify what it was set too?
 
 \subsection*{Evaluation Protocol}
 For our testing, we cover different standard algorithms traditionally used in CV applications, as well as some major
 processes relevant to computer vision (e.g. image acquisition). Our tests were aiming to reproduce general high level
-processes applied during CV applications development rather than low level function calls. 
+processes applied during CV applications development, rather than low level function calls. 
 
-For each of the tests we describe the process, the difference in terms of syntax between the different libraries, 
-the performance and the usability of each libraries. As we aim to provide implementations of the tests for each of the 3 tested libraries, some of the tests only focused on comparing OPENCV\_PY vs SCIPY. 
-Reader can access the source code from the project website
+For each test we describe the process, the difference in syntax between different libraries, and
+the performance and usability of each library. In most cases we provide implementations of 
+the tests using each of the 3 libraries under analysis, however for some of the tests, an
+ implementation was not possible due to differences in the libraries. As we are more focused 
+ on comparing the two Python libraries OPENCV\_PY versus SCIPY, an OPENCV\_C 
+ implementation was not necessary for every test. Source code can be accessed via the project website
 \footnote{
 http://code.google.com/p/pycam/wiki/PythonComputerVision
 }.
@@ -190,8 +193,8 @@ http://code.google.com/p/pycam/wiki/PythonComputerVision
 
 \subsection{Image Acquisition}
 
-Live image acquisition is largely utilized in a majority of CV applications.
-We thus tested, frame acquisition and frame display as a first test. Additional
+Live image acquisition is widely utilized by the majority of CV applications.
+Hence frame acquisition and frame display was an initial test. Additional
 to performance results, we describe in this section the syntax between the different 
 libraries for implementing this test.
 
@@ -232,7 +235,7 @@ int~main()\{
 \end{lyxcode}
 \caption{\label{alg:C-Image-capture}Image capture and display with OpenCV
 in C}
-
+% Should it be Algorithm 1: Imag...? With a colon?
 \end{algorithm}
 
 
@@ -240,7 +243,7 @@ in C}
 \subsubsection*{Acquiring and displaying an image with OpenCV Python}
 
 Algorithm \ref{alg:Python-Image-capture} shows the equivalent of the python wrapper.
-You can observe a high level of similarity with the previous version, the main difference being in the Python code no variables types are declared. 
+There is a high level of similarity with the previous version, however, in the Python code no variables types are declared. 
 
 %
 \begin{algorithm}[h]
@@ -267,36 +270,36 @@ hg.cvShowImage(\textquotedbl{}Snapshot\textquotedbl{},~frame)
 \subsubsection*{Comparison}
 
 Figure \ref{fig:Streaming-comparison} shows the performance results for
-the previous algorithms. The measurement was done over a 2 minutes period for 3 iterations, averaging
-the resulting frame rates. OpenCV Python and OpenCV C perform at very similar frame rates whilst carrying
-out an I/O bound task. OpenCV C having a marginally higher frame rate output than OpenCV Python. 
+the previous algorithms. The measurement was over a 2 minute period for 3 iterations,
+and  the resulting frame rates were averaged. OPENCV\_PY and OPENCV\_C perform at very similar frame rates while carrying
+out an I/O bound task. OPENCV\_C has a marginally higher frame rate output than OPENCV\_PY. 
 
-The SciPy package does not currently have a direct method for image capture, so we couldn't compare live acquisition.
-However, we developed a solution for using the OpenCV camera capture with SciPy: we created a Python decorator which converts the image data to a NumPy array before and after calling a Python function that processes and support NumPy images. A 640x480 RGB image takes less than 2ms to convert in either direction on the testing platform used throughout this report.
+The SciPy package does not currently have a direct method for image capture, so it was not possible to compare live acquisition.
+However, a solution was developed for using the OpenCV camera capture with SciPy; we created a Python decorator which converts the image data to a NumPy array before and after calling a Python function that processes and supports NumPy images. A 640x480 RGB image takes less than 2 ms to convert in either direction on the testing platform used throughout this report.
 
 \subsection{Image Blur}
 
 One of the simplest operations in image processing is blurring an
 image. As this can be achieved in different ways, we focused here on testing a basic
-Gaussian blur. As well known, this is easily achieved by convolving
+Gaussian blur. This is easily achieved by convolving
 the image with a Gaussian filter. Because of the separability of multidimensional
 Gaussian filters \cite{young1995recursive}, the convolution can be
-applied in two ways; applying a 1 dimensional filter twice, once in
-each direction; or secondly the image can be convolved with a 2-dimensional
-Gaussian filter created by the product of two 1 dimensional filters.
+applied in two ways; applying a one-dimensional filter twice - once in
+each direction, or secondly the image can be convolved with a two-dimensional
+Gaussian filter created by the product of two one-dimensional filters.
 
-Equation \ref{eq:1D Gaussian Filter} shows the Gaussian function
-for obtaining the filter in one dimension and Equation \ref{eq:2D Gaussian Filter} shows the 2 dimensional case \cite{SS01}.
+The Gaussian function for obtaining the filter in one dimension is given 
+in Equation \ref{eq:1D Gaussian Filter}, Equation \ref{eq:2D Gaussian Filter} gives the 2 dimensional case \cite{SS01}.
  \begin{equation}
 G\left(x\right)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{x^{2}}{2\sigma^{2}}}\label{eq:1D Gaussian Filter}\end{equation}
 \begin{equation}
 G\left(x,y\right)=\frac{1}{\sqrt{2\pi}\sigma^{2}}e^{-\frac{x^{2}+y^{2}}{2\sigma^{2}}}\label{eq:2D Gaussian Filter}\end{equation}
-with \textit{Sigma} the standard deviation of the Gaussian distribution. 
+Where \textit{Sigma} is the standard deviation of the Gaussian distribution. 
 
 OpenCV includes a Gaussian filter implementation that can be applied to an image by calling
 the \emph{\noun{cvSmooth}} function and passing the desired filter
 size. SciPy has a n-dimensional Gaussian filter that acts on a NumPy
-array. Both libraries use the 1 dimensional case, as it requires less
+array. Both libraries use the one-dimensional case, as it requires less
 computation.
 
 \begin{figure}[htbp]
@@ -319,8 +322,9 @@ To ensure the same level of filtering is carried out for all the libraries, the 
 \subsubsection*{Comparison}
 
 The blurred output images are shown on the Lena dataset in Figure \ref{fig:Gaussian-Output-Images}.
-A basic image difference between confirmed similar results between C++/Python OpenCV version (as expected), but
-small difference between SciPy and OpenCV Python code as presented Figure \ref{fig:Difference-of-each}. The graph in Figure \ref{fig:Difference-of-each} shows the pixel by pixel differences in each of the colour channels of a single image.
+A basic image difference between output images confirmed exactly the same results 
+between C++/Python OpenCV version (as expected), but small differences were found 
+between SciPy and OpenCV Python code as presented in Figure \ref{fig:Difference-of-each}. The graph in Figure \ref{fig:Difference-of-each} shows the pixel by pixel differences in each of the colour channels of a single image.
 The maximum intensity difference at any point was 7.8\%, the mean difference was 0.8\% of the full intensity scale. 
 
 \begin{figure}[htbp]
@@ -343,16 +347,18 @@ uses the size of the filter, this is a good indication it probably
 uses the pascal triangle as an approximation for the Gaussian kernel \cite{ben1991image}.
 These differences are minor, but it is worth noting that such a simple traditionally used algorithm provides such different results.
 
-In terms of time performance Figure \ref{fig:performance-gaussian} shows that OpenCV (either Python and C version) runs twice as fast as SciPy.
+In terms of time performance, Figure \ref{fig:performance-gaussian} shows that OpenCV (either Python and C version) runs twice as fast as SciPy.
 %
 
 \subsection{Background subtraction}
 
 A common task in security surveillance, human computer interaction is the detection of any visual changes in a video. This is done in its simplest form by a comparison of one frame to another previous frame \cite{gao2006robust}.
-If the difference image is more than a certain threshold, something has changed. 
+If the image difference exceeds a specified threshold, something is deemed to have changed. 
 
 An example is presented in Figure \ref{fig:background-Adding-and-removing}
-after adding a cellphone to a scene for the \noun{OPENCV\_PY} implementation. As Figure \ref{fig:BackgroundSubtract_graph} shows, the performance between Python an C are in the same order of magnitude, no significant difference were observable, where SCIPY offers inferior performances.
+after adding a cellphone to a scene for the \noun{OPENCV\_PY} implementation. 
+As Figure \ref{fig:BackgroundSubtract_graph} shows, the performance between Python 
+and C are in the same order of magnitude, no significant difference were observable, however, the frame rate for  SCIPY is significantly slower.
 %
 \begin{figure}[htbp]
 \includegraphics[width=0.95\columnwidth]{report_data/background_subtraction}
@@ -413,7 +419,7 @@ detection algorithm on the Lena test image with OPENCV\_PY and SCIPY.}
 
 \end{figure}
 
-Visual assessment of the images show a difference of the features identified also reflecting a difference in term of implementation between both libraries. Timing performances are available on the table below (measured average over 300 iterations on the Lena dataset), OpenCV Python offering larger better performances than SciPy.
+Visual assessment of the images show a difference of the features identified also reflecting a difference in terms of implementation between both libraries. Timing performances are available on the table below (measured average over 300 iterations on the Lena dataset), OPENCV\_PY performed the task roughly three times quicker than SciPy.
 \begin{center}
 \begin{tabular}{|c|c|c|}
 \hline 
@@ -435,11 +441,11 @@ of faces in an image, this is a specific case of general object detection.
 
 Figure \ref{fig:OpenCV-Face-Detection} shows the output from our tests running on OpenCV Python under different conditions  using the face Haar-Cascade classifier that comes with OpenCV.
 
-The method gave an average framerate of 7.16 \textpm{} 0.02 Hz. The
+The method gave an average frame rate of 7.16 \textpm{} 0.02 Hz. The
 detection process itself gave very consistent timings of 107 \textpm{}
 1 ms. There is no corresponding high level functionality for Face detection in SciPy, so a performance comparison was not possible. 
 
-However, we can note that a recent project PyCV \cite{tri2009principled} improves the face detection from OpenCV utilizing SciPy.
+However, we can note that a recent project PyCV \cite{tri2009principled} improves on the face detection in OpenCV utilizing SciPy.
 
 %
 \begin{figure}[h]
@@ -479,10 +485,9 @@ However, we can note that a recent project PyCV \cite{tri2009principled} improve
 %
 \section{Qualitative Comparison}
 
-Comparing OpenCV Python vs OpenCV C, the development and testing process has been observed 
-to be shorter and easier with the Python. The value of the Python interpreter as a better 
-rapid prototyping tool was also quite discernible regarding the development of image 
-processing/computer vision.
+Comparing OpenCV Python versus OpenCV C, the development and testing process has been observed 
+to be shorter and easier with Python. With regard to the development of image processing 
+and CV, Python has been shown to have value as a rapid prototyping tool
 
 The documentation in both SciPy and OpenCV was found to be complete,
 but not as extensive as for a professional package like MATLAB. The support
@@ -566,14 +571,15 @@ of the Python Language, Google's \noun{Unladen
 Swallow} project which aims to speed up Python by leveraging the \noun{Low
 Level Virtual Machine} (LLVM). 
 
-To finish, we can also cite Pyro \cite{blank2003pyro} a robotics simulation environment as 
+Pyro \cite{blank2003pyro}, a robotics simulation environment is 
 another example of a platform including computer vision modules.
 
 \section{Conclusion}
 
 For the CV community, Python offers a valuable platform for experimenting 
-new algorithms very quickly. Our tests demonstrated the quantitative and qualitative
-value of Python especially regarding the OpenCV Python library. For beginners in computer vision development, we thus recommend Python. For advanced project development requiring real-time support and portability on embedded systems, OpenCV C offers a more reliable approach.
+with new algorithms very quickly. Our tests demonstrated the quantitative and qualitative
+value of Python with particular regard to the OpenCV Python library. Thus for beginners in CV 
+development, we recommend Python. For advanced project development requiring real-time support and portability on embedded systems, OpenCV C offers a more reliable approach.
 
 \bibliographystyle{ieeetr}
 \bibliography{report_data/database}
