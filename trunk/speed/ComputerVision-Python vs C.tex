@@ -497,18 +497,21 @@ SciPy is still a relatively new library. In some cases, we also noticed the abse
 functions in both libraries, generally explained by the actual different orientation of libraries 
 (SciPy more oriented for general scientific computing).
 
-SciPy offers really valuable tools for the development and the monitoring of an application. Graphs can be generated easily with IPython based on the Matplotlib. In overall, IPython delivers pause execution during interpretation and give access to a live interactive shell with full timing and plotting capabilities (see Algorithm \ref{alg:Interactive,-inplace-timing}).
-%
+SciPy offers really valuable tools for the development and the monitoring of an application. Graphs can be 
+generated easily with IPython based on the Matplotlib. A powerful feature of IPython is the embeddable 
+interpreter which delivers access to a live interactive shell with full timing and plotting capabilities 
+during program execution (see Algorithm \ref{alg:Interactive,-inplace-timing}).
+
 \begin{algorithm}
 \noindent In {[}1{]}: from opencv import cv
 
-\noindent In {[}2{]}: cv.cvAnd(diffImage,image, temp)
+\noindent In {[}2{]}: cv.cvAnd(diffImage, image, temp)
 
-\noindent In {[}3{]}: timeit cv.cvAnd(diffImage,image, temp)
+\noindent In {[}3{]}: timeit cv.cvAnd(diffImage, image, temp)
 
 \noindent 1000 loops, best of 3: 229 \textmu{}s per loop
 
-\noindent In {[}4{]}: from pylab import imshow, show
+\noindent In {[}4{]}: from pylab import *
 
 \noindent In {[}5{]}: imshow(temp) 
 
@@ -516,8 +519,21 @@ SciPy offers really valuable tools for the development and the monitoring of an 
 
 \noindent In {[}6{]}: show()
 
+\noindent In {[}7{]}: image.shape
+
+\noindent Out{[}7{]}: (480, 640, 3)
+
+\noindent In {[}8{]}: differenceImage = abs(np\_image.astype(float) - original.astype(float)).astype(uint8)
+
+\noindent In {[}9{]}: timeit differenceImage = abs(np\_image.astype(float) - original.astype(float)).astype(uint8)
+
+\noindent 10 loops, best of 3: 27.7 ms per loop
+
 \caption{\label{alg:Interactive,-inplace-timing} Using IPython, the interactive
-shell can be used from deep inside a nested loop in a running program.
+shell can be used from deep inside a nested loop in a running program. Here we have
+called IPShellEmbed()() inside the background subtract algorithm to look at intermediate
+data and quickly assess timing. Note the variables from the running program are 
+directly accessible from the shell.
 }
 \end{algorithm}
 
