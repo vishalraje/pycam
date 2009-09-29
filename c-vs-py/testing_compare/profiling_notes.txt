@@ -1,0 +1,501 @@
+  150  ipython -logfile ipythonlogs/blur.py
+  151  ./blur_scipy.py 
+  152  ./blur_scipy.py \
+  153  ./blur_scipy.py
+  154  ./blur_scipy.py \
+  155  ./blur_scipy.py
+  156  ipython
+  157  ./blur_scipy.py
+  158  ipython -pylab
+  159  ./blur_scipy.py
+  160  q
+  161  ./blur_opencv.py 
+  162  ./blur_scipy.py
+  163  svn status
+  164  svn add misc.py
+  165  svn add droptoshell.py
+  166  cat ndimage.py 
+  167  rm ndimage.py 
+  168  python VideoCapturePlayer.py
+  169  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+  170  ./VCP
+  171  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+  172  ./VCP
+  173  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+  174  ./VCP
+  175  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+  176  ./VCP
+  177  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+  178  ./VCP
+  179  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+  180  ./VCP
+  181  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+  182  ./VCP
+  183  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+  184  ./VCP
+  185  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+  186  ./VCP
+  187  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+  188  ./VCP
+  189  ls
+  190  python blur_opencv.py 
+  191  python blur_scipy.py
+  192  python blur_opencv.py 
+  193  python blur_scipy.py
+  194  python blur_opencv.py 
+  195  python blur_scipy.py
+  196  ls
+  197  python webcamShow.py
+  198  svn status
+  199  svn commit -m "Fixed the timing code in VideoCapturePlayer - the python opencv version. Added timing code to the CPP version. Added a scipy gaussian blur example, made a decorator to use scipy processing functions directly on CvMats. Implemented a slow gaussian blur using convolution in scipy."
+  200  cd ~
+  201  ls
+  202  cd op
+  203  cd dev
+  204  ls
+  205  cd ..
+  206  cd Documents/
+  207  ls
+  208  cd opencv-svn/
+  209  ls
+  210  cd opencv/
+  211  ls
+  212  cd interfaces/
+  213  ls
+  214  cd swig
+  215  ls
+  216  cd general/
+  217  ls
+  218  cd ../python
+  219  ls
+  220  gedit adaptors.py &
+  221  ipython
+  222  ifconfig -a
+  223  ip add
+  224  sudo ip address add 192.168.0.200/24 dev usb0
+  225  sudo ip address add 192.168.0.200/24 dev eth1
+  226  sudo ip link set dev eth1 up
+  227  ifconfig -a
+  228  ssh root@192.168.0.202
+  229  ssh root@192.168.0.200
+  230  sudo route add -host 192.168.0.202 dev usb0
+  231  sudo route add -host 192.168.0.202 dev eth1
+  232  ssh root@192.168.0.200
+  233  ssh root@192.168.0.202
+  234  dmesg | tail
+  235  sudo ip address add 192.168.0.200/24 dev eth1
+  236  sudo ip link set dev eth1 up
+  237  sudo route add -host 192.168.0.202 dev eth1
+  238  ssh root@192.168.0.202
+  239  ssh root@192.168.0.200
+  240  sudo ssh root@192.168.0.202
+  241  su
+  242  sudo su
+  243  adb
+  244  adb devices
+  245  adb get-state
+  246  ifconfig eth1 192.168.0.200 netmask 255.255.255.0
+  247  sudo ifconfig eth1 192.168.0.200 netmask 255.255.255.0
+  248  adb kill-server
+  249  ADBHOST=192.168.0.202 adb devices
+  250  ADBHOST=192.168.0.202
+  251  export ADBHOST
+  252  ls
+  253  cd Desktop/
+  254  ls
+  255  mv IMG_1740.JPG kim_brian.jpg
+  256  adb push kim_brian.jpg /sdcard/
+  257  adb shell
+  258  ls
+  259  adb install AndroidSOS.apk 
+  260  cd ..
+  261  ls
+  262  cd android_stuff/
+  263  ls
+  264  mkdir pulled_apps
+  265  cd pulled_apps/
+  266  adb pull /system/app/Browser.apk androidbrowserbackup.apk
+  267  ls
+  268  ls -as
+  269  cd ..
+  270  adb -d install downloaded_apps/ConnectBot-svn-r404-english.apk 
+  271  adb devices
+  272  adb -d install downloaded_apps/ConnectBot-svn-r404-english.apk 
+  273  adb
+  274  adb get-state
+  275  adb remount
+  276  adb shell
+  277  ls
+  278  adb -d install downloaded_apps/ConnectBot-svn-r404-english.apk 
+  279  cd downloaded_apps/
+  280  adb install ConnectBot-svn-r404-english.apk 
+  281  adb logcat WebCore
+  282  adb shell ping 192.168.0.200
+  283  adb shell ping google.com
+  284  adb shell ping http://google.com
+  285  adb install AndroidSOS.apk 
+  286  ping -n 2 210.7.36.67
+  287  ping -n2 210.7.36.67
+  288  ping -c2 210.7.36.67
+  289  adb shell ping -c2 210.7.36.67
+  290  adb shell
+  291  ls
+  292  adb install OperaMini_4.0.apk 
+  293  adb install Universal_Conversion_Application.apk 
+  294  adb install Android_File_Browser_2.0.apk 
+  295  cd ..
+  296  ls
+  297  mkdir emulation
+  298  cd emulation/
+  299  android create avd --target 2 --name my_avd
+  300  ls
+  301  ls -a
+  302  sudo apt-get install git-core gnupg sun-java5-jdk flex bison gperf libsdl-dev libesd0-dev libwxgtk2.6-dev build-essential zip curl libncurses5-dev zlib1g-dev
+  303  sudo apt-get install git-core gnupg flex bison gperf build-essential zip curl sun-java5-jdk zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev ia32-libs x11proto-core-dev libx11-dev lib32readline5-dev lib32z-dev valigrind
+  304  sudo apt-get install git-core gnupg flex bison gperf build-essential zip curl sun-java5-jdk zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev ia32-libs x11proto-core-dev libx11-dev lib32readline5-dev lib32z-dev
+  305  cd ..
+  306  ls
+  307  sudo ip address add 192.168.0.200/24 dev eth1
+  308  sudo ip link set dev eth1 up
+  309  adb 
+  310  adb wait-for-device
+  311  ping 192.168.0.202
+  312  adb shell
+  313  adb remount
+  314  adb start-server
+  315  adb shell
+  316  ifconfig usb0 192.168.0.200 netmask 255.255.255.0
+  317  sudo ifconfig usb0 192.168.0.200 netmask 255.255.255.0
+  318  sudo ifconfig eth1 192.168.0.200 netmask 255.255.255.0
+  319  adb kill-server
+  320  ADBHOST=192.168.0.202 adb devices
+  321  adb shell
+  322  adb install downloaded_apps/AndroidScriptingEnvironment-0.11-alpha.apk 
+  323  sudo apt-get install python-simplejson
+  324  hg clone https://android-scripting.googlecode.com/hg/ android-scripting
+  325  ls
+  326  ipython
+  327  adb install Ma
+  328  adb install downloaded_apps/Maps.apk 
+  329  adb install downloaded_apps/ShoppingList-1.1.1.apk 
+  330  adb install downloaded_apps/SplashPlay-1.0.4.apk 
+  331  cd ..
+  332  ls
+  333  cd dev
+  334  ls
+  335  cd pycam/
+  336  ls
+  337  svn update
+  338  cd trunx
+  339  cd trunk/
+  340  ls
+  341  cd speed/
+  342  ls
+  343  sudo easy_install Pygments
+  344  pygmentize -f html misc.py
+  345  pygmentize -f html misc.py > ~/temp.html
+  346  gedit ~/temp.html &
+  347  from opencv import adaptors
+  348  class scipyFromOpenCV(object):
+  349  &nbsp;&nbsp;&nbsp; """This decorator can be used to wrap a function that takes 
+  350  &nbsp;&nbsp;&nbsp; and returns a numpy array into one that takes and retuns an
+  351  &nbsp;&nbsp;&nbsp; opencv CvMat.
+  352  &nbsp;&nbsp;&nbsp; """
+  353  &nbsp;&nbsp;&nbsp; def __init__(self, f):
+  354  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.f = f&nbsp;&nbsp;&nbsp; 
+  355  &nbsp;&nbsp;&nbsp; def __call__(self, image):
+  356  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # Convert CvMat to ndarray
+  357  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; np_image = adaptors.Ipl2NumPy(image)
+  358  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  359  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # Call the original function
+  360  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; np_image_filtered = self.f(np_image)
+  361  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  362  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # Convert back to CvMat
+  363  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return adaptors.NumPy2Ipl(np_image_filtered)
+  364  pygmentize -S default -f html
+  365  pygmentize -S default -f html > ~/temp.css
+  366  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx
+  367  ls
+  368  rm blur_opencv.cpp
+  369  ls
+  370  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx
+  371  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxxg++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+  372  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+  373  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx
+  374  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx videoCapturePlayer.cxx 
+  375  ./blur
+  376  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx videoCapturePlayer.cxx 
+  377  ./blur
+  378  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx videoCapturePlayer.cxx 
+  379  ./blur
+  380  python blur_opencv.py
+  381  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx videoCapturePlayer.cxx 
+  382  ./blur
+  383  ./VCP
+  384  ./blur_opencv.py 
+  385  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx videoCapturePlayer.cxx 
+  386  ./blur
+  387  ./VCP
+  388  python VideoCapturePlayer.py
+  389  ls
+  390  python VideoCapturePlayer.py
+  391  ./VCP
+  392  python VideoCapturePlayer.py
+  393  ./VCP
+  394  python VideoCapturePlayer.py
+  395  ./VCP
+  396  svn status
+  397  svn add blur_opencv.cxx 
+  398  cd report_data/
+  399  ls
+  400  svn add image_capture_graph.png 
+  401  cd ..
+  402  svn add report_data
+  403  cd report_data/
+  404  ls -a
+  405  svn status
+  406  svn rm .~lock.test_results.ods#
+  407  svn status
+  408  svn rm Image_Capture_Graph.pdf 
+  409  svn rm --force Image_Capture_Graph.pdf 
+  410  cd ..
+  411  svn status
+  412  svn commit -m "Added a CPP gaussian blur example, did performance tests of image capture code. Need to look into results, Python shouldn't be faster."
+  413  g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx videoCapturePlayer.cxx 
+  414  ./blur
+  415  ./blur_opencv.py 
+  416  g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx videoCapturePlayer.cxx 
+  417  ./blur
+  418  g++ -O2 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx videoCapturePlayer.cxx 
+  419  ./blur
+  420  g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx videoCapturePlayer.cxx 
+  421  ./blur
+  422  ./blur_opencv.py 
+  423  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+  424  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx videoCapturePlayer.cxx
+  425  pkg-config -help
+  426  pkg-config --help
+  427  ./blur_scipy.py
+  428  ./blur
+  429  ipython
+  430  ./blur_scipy.py
+  431  ls
+  432  chmod +x objectDetect.py
+  433  ./objectDetect.py 
+  434  ipython
+  435  ./objectDetect.py
+  436  ./blur_scipy.py
+  437  ./blur_opencv.py.py
+  438  ./blur_opencv.py
+  439  ./blur_scipy.py
+  440  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx videoCapturePlayer.cxx
+  441  g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx videoCapturePlayer.cxx
+  442  ./blur
+  443  ./blur_opencv.py 
+  444  ./blur_scipy.py
+  445  ls
+  446  ./blur_opencv.py 
+  447  ./blur_scipy.py
+  448  ./blur
+  449  svn status
+  450  svn add objectDetect.py
+  451  svn commit -m "Report layout is now IEEEtrans, added objectDetect - a Python class for haar object detection."
+  452  cd /home/brian/Desktop/IEEEtran/
+  453  ls
+  454  ls /usr/share/texmf-tetex/tex/latex/IEEEtran
+  455  ls /usr/share/texmf-tetex/tex/latex/
+  456  ls /usr/share/
+  457  ls /usr/share/lyx
+  458  ls /usr/share/lyx/layouts/
+  459  ls
+  460  DIR=/usr/share/lyx/layouts/
+  461  ls /usr/share/texmf-tetex/
+  462  ls /usr/local/te*
+  463  locate texmf-local
+  464  locate texmf
+  465  ls /usr/share/texmf-texlive/
+  466  ls /usr/share/texmf-texlive/tex
+  467  ls /usr/share/t*
+  468  ls /usr/share/texmf/tex
+  469  ls /usr/share/texmf/tex/latex
+  470  ls /usr/share/texmf/tex/plain
+  471  ls /usr/share/texmf
+  472  locate .cls
+  473  ls /usr/share/texmf-texlive/tex/latex/
+  474  ls /usr/share/texmf-texlive/tex/latex/I*
+  475  ls /usr/share/texmf-texlive/tex/latex/IEEE
+  476  ls /usr/share/texmf-texlive/tex/latex/IEEEtran
+  477  sudo texhash
+  478  ls ~./Lyx
+  479  cat ~./Lyx
+  480  cat ~/Lyx
+  481  cat ~.Lyx
+  482  ls ~/.lyx
+  483  cat /home/brian/.lyx/textclass.lst 
+  484  locate share/texmf-local/tex
+  485  locate texmf-local
+  486  ls /usr/share/texmf-texlive/tex/latex/IEEEtran
+  487  ls
+  488  sudo cp IEEEtran.cls /usr/share/texmf-texlive/tex/latex/IEEEtran/IEEEtran.cls
+  489  sudo texhash
+  490  cat /home/brian/.lyx/textclass.lst | grep IEEE
+  491  locate haarcascade_eye
+  492  ls /usr/local/share/opencv/haarcascades/
+  493  ls /usr/share/opencv/haarcascades/
+  494  ls /home/brian/Documents/opencv-svn/opencv/data/haarcascades/
+  495  cd /home/brian/dev/pycam/trunk/speed
+  496  ./VideoCapturePlayer.py
+  497  ipython
+  498  ./VideoCapturePlayer.py
+  499  ./objectDetect.py
+  500  ipython
+  501  ls
+  502  ienabler.py 
+  503  cd Desktop/
+  504  ienabler.py 
+  505  cd ..
+  506  ls
+  507  cd dev
+  508  ls
+  509  cd pycam
+  510  ls
+  511  svn update
+  512  svn status
+  513  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+  514  cd trunk/speed/
+  515  ls
+  516  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+  517  rm VCP
+  518  g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+  519  ./VCP 
+  520  g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+  521  ./VCP 
+  522  g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+  523  ./VCP 
+  524  g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+  525  ./VCP
+  526  g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+  527  ./VCP
+  528  ls
+  529  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx videoCapturePlayer.cxx
+  530  g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx videoCapturePlayer.cxx
+  531  g++ -pedantic -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx videoCapturePlayer.cxx
+  532  g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx videoCapturePlayer.cxx
+  533  ./blur
+  534  ./blur_opencv.py 
+  535  g++ -pg -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx videoCapturePlayer.cxx
+  536  ./blur
+  537  ls
+  538  ./blur
+  539  ls
+  540  gprof gmon.out 
+  541  gprof blur gmon.out 
+  542  clear
+  543  gprof blur gmon.out 
+  544  lc
+  545  gprof -cl blur gmon.out 
+  546  man gprof
+  547  gprof -c blur gmon.out 
+  548  lc
+  549  clear
+  550  opcontroll
+  551  opcontrol
+  552  sudo apt-get install oprofile
+  553  lc
+  554  opcontrol --start
+  555  opcontrol --no-vmlinux
+  556  opcontrol --init
+  557  sudo opcontrol --init
+  558  sudo opcontrol --start
+  559* sudo opcontrol --no-vmli
+  560  sudo opcontrol --start
+  561  ./blur
+  562  lc
+  563  sudo opcontrol --stop
+  564  sudo opcontrol --dump
+  565  ls /var/lib/oprofile/
+  566  ls /var/lib/oprofile/samples/
+  567  ls /var/lib/oprofile/samples/current/
+  568  lc
+  569  clear
+  570  ls
+  571  man opreport 
+  572  oreport -c `pwd`/blur
+  573  opreport -c `pwd`/blur
+  574  man opreport
+  575  opreport -lc `pwd`/blur
+  576  man opreport
+  577  opreport -d -l -c `pwd`/blur
+  578  opreport -d -l `pwd`/blur
+  579  g++ -g -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o blur blur_opencv.cxx videoCapturePlayer.cxx
+  580  sudo opcontrol --stop
+  581  sudo opcontrol --reset
+  582  sudo opcontrol --start
+  583  ./blur
+  584  sudo opcontrol --stop
+  585  sudo opcontrol --dump
+  586  opreport -d -l `pwd`/blur
+  587  opreport -c -l `pwd`/blur
+  588  ll /usr/lib/libcv.so
+  589  ls -l /usr/lib/libcv.so
+  590  ls -l /usr/lib/libcv.so.1.1
+  591  ls -l /usr/lib/libcv.so.1.1.0 
+  592  opreport -c -l /usr/lib/libcv.so.1.1.0 
+  593  opreport -c -l /usr/lib/libcv.so
+  594  opreport -c -l /usr/lib/libcv
+  595  opreport -c -l libcv
+  596  opreport -c -l *libcv*'
+
+  597  opreport -c -l '*libcv*'
+  598  opreport -l '*libcv*'
+  599  opreport '*libcv*'
+  600  cls
+  601  clear
+  602  opreport -c -l '*libcv*' > 1.txt
+  603  opreport -l '*libcv*' > 2.txt
+  604  opreport '*libcv*' > 3.txt
+  605  sudo opcontrol --stop
+  606* 
+  607  opreport -l '*libcv*' 
+  608  sudo opcontrol --start
+  609  lc
+  610  clear
+  611  ls
+  612  ./blur_opencv.py & x=$? ;  sleep 30 ; kill $x
+  613  lc
+  614  clear
+  615  sudo opcontrol --stop
+  616  sudo opcontrol --reset
+  617  sudo opcontrol --start
+  618  ./blur_opencv.py 1>/dev/null 2>/dev/null ; x=0; while (true) ; do echo $x ; x=$(expr $x + 1) ; done
+  619  ./blur_opencv.py 1>/dev/null 2>/dev/null & ; x=0; while (true) ; do echo $x ; x=$(expr $x + 1) ; sleep 1 ; done
+  620  ./blur_opencv.py 1>/dev/null 2>/dev/null & x=0; while (true) ; do echo $x ; x=$(expr $x + 1) ; sleep 1 ; done
+  621  lc
+  622  ps aux | grep blur
+  623  kill 13618
+  624  ps aux | grep blur
+  625  lc
+  626  ls
+  627  sudo opcontrol --stop
+  628  sudo opcontrol --reset
+  629  sudo opcontrol --start
+  630  ./blur_opencv.py 1>/dev/null 2>/dev/null & x=0; while (true) ; do echo $x ; x=$(expr $x + 1) ; sleep 1 ; done
+  631  sudo opcontrol --stop
+  632  cls
+  633  opreport -l '*libcv*'
+  634  opreport '*libcv*'
+  635  opreport -c -l '*libcv*' > 1.txt
+  636  opreport -l '*libcv*' > 2.txt
+  637  opreport '*libcv*' > 3.txt
+  638  sudo opcontrol --stop
+  639  sudo opcontrol --reset
+  640  sudo opcontrol --start
+  641  ./blur 1>/dev/null 2>/dev/null & x=0; while (true) ; do echo $x ; x=$(expr $x + 1) ; sleep 1 ; done
+  642  opreport -c -l '*libcv*' > 1c.txt
+  643  opreport -l '*libcv*' > 2c.txt
+  644  opreport '*libcv*' > 3c.txt
+  645  ls
+  646  clear
+  647  ls
+  648  history
+  649  history > profiling_notes.txt
