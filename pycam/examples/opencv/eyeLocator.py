@@ -2,10 +2,13 @@
 
 import opencv
 import pygame
-from VideoCapturePlayer import *
-from conversionUtils import *
-from pygameFaceDetect import getFaces
-from objectDetect import ObjectDetector
+from pycam import VideoCapturePlayer
+from pycam.conversionUtils import *
+from pycam.pygameFaceDetect import getFaces
+from pycam.objectDetect import ObjectDetector
+from pygame.locals import *
+
+eyeDetector = ObjectDetector("eye")
 
 def locateFaceAndEyeProcess(surf):
     faces = getFaces(surf)
@@ -23,7 +26,6 @@ def locateFaceAndEyeProcess(surf):
     return surf
 
 if __name__ == "__main__":
-    eyeDetector = ObjectDetector("eye")
     vcp = VideoCapturePlayer(processFunction=locateFaceAndEyeProcess,forceOpenCv=True)
     vcp.main()
     pygame.quit()

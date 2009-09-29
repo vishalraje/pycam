@@ -4,7 +4,7 @@ from pygame import surfarray
 def surf2CV(surf):
     """Given a surface, convert to an opencv format (cvMat)
     """
-    numpyImage = surfarray.pixels3d(surf)
+    numpyImage = surfarray.array3d(surf)
     cvImage = adaptors.NumPy2Ipl(numpyImage.transpose(1,0,2))
     return cvImage
 

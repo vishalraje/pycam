@@ -1,7 +1,7 @@
 # Derived from Nirav Patel's Pygame Camera Tutorial
 
 import pygame
-from VideoCapturePlayer import VideoCapturePlayer
+from pycam import VideoCapturePlayer
 
 class GreenScreen():
     def __init__(self):

@@ -1,9 +1,7 @@
-# Derived from Nirav Patel's Pygame Camera Tutorial
-
 # When the color desired is in the middle box, click the mouse to start thresholding.
 
 import pygame
-from VideoCapturePlayer import VideoCapturePlayer
+from pycam import VideoCapturePlayer
 
 class Thresholder():
     def __init__(self):

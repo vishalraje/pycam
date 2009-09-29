@@ -1,11 +1,11 @@
 #!/usr/bin/python
-from VideoCapturePlayer import *
-import pygameFaceDetect
-import edgeDetect
+from pycam import VideoCapturePlayer
+from pycam import pygameFaceDetect
+from pycam.filters import outlineEdges
 
 def process(surf):
     faces = pygameFaceDetect.getFaces(surf)
-    surf = edgeDetect.edgeDetectionProcess(surf)
+    surf = outlineEdges(surf)
     if faces:
         pygameFaceDetect.drawFacesOnSurface(surf, faces)
     return surf
