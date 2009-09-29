@@ -1,11 +1,12 @@
 #!/usr/bin/python
-
+"""This example doesn't actually display anything - but it prints out
+if it finds a face at the computer or not."""
 import opencv
 import pygame
-from VideoCapturePlayer import *
-from conversionUtils import *
+from pycam import VideoCapturePlayer
+from pycam.conversionUtils import *
 
-from objectDetect import ObjectDetector
+from pycam.objectDetect import ObjectDetector
 
 def locatePeopleProcess(surf, lastState=[]):
     person = False

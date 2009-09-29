@@ -6,11 +6,11 @@ with pygame.
 
 """
 
-from VideoCapturePlayer import *
-import faceDetect
+from pycam import VideoCapturePlayer
+from pycam import ObjectDetector
 import opencv
 
-from conversionUtils import *
+from pycam.conversionUtils import *
 import pygame
 from pygame.locals import *
 from pygame import surfarray
@@ -20,14 +20,16 @@ from pygame import surfarray
 # around the faces... Note pygame is still rendering the result
 drawWithOpenCv = False
 
-def drawFacesOnSurface(surf,faces):
+faceDetect = ObjectDetector('face')
+
+def drawFacesOnSurface(surf, faces):
     """draw rectangles around detected cvObjects with pygame
     """
     s = faceDetect.image_scale
     for face in faces:
         r = pygame.Rect(face.x*s,face.y*s,face.width*s,face.height*s)
         pygame.draw.rect(surf,Color("green"),r,1)
-    
+
 
 def locateFacesProcess(surf):
     if drawWithOpenCv:
@@ -38,15 +40,17 @@ def locateFacesProcess(surf):
         faces = getFaces(surf)
         if faces:
             drawFacesOnSurface(surf,faces)
-    
     return surf
 
 def getFaces(surf):
     img = surf2CV(surf)
     return faceDetect.detectObject(img)
 
-if __name__ == "__main__":
+def main():
     vcp = VideoCapturePlayer(processFunction=locateFacesProcess)
     vcp.main()
     pygame.quit()
+    
+if __name__ == "__main__":
+    main()
     

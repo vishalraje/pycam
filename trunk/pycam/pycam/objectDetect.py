@@ -2,6 +2,7 @@
 """
 This library is used for object detection using haar-like features.
 The program finds haar cascade objects in a camera image or video stream and displays a red box around them.
+It requires OpenCV to run.
 
 An objectDetector can be made with a harrcascade name.
 Usage:

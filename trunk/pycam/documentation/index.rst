@@ -1,0 +1,32 @@
+.. Pycam documentation master file, created by
+   sphinx-quickstart on Tue Sep 29 21:26:12 2009.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to Pycam's documentation!
+=================================
+
+**Pycam** is a project exploring the new pygame Camera module with opencv.
+The project contains a video player class that can work with different 
+backend setups, and can incorporate an optional process function.
+
+Setup & Install
+===============
+You can install Pycam with setup tools:
+# sudo python setup.py install
+
+This copies pycam to your distribution dir. So you can then 
+import pycam
+
+
+
+Contents:
+
+.. toctree::
+   :maxdepth: 2
+
+
+   modules.rst
+   
+
+.. automodule::

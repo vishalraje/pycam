@@ -1,0 +1,33 @@
+.. Pycam documentation master file, created by
+   sphinx-quickstart on Tue Sep 29 21:26:12 2009.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Pycam's Modules
+===============
+
+**Camera**
+This is a Pygame camera that uses OpenCV. This was usefull back when the Pygame Camera didn't work
+on every platform or with many cameras. Now it is unneeded as pygame camera includes an opencv option.
+
+
+**VideoCapturePlayer**
+A VideoCapturePlayer object is an encapsulation of 
+    the display of a video stream. 
+    
+    A process can be given (as a function) that is run
+    on every frame between capture and display.
+    
+    For example a filter function that takes and returns a 
+    surface can be given. This player will take the webcam image, 
+    pass it through the filter then display the result.
+    
+    If the function takes significant computation time (>1second)
+    The VideoCapturePlayer takes 3 images between each, this flushes
+    the buffer, ensuring an updated picture is used in the next computation.
+     
+    If a new version of pygame is installed - this class uses the pygame.camera module, otherwise 
+    it uses opencv.
+    
+
+
