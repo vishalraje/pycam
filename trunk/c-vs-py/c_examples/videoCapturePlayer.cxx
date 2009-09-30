@@ -1,7 +1,41 @@
 /*
-Should be able to compile this independantly by uncommenting the main function at the bottom and using:
-g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o VCP videoCapturePlayer.cxx
+ * This VideoCapturePlayer is the code behind all the C/C++ examples.
+ * This is the interface to the VideoCapturePlayer (VCP) written in C++
+ * The VCP optionally takes a function pointer to a function that proccess
+ * each frame.
+ * 
+ * Brian Thorne <brian.thorne@hitlabnz.org>
 */
+
+//  Example Usage Follows
+/*
+// This is a template for a function that can be fed into VideoCapturePlayer
+// It must take a CvMat, and return a CvMat.
+// It draws a rectangle on the screen with OpenCV.
+CvMat * drawBox(CvMat *x)
+{
+    CvPoint pt1, pt2;
+    pt1.x = pt1.y = 200;
+    pt2.x = pt2.y = 250;
+    cvRectangle( x, pt1, pt2, CV_RGB(30,0,200) );
+    return x;
+}
+
+// An example main function creating a VideoCapturePlayer
+// with a process function.
+int main( int argc, char** argv )
+{
+    cout << "Starting VideoCapturePlayer demo" << endl;
+    cout << "Press 'q' to exit the program" << endl;
+    // With or without a process function:
+    //VideoCapturePlayer vcp = VideoCapturePlayer(&drawBox);
+    VideoCapturePlayer vcp = VideoCapturePlayer();
+    vcp.init();
+    vcp.main();
+    return 0;
+}
+*/
+
 
 #include <string>
 #include <iostream>
@@ -121,33 +155,4 @@ void VideoCapturePlayer::main()
     cout << "FPS: " << fps << endl;
 }
 
-//  Example Usage Follows
-/*
 
-
-// This is a template for a function that can be fed into VideoCapturePlayer
-// It must take a CvMat, and return a CvMat.
-// It draws a rectangle on the screen.
-CvMat * drawBox(CvMat *x)
-{
-    CvPoint pt1, pt2;
-    pt1.x = pt1.y = 200;
-    pt2.x = pt2.y = 250;
-    cvRectangle( x, pt1, pt2, CV_RGB(30,0,200) );
-    return x;
-}
-
-// An example main function creating a VideoCapturePlayer
-// with a process function.
-int main( int argc, char** argv )
-{
-    cout << "Starting VideoCapturePlayer demo" << endl;
-    cout << "Press 'q' to exit the program" << endl;
-    //VideoCapturePlayer vcp = VideoCapturePlayer(&drawBox);
-    VideoCapturePlayer vcp = VideoCapturePlayer();
-    vcp.init();
-    vcp.main();
-    
-    return 0;
-}
-*/

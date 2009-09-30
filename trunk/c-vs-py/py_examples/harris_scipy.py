@@ -5,7 +5,8 @@ Show an image and detect harris features with scipy in python.
 Original source from:
 http://jesolem.blogspot.com/2009/01/harris-corner-detector-in-python.html
 
-Brian Thorne - July 09
+Brian Thorne - July 09 - <brian.thorne@hitlabnz.org>
+
 Compile/Run with: python harris_scipy.py
 """
 

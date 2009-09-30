@@ -2,7 +2,7 @@
 
 """
 Load, Filter then Show an image with opencv in python
-Brian Thorne 2009
+Brian Thorne 2009 <brian.thorne@hitlabnz.org>
 """
 
 from VideoCapturePlayer import VideoCapturePlayer as VCP
@@ -32,7 +32,7 @@ def medianBlur(image, filterSize=43):
     >>> plot_ref = imshow(b)
     >>> plot_ref = subplot(1,2,2)
     >>> plot_ref = imshow(i)
-    >>> #show() # show the images
+    >>> show() # show the images
     
     """
     cv.cvSmooth(image, image, cv.CV_MEDIAN, filterSize)
@@ -62,6 +62,6 @@ def testMedianBlur():
     
 
 if __name__ == "__main__":
-    testMedianBlur()
+    #testMedianBlur()
     title = "Median Filtered Output"
-    #VCP(medianBlur, title).main()
+    VCP(medianBlur, title).main()

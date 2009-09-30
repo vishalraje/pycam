@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 """
- This example has no error checking, it should not be used!
+Shows the simplest possible way of showing a single frame using OpenCV
 
- Brian Thorne
+Note: This example has no error checking, it should not be used!
+
+Brian Thorne 2009 <brian.thorne@hitlabnz.org>
 """
 
 
 from opencv import highgui as hg
-
 
 capture = hg.cvCreateCameraCapture(0)
 hg.cvNamedWindow( "Snapshot")

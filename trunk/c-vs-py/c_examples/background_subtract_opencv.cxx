@@ -1,12 +1,11 @@
 /*
- *      blur_opencv.cxx
- *      
- *      Copyright 2009 Brian Thorne <brian.thorne@canterbury.ac.nz>
+ *  Carry out a simple background subtraction and show the changes.
+ *
+ *  Compile with:
  * 
- *      Compile with:
- * 
- *   g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o bg_sub background_subtract_opencv.cxx videoCapturePlayer.cxx
+ *  g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o background_subtract background_subtract_opencv.cxx videoCapturePlayer.cxx
  *   
+ *  Brian Thorne 2009 <brian.thorne@hitlabnz.org>
  */
 
 #include <iostream>
@@ -14,6 +13,14 @@
 
 CvMat *original;
 
+/*
+ * Takes the first 3 frames and throws them out.
+ * Saves the forth frame.
+ * Carries out a difference between each frame with this saved original.
+ * Thresholds the difference, applies a median filter, blurs the mask
+ * then masks the original frame with the changes, so only the changes appear.
+ * 
+ * */
 CvMat * bg_subtract(CvMat *x)
 {
     static int n = 0;

@@ -4,12 +4,29 @@ from opencv import cv, highgui as hg
 import time
 import logging
 
+"""
+Todo:
+* Change the init function to enable either NumPy or CvMat or Pygame Surface types.
+"""
+
+"""
+This sets how much output there will be. 
+Options are:
+None - if no information is wanted
+logging.ERROR - Only spit out information if stuff up occurs.
+logging.INFO (Default) - Just startup message, and framerate after completion.
+logging.DEBUG - Information on every frame.
+"""
 verbosity = logging.INFO
+
+
+"""
+To enable profiling of the program. Gets lots and lots of stats about where 
+time was spent.
+"""
 profiling = False
 
 logging.basicConfig(filename=None,level=verbosity,)
-
-
 
 
 class VideoCapturePlayer(object):

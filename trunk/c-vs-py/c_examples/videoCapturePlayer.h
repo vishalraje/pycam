@@ -1,7 +1,9 @@
 /*
- *  videoCapturePlayer.h
+ * This is the interface to the VideoCapturePlayer (VCP) written in C++
+ * The VCP optionally takes a function pointer to a function that proccess
+ * each frame.
  *
- *  Created by Brian Thorne on 31/08/09.
+ *  Brian Thorne 31/08/09  <brian.thorne@hitlabnz.org>
  *
  */
 

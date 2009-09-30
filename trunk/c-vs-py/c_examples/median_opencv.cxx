@@ -1,11 +1,11 @@
-/*
- *      blur_opencv.cxx
- *      
- *      Copyright 2009 Brian Thorne <brian.thorne@canterbury.ac.nz>
+/* 
+ * This shows a median blur applied to a live webcam stream.
+ *     
+ *  Brian Thorne 2009 <brian.thorne@canterbury.ac.nz>
  * 
- *      Compile with:
+ *  Compile with:
  * 
- * g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o median median_opencv.cxx videoCapturePlayer.cxx
+ *  g++ -O3 -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o median median_opencv.cxx videoCapturePlayer.cxx
  *  
  */
 
@@ -13,6 +13,10 @@
 #include <iostream>
 #include "videoCapturePlayer.h"
 
+/*
+ * The process function that carries out the median blur on a OpenCV CvMat image.
+ * Returns the filtered CvMat image.
+ * */
 CvMat * medianBlur(CvMat *x)
 {
     int filterSize = 43;
@@ -20,6 +24,10 @@ CvMat * medianBlur(CvMat *x)
     return x;
 }
 
+/*
+ * Function for testing the static performance of the median blur.
+ * You might need to change the path to lena.
+ * */
 bool test_medianBlur()
 {
     std::cout << "Testing Median Blur C++ function" << std::endl;
@@ -33,7 +41,7 @@ bool test_medianBlur()
 int main( int argc, char** argv )
 {
     std::cout << "Median Blur C++ file" << std::endl;
-    test_medianBlur();
+    //test_medianBlur();
     std::cout << "Starting Median Blur C++ Video Capture Demo" << std::endl;
     std::cout << "Press 'q' to exit the program" << std::endl;
     VideoCapturePlayer vcp = VideoCapturePlayer(&medianBlur);
