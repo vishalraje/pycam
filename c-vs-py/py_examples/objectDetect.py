@@ -3,8 +3,6 @@
 This library is used for object detection using haar-like features.
 The program finds haar cascade objects in a camera image or video stream and displays a red box around them.
 
-TODO: make into a class
-TODO: make it standalone runnable as well...
 TODO: use optparser
 """
 
@@ -12,7 +10,8 @@ from os import path
 import sys
 import exceptions
 import opencv
-#TODO stop polluting the namespace
+
+#TODO stop polluting the namespace, just import what is used
 from opencv.cv import *
 from opencv.highgui import *
 

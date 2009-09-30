@@ -1,7 +1,12 @@
 /*
-Should be able to compile with:
-g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o videoShow videoShow.c
-Pass a video file as first arg, or it will try webcam.
+ * This is a standalone video capture and display loop with error checking.
+ * 
+ * Should be able to compile with:
+ *  g++ -Wall `pkg-config --cflags opencv` `pkg-config --libs opencv` -o videoShow videoShow.c
+ * 
+ * Pass a video file as first arg, or it will try webcam.
+ * 
+ * Brian Thorne 2009 <brian.thorne@hitlabnz.org>
 */
 
 #include <stdio.h>
