@@ -227,8 +227,8 @@ hg.cvShowImage("Snapshot", frame)
 \end_layout
 
 \begin_layout Standard
-As with C++, an object orrientated version of this acquisition loop with
- error checking is used in further tests.
+As with C++, an object orriented version of this acquisition loop with error
+ checking is used in further tests.
  The VideoCapturePlayer object optionally takes a pointer to a function.
  The function takes the raw image, and returns a possibly modified image.
 \end_layout
@@ -677,8 +677,7 @@ Learning OpenCV: computer vision with the OpenCV library
 \begin_inset Quotes erd
 \end_inset
 
-, page 112.
- 
+
 \end_layout
 
 \end_body
