@@ -10,8 +10,6 @@ plt.figure()
 show()
 
 def plot_seperate_rgb(diff):
-    
-   
     plt.subplot(1,3,1)
     plt.title("R")
     im1 = plt.imshow(diff[:,:,0], cmap=cm.Reds)

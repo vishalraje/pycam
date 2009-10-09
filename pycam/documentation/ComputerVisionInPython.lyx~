@@ -2,7 +2,7 @@
 \lyxformat 345
 \begin_document
 \begin_header
-\textclass paper
+\textclass book
 \use_default_options true
 \begin_modules
 theorems-ams
@@ -61,7 +61,7 @@ An introduction to and argument for computer vision in Python inplace of
  
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Introduction
 \end_layout
 
@@ -75,19 +75,6 @@ e.
  I aim to show what is possible with current libraries, demonstrate their
  usability, explore their limitations, compare performance and cover elements
  of best coding practice.
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-frac{a}{b}
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard

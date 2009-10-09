@@ -5,7 +5,17 @@ import exceptions
 
 import logging
 verbose = False
-# Todo replace with proper pythonic logging
+
+"""
+Future API changing notes.
+It would be good to combine the VideoCapturePlayers (VCP) for OpenCV and for Pygame.
+Maybe using functools a VCP could be made using the optimal data storage format?
+
+Or could have in the constructor args a opencvprocess and a numpyprocess and a surface process
+and depending on what is given create the right display and use the right data storage...
+
+
+"""
 
 logging.debug("Pygame Version: %s" % pygame.__version__)
 
@@ -129,6 +139,7 @@ class VideoCapturePlayer(object):
             pass
     
     def main(self):
+        """Start the video capture loop"""
         if verbose:
             print "Video Capture & Display Started... press Escape to quit"
         going = True

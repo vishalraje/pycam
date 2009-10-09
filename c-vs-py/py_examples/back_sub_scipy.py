@@ -2,45 +2,35 @@
 """
 ~7fps
 Brian Thorne - September 09
-
 """
 
-from __future__ import division
-import numpy as np
-from numpy import array, uint8
+#from __future__ import division
+#from IPython.Shell import IPShellEmbed
+
+from numpy import array, uint8, zeros
 from scipy import signal, ndimage
 from VideoCapturePlayer import VideoCapturePlayer as VCP
-from misc import scipyFromOpenCV, opencvFilt2sigma
-
-from IPython.Shell import IPShellEmbed
+from misc import scipyFromOpenCV
 from scipy.ndimage import morphology
-
 
 @scipyFromOpenCV
 def threshold_image(np_image, n=[]):
-    """Record the first 5 images to get a background, then diff current frame with the last saved frame.
-    """
     if len(n) < 5:
-        # n[4] will be our background
-        # First capture a few images
+        # First capture a few images - give the camera time to adjust...
         n.append(np_image[:])
-        if len(n) == 5:
-            # last time here 
-            #n[4] = ndimage.filters.gaussian_filter(n[4],3,order=0)
-            pass 
+        #if len(n) == 5:
+        #    could do some filtering or averaging here
         return np_image
     original = n[4]
     img = np_image[:]
     
-    
-    
-    differenceImage = abs(np_image.astype(float) - original.astype(float)).astype(uint8)
-    # filter out random noise
-    #differenceImage = ndimage.median_filter(differenceImage,size=3)
-    
+    # Take the difference between the original frame and the current frame
+    differenceImage = abs(np_image.astype(int) - original.astype(int)).astype(uint8)
+
     """The threshold value determines the amount of "Change" required 
     before something will show up"""
     thresholdValue = 30
+    
     # Take the N-Dimensional difference (3 channels of binary)
     differenceImage = (differenceImage >= thresholdValue)
     
@@ -53,23 +43,15 @@ def threshold_image(np_image, n=[]):
     # Remove Salt & Pepper Noise
     differenceImage = ndimage.median_filter(differenceImage,size=5)
     
+    # Create a black image of same type and shape as input
+    output = zeros(img.shape).astype(img.dtype)
     
-    #IPShellEmbed()()
-    output = np.zeros(img.shape).astype(img.dtype)
+    # Take the original pixel at every point where the image is "different"
     output[differenceImage] = img[differenceImage]
     return output
 
-
-
-def main():
-    title = "SciPy Background Subtraction"
-    
-    VCP(threshold_image,title=title).main()
-    
-
 if __name__ == "__main__": 
-    #testGaussianBlur()
-    main()
-    #import cProfile
-    #cProfile.run("main()",'python_profile_data')
+    title = "SciPy Background Subtraction"
+    VCP(threshold_image,title=title).main()
+
 
