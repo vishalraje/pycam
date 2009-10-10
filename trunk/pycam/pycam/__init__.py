@@ -14,11 +14,16 @@ The pycam.camera is a wrapper for an OpenCV camera to be used with Pygame.
 # Turn pycam into a python module...
 from VideoCapturePlayer import VideoCapturePlayer
 from camera import Camera
-from conversionUtils import surf2CV, cv2SurfArray, numpyFromSurf, numpyFromOpenCV
+import filters
+from conversionUtils import numpyFromSurf
+
+# If we have OpenCV
+from conversionUtils import surf2CV, cv2SurfArray, numpyFromOpenCV
 from adaptors import Ipl2NumPy, NumPy2Ipl
 import objectDetect
 from objectDetect import ObjectDetector
-import filters
+
+
 
 
 
