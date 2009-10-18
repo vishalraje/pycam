@@ -22,7 +22,8 @@ class GreenScreen():
     
     def threshold(self, snapshot):
         dest = snapshot.copy()
-        pygame.transform.threshold(dest, snapshot, (0,0,0), (100,100,100) ,(255,255,255),1,self.background)   
+        pygame.transform.threshold(dest, snapshot, (0,255,0),(30,30,30),(0,0,0),1,self.background)
+		#(0,0,0), (100,100,100,0) ,(255,255,255), 1, self.background,False)   
         return dest #self.dest
 
     def process(self, snapshot):

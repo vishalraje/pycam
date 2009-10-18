@@ -149,11 +149,10 @@ class VideoCapturePlayer(object):
             # note seems to work on my camera at hitlab - Brian
             if not hasattr(self.camera, "query_image") or self.camera.query_image():
                 self.get_and_flip()
-                self.clock.tick()
-                if self.clock.get_fps():
-                    fpslist.append(self.clock.get_fps())
-                    if verbose:
-                        print "fps: ",fpslist[-1]
+                self.clock.tick(60)
+                fpslist.append(self.clock.get_fps())
+                if verbose:
+                    print "fps: ",fpslist[-1]
         print "Video Capture &  Display complete."
         print "Average Frames Per Second " 
         avg = numpy.average(fpslist)
