@@ -22,7 +22,7 @@ DEFINES=
 
 # -L/usr/local/lib
 LIBDIRS		=	-L/usr/X11R6/lib -L/lib -L/usr/lib
-LIBS		=	-lm -ldc1394_control -lraw1394 -lcv -lcvaux -lhighgui
+LIBS		=	-lm -lcv -lcvaux -lhighgui
 INCLUDES	=	-I/usr/include/opencv
 
 OBJS 		= 	remove_corneal_reflection.o \

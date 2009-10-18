@@ -43,8 +43,8 @@
 #include <math.h>
 #include <sys/time.h>
 
-#include <libraw1394/raw1394.h>
-#include <libdc1394/dc1394_control.h>
+//#include <libraw1394/raw1394.h>
+//#include <libdc1394/dc1394_control.h>
 
 #include "cvEyeTracker.h"
 
@@ -793,9 +793,27 @@ void Reduce_Line_Noise(IplImage* in_image)
 void Grab_Camera_Frames()
 {
   Grab_IEEE1394();
-  memcpy(eye_image->imageData,Get_Raw_Frame(0),monobytesperimage);
+  //memcpy(eye_image->imageData,Get_Raw_Frame(0),monobytesperimage);
   //memcpy(scene_image->imageData,(char *)cameras[1].capture_buffer,monobytesperimage);
-  FirewireFrame_to_RGBIplImage((unsigned char *)Get_Raw_Frame(1), scene_image);
+  //FirewireFrame_to_RGBIplImage((unsigned char *)Get_Raw_Frame(1), scene_image);
+  
+  IplImage *tempEyeImage = Get_Raw_Frame(0);
+  //IplImage *sceneImage =  Get_Raw_Frame(1);
+  printf("Got raw frame for eye image, nChans %i, depth: %i\n", tempEyeImage->nChannels, tempEyeImage->depth);
+  printf("Width x height: %i x %i\n", tempEyeImage->width, tempEyeImage->height);
+  
+  eye_image->imageData = tempEyeImage->imageData;
+  //eye_image->imageData = 
+  /*cvCvtColor(
+        tempEyeImage,
+        eye_image,
+        CV_RGB2GRAY
+        );
+  printf("Image converted.");*/
+  //eye_image = Get_Raw_Frame(0);
+  scene_image = Get_Raw_Frame(1);
+  
+  
 
   if (original_eye_image != NULL) 
   	cvReleaseImage(&original_eye_image);
@@ -1108,19 +1126,9 @@ void process_image_display(void)
 // Returns true/false
 int eyetracker_calc_gaze(void)
 {
-// ??: This is unnecessary: 
-//
-//  if (start_point.x == -1 && start_point.y == -1)
-//      Grab_Camera_Frames();
-//  }
 
     process_image(); 
     process_image_display(); 
-
-// ??: This is unnecessary: (unless we need to store one set of frames 
-//     before we can search/print properly)
-//
-//    if (frame_number%1==0) Update_Gui_Windows(); 
 
 	if (!valid_point_calc || !valid_ellipse || !do_map2scene) 
 		return 0;
