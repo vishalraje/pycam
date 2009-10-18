@@ -11,8 +11,8 @@ from scipy import signal
 from pygame import transform
 
 useOpenCvCam = False     # Force the use of opencv camera instead of pygames - VidCapPlayer will fall back to this anyway
-useScipy = False         # Otherwise use pygames inbuilt transform tools for the edge detection.
-scipySpline = useScipy and True     # or laplacian filter...
+useScipy = True         # Otherwise use pygames inbuilt transform tools for the edge detection.
+scipySpline = useScipy and False     # or laplacian filter...
 
 
 if useOpenCvCam:
