@@ -2,7 +2,8 @@
 # File:  Makefile (for cvEyeTrack library)
 #
 
-PREFIX = /usr/local/
+PREFIX = /usr/
+#PREFIX = /usr/local/
 #PREFIX = ./opt/
 
 LIB = libCvEyeTrack.so
@@ -18,11 +19,11 @@ CXX			=	g++
 CXXFLAGS	=	-g -Wall -fPIC
 
 #DEFINES= -O2
-DEFINES=
+DEFINES="-D__MINGW__"
 
 # -L/usr/local/lib
 LIBDIRS		=	-L/usr/X11R6/lib -L/lib -L/usr/lib
-LIBS		=	-lm -lcv -lcvaux -lhighgui
+LIBS		=	-lm -lcv -lcvaux -lhighgui -lcxcore
 INCLUDES	=	-I/usr/include/opencv
 
 OBJS 		= 	remove_corneal_reflection.o \
@@ -69,7 +70,7 @@ $(LIB): $(libObj)
 build: $(OBJS)
 	@echo "Linking" 
 	$(CXX) -shared -Wl,-soname,$(LIB) -o $(LIB) \
-	*.o -lc $(LIBS)
+	*.o $(LIBS)
 	@echo "Library Built."
 
 cvEyeTracker.o: cvEyeTracker.c ransac_ellipse.o $(HEADDERS)
@@ -82,6 +83,7 @@ ransac_ellipse.o: ransac_ellipse.cpp $(HEADDERS)
 	$(CXX) $(CXXFLAGS) $(DEFINES) $(INCLUDES) -c ransac_ellipse.cpp
 
 firewire_camera.o: firewire_camera.cpp $(HEADDERS)
+	echo "$(CXX) $(CXXFLAGS) $(DEFINES) $(INCLUDES) -c firewire_camera.cpp"
 	$(CXX) $(CXXFLAGS) $(DEFINES) $(INCLUDES) -c firewire_camera.cpp
 
 svd.o: svd.c $(HEADDERS)

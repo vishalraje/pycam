@@ -22,8 +22,8 @@
 //#include <libraw1394/raw1394.h>
 //#include <libdc1394/dc1394_control.h>
 
-#include "cv.h"
-#include "highgui.h"
+#include <cv.h>
+#include <highgui.h>
 
 
 // Exposed functions

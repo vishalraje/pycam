@@ -32,7 +32,10 @@
 #define _TIMING_H
 
 #include <time.h>
+
 #include <sys/time.h>
+
+
 
 #define timediff(t1,t2) ((double)(t2.tv_sec - t1.tv_sec) + ((double)(t2.tv_usec - t1.tv_usec)/(double)1000000))
 

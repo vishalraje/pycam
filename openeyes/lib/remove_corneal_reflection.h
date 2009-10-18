@@ -39,8 +39,8 @@
 #endif
 
 
-void remove_corneal_reflection(IplImage *image, IplImage *threshold_image, int sx, int sy, int window_size, 
-     int biggest_crr, int &crx, int &cry, int& crr, int *valid_point_calc);
+void remove_corneal_reflection(IplImage *image, IplImage *threshold_image, int sx, int sy, int window_size,
+     int biggest_crr, int &crx, int &cry, int &crr, int *valid_point_calc);
 
 void locate_corneal_reflection(IplImage *image, IplImage *threshold_image, int sx, int sy, int window_size, 
      int biggest_crar, int &crx, int &cry, int &crar, int *valid_point_calc);

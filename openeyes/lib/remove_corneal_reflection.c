@@ -35,7 +35,7 @@
 
 
 void remove_corneal_reflection(IplImage *image, IplImage *threshold_image, int sx, int sy, int window_size, int 
-biggest_crr, int& crx, int& cry, int& crr, int *valid_point_calc)
+biggest_crr, int &crx, int &cry, int &crr, int *valid_point_calc)
 {
   int crar = -1;	//corneal reflection approximate radius
   crx = cry = crar = -1;

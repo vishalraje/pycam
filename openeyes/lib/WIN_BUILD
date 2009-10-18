@@ -1,0 +1,10 @@
+Building on windows is a bit fickle right now
+I just did a:
+scons -c
+make
+make install
+scons
+
+and it made 3MB shared library without complaining.
+
+This is using scons and mingw
