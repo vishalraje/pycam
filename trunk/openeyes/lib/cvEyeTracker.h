@@ -30,14 +30,17 @@
 #ifndef CVEYETRACKER
 #define CVEYETRACKER
 
-#ifdef _CH_
-#pragma package <opencv>
-#endif
+//#ifdef _CH_
+//#pragma package <opencv>
+//#endif
 
-#ifndef _EiC
-#include "cv.h"
-#include "highgui.h"
-#endif
+//#ifndef _EiC
+
+#include <cv.h>
+#include <cxcore.h>
+#include <highgui.h>
+
+//#endif
 
 
 

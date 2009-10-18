@@ -2,22 +2,33 @@ import os
 env = Environment()
 
 # Search for the correct location of opencv and libdc1394
-env.ParseConfig( 'pkg-config --cflags --libs --libs-only-L opencv' )
+#env.ParseConfig( 'pkg-config --cflags --libs --libs-only-L opencv' )
 
 
 # We are using an installed version of the library at build and run time.
 # /usr/local/libCvEyeTrack.so
 # This is to ensure that the library is found at runtime if we are not installing...
 #env.Append( RPATH = env.Literal( os.path.abspath( os.path.join('\\$$ORIGIN',os.pardir,'lib'))))
+conf = Configure(env)
+if not conf.CheckCHeader('cvEyeTracker.h'):
+	print 'cvEyeTracker.h must be installed!'
+	Exit(1)
 
+env = conf.Finish()
+	
+	
 # This builds and links our program
 env.Program(
     target='tracker_example_scons',
     source=['tracker_example.cpp'],
     LIBS = ['CvEyeTrack',
-            #'m', 
+            'm', 
             'cv', 
             'cvaux',
+			'cxcore',
             'highgui',
+			'stdc++',
            ],
+	CCFLAGS='-D__MINGW__',
+	LIBPATH = ['C:\\OpenCV2.0\\lib']
     )
