@@ -8,9 +8,11 @@ from pygame import surfarray
 
 
 def surf2CV(surf):
-    """Given a surface, convert to an opencv format (cvMat)
     """
-    numpyImage = surfarray.array3d(surf)
+    Given a Pygame surface, convert to an OpenCv cvArray format.
+    Either Ipl image or cvMat.
+    """
+    numpyImage = surfarray.pixels3d(surf)#.copy()    # Is this required to be a copy?
     cvImage = adaptors.NumPy2Ipl(numpyImage.transpose(1,0,2))
     return cvImage
 
@@ -50,7 +52,8 @@ class numpyFromSurf(object):
 class numpyFromOpenCV(object):
     """This decorator can be used to wrap a function that takes 
     and returns a numpy array into one that takes and retuns an
-    opencv CvMat.
+    opencv CvMat. If the orrientation matters we might need to 
+    transpose (1,0,2)
     """
     def __init__(self, f):
         self.f = f    
@@ -65,3 +68,46 @@ class numpyFromOpenCV(object):
         # Convert back to CvMat
         return adaptors.NumPy2Ipl(np_image_filtered)
 
+try:
+
+    import cv
+
+    def cv2array(im):
+        depth2dtype = {
+            cv.IPL_DEPTH_8U: 'uint8',
+            cv.IPL_DEPTH_8S: 'int8',
+            cv.IPL_DEPTH_16U: 'uint16',
+            cv.IPL_DEPTH_16S: 'int16',
+            cv.IPL_DEPTH_32S: 'int32',
+            cv.IPL_DEPTH_32F: 'float32',
+            cv.IPL_DEPTH_64F: 'float64',
+        }
+
+        arrdtype=im.depth
+        a = np.fromstring(
+        im.tostring(),
+        dtype=depth2dtype[im.depth],
+        count=im.width*im.height*im.nChannels)
+        a.shape = (im.height,im.width,im.nChannels)
+        return a
+
+    def array2cv(a):
+        dtype2depth = {
+            'uint8': cv.IPL_DEPTH_8U,
+            'int8': cv.IPL_DEPTH_8S,
+            'uint16': cv.IPL_DEPTH_16U,
+            'int16': cv.IPL_DEPTH_16S,
+            'int32': cv.IPL_DEPTH_32S,
+            'float32': cv.IPL_DEPTH_32F,
+            'float64': cv.IPL_DEPTH_64F,
+        }
+        try:
+            nChannels = a.shape[2]
+        except:
+            nChannels = 1
+        cv_im = cv.CreateImageHeader((a.shape[1],a.shape[0]),
+        dtype2depth[str(a.dtype)], nChannels)
+        cv.SetData(cv_im, a.tostring(),a.dtype.itemsize*nChannels*a.shape[1])
+        return cv_im
+except:
+    pass

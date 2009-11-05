@@ -10,11 +10,11 @@ from pycam import VideoCapturePlayer
 from pycam import ObjectDetector
 import opencv
 
-from pycam.conversionUtils import *
+from pycam.conversionUtils import adaptors, surf2CV
 import pygame
 from pygame.locals import *
 from pygame import surfarray
-
+from IPython.Shell import IPShellEmbed
 
 # While opencv has the image for detecting faces it can paint a rect 
 # around the faces... Note pygame is still rendering the result
@@ -38,12 +38,16 @@ def locateFacesProcess(surf):
         pygame.surfarray.blit_array(surf,cv2SurfArray(img))
     else:
         faces = getFaces(surf)
-        if faces:
+        if faces.total:
+            # Break to shell when face is detected :-P
+            #IPShellEmbed()()
             drawFacesOnSurface(surf,faces)
     return surf
 
+
 def getFaces(surf):
-    img = surf2CV(surf)
+    
+    img = surf2CV(surf) #200ms!
     return faceDetect.detectObject(img)
 
 def main():

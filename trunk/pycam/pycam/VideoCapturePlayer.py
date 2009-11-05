@@ -4,7 +4,7 @@ import numpy
 import exceptions
 
 import logging
-verbose = False
+verbose = True
 
 """
 Future API changing notes.
@@ -43,7 +43,7 @@ class VideoCapturePlayer(object):
     def __init__(self, processFunction = None, forceOpenCv = False, displaySurface=None, show=True, **argd):
         self.__dict__.update(**argd)
         super(VideoCapturePlayer, self).__init__(**argd)
-        
+        logging.debug("Initializing Video Capture Class")
         self.processFunction = processFunction
         self.processRuns = 0
         
@@ -70,7 +70,7 @@ class VideoCapturePlayer(object):
         if not self.clist:
             raise ValueError("Sorry, no cameras detected.")
         
-        print("Opening device %s, with video size (%s,%s)" % (self.clist[0],self.size[0],self.size[1]))
+        logging.info("Opening device %s, with video size (%s,%s)" % (self.clist[0],self.size[0],self.size[1]))
         
         # creates the camera of the specified size and in RGB colorspace
         if not forceOpenCv:
@@ -79,17 +79,19 @@ class VideoCapturePlayer(object):
                 # starts the camera
                 self.camera.start()
             except:
-                # Ignore that pygame camera failed - we will try opencv
+                logging.debug("Ignoring that pygame camera failed - we will try opencv")
                 forceOpenCv = True
                 del camera
                 import camera
                 self.clist = camera.list_cameras()
         if forceOpenCv:
+            logging.debug("Trying to open the OpenCV wrapped camera")
             self.camera = camera.Camera(self.clist[0], self.size, "RGB", imageType="pygame")
             self.camera.start()
             
-        
+        logging.info("Waiting for camera...")
         self.waitForCam()
+        logging.info("Camera ready.")
 
         self.clock = pygame.time.Clock()
         self.processClock = pygame.time.Clock()
@@ -136,7 +138,7 @@ class VideoCapturePlayer(object):
     def waitForCam(self):
        # Wait until camera is ready to take image
         while not self.camera.query_image():
-            pass
+            pygame.time.wait(100)
     
     def main(self):
         """Start the video capture loop"""
