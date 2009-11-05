@@ -52,7 +52,7 @@ cascadePaths = (
 
 def findCascade(cascade):
     """
-    Given the most flimsy of names like "face" or "eye" give a valid file path of a Haar cascade.
+    Given the most flimsy of names like "face" or "eye" try find a valid file path of a Haar cascade.
         
     >>> findCascade('eye')
     '/usr/local/share/opencv/haarcascades/haarcascade_eye.xml'
@@ -79,7 +79,7 @@ class ObjectDetector(object):
     """
     An ObjectDetector is used to detect harr like features in an image.
     """
-    def __init__(self,cascadeName="face"):
+    def __init__(self, cascadeName="face"):
         self.storage = cvCreateMemStorage(0)
         self.cascade_name = findCascade(cascadeName)
         logging.info("Found descriptor for object: %s" % cascadeName )
@@ -104,7 +104,7 @@ class ObjectDetector(object):
         self.min_size = cvSize(20,20)
         self.image_scale = 1.3
         self.haar_scale = 1.3
-        self.min_neighbors = 4
+        self.min_neighbors = 2
         self.haar_flags = CV_HAAR_DO_CANNY_PRUNING
 
 
