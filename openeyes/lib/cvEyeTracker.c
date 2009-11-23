@@ -37,7 +37,7 @@
 #include <unistd.h>
 //#include <linux/videodev.h>
 //#include <sys/ioctl.h>
-#include <io.h>
+//#include <io.h>
 
 #include <string.h>
 //#include <sys/mman.h>
@@ -56,7 +56,7 @@
 #include "svd.h"
 #include "colour_conversions.h"
 
-#include "firewire_camera.h"
+#include "cameraReaders/openEyesCameraReader.h"
 
 //#ifdef _CH_
 //#pragma package <opencv>
@@ -99,7 +99,9 @@ FILE *ellipse_log;
 #define PUPIL_SIZE_TOLERANCE 		1000	//range of allowed pupil diameters
 #define MAX_CONTOUR_COUNT		20
 
-int width, height;
+int cam_image_width, cam_image_height;
+//#define FRAMEW 640
+//#define FRAMEH 480
 
 // Load the source image. 
 IplImage *eye_image=NULL;
@@ -147,15 +149,14 @@ int inx, iny;                                   // translation to center pupil d
 CvScalar White,Red,Green,Blue,Yellow;
 int frame_number=0;
 
-#define FRAMEW 640
-#define FRAMEH 480
 
-int monobytesperimage=FRAMEW*FRAMEH;
-int yuv411bytesperimage=FRAMEW*FRAMEH*12/8;
+//int monobytesperimage=FRAMEW*FRAMEH;
+//int yuv411bytesperimage=FRAMEW*FRAMEH*12/8;
 
-const double beta = 0.2;	//hysteresis factor for noise reduction
-double *intensity_factor_hori = (double*)malloc(FRAMEH*sizeof(double)); //horizontal intensity factor for noise reduction
-double *avg_intensity_hori = (double*)malloc(FRAMEH*sizeof(double)); //horizontal average intensity
+const double beta = 0.2;			//hysteresis factor for noise reduction
+double *intensity_factor_hori;		//horizontal intensity factor for noise reduction
+double *avg_intensity_hori;			//horizontal average intensity
+
 
 //parameters for the algorithm
 int edge_threshold = 20;		//threshold of pupil edge points detection
@@ -706,7 +707,7 @@ void Activate_Calibration()
 
 void Average_Frames(UINT8 *result_image, UINT8 *prev_image, UINT8 *now_image, UINT8 *next_image)
 {
-  int npixels = FRAMEW * FRAMEH;
+  int npixels = cam_image_width * cam_image_height;
   int i;
   for (i = 0; i < npixels; i++) {
     *result_image = (*prev_image + *now_image + *next_image) / 3;
@@ -724,32 +725,32 @@ void Normalize_Line_Histogram(IplImage *in_image)
  int linesum;
  double factor=0;
  int subsample=10;
- double hwidth=(100.0f*(double)width/(double)subsample);
+ double hwidth=(100.0f*(double)cam_image_width/(double)subsample);
 /*
  char adjustment;
- for (y=0;y<height;y++) {
+ for (y=0;y<cam_image_height;y++) {
    linesum=0; 
-   for (x=0;x<width;x+=subsample) {
+   for (x=0;x<cam_image_width;x+=subsample) {
      linesum+=*s;
      s+=subsample;
    }
-   s-=width;
-   adjustment=(char)(128-(double)(linesum)/(double)(width/subsample));
-   for (x=0;x<width;x++) {
+   s-=cam_image_width;
+   adjustment=(char)(128-(double)(linesum)/(double)(cam_image_width/subsample));
+   for (x=0;x<cam_image_width;x++) {
      *s=MIN(*s+adjustment,255);
      s++;
    }
  }
 */
- for (y=0;y<height;y++) {
+ for (y=0;y<cam_image_height;y++) {
    linesum=1; 
-   for (x=0;x<width;x+=subsample) {
+   for (x=0;x<cam_image_width;x+=subsample) {
      linesum+=*s;
      s+=subsample;
    }
-   s-=width;
+   s-=cam_image_width;
    factor=hwidth/((double)linesum);
-   for (x=0;x<width;x++) {
+   for (x=0;x<cam_image_width;x++) {
      *s=(unsigned char)(((double)*s)*factor);
      s++;
    }
@@ -795,26 +796,15 @@ void Reduce_Line_Noise(IplImage* in_image)
 void Grab_Camera_Frames()
 {
   Grab_IEEE1394();
+
   //memcpy(eye_image->imageData,Get_Raw_Frame(0),monobytesperimage);
   //memcpy(scene_image->imageData,(char *)cameras[1].capture_buffer,monobytesperimage);
   //FirewireFrame_to_RGBIplImage((unsigned char *)Get_Raw_Frame(1), scene_image);
   
-  IplImage *tempEyeImage = Get_Raw_Frame(0);
-  //IplImage *sceneImage =  Get_Raw_Frame(1);
-  printf("Got raw frame for eye image, nChans %i, depth: %i\n", tempEyeImage->nChannels, tempEyeImage->depth);
-  printf("Width x height: %i x %i\n", tempEyeImage->width, tempEyeImage->height);
-  
-  eye_image->imageData = tempEyeImage->imageData;
-  //eye_image->imageData = 
-  /*cvCvtColor(
-        tempEyeImage,
-        eye_image,
-        CV_RGB2GRAY
-        );
-  printf("Image converted.");*/
-  //eye_image = Get_Raw_Frame(0);
+  eye_image = Get_Raw_Frame(0);
   scene_image = Get_Raw_Frame(1);
-  
+  printf("Got raw frame for eye image, nChans %i, depth: %i\n", eye_image->nChannels, eye_image->depth);
+  printf("Width x height: %i x %i\n", eye_image->width, eye_image->height);
   
 
   if (original_eye_image != NULL) 
@@ -1035,8 +1025,8 @@ void process_image()
   	valid_ellipse = 0;		
   }
   if (lost_frame_num > 5) {
-    start_point.x = FRAMEW/2;
-    start_point.y = FRAMEH/2;
+    start_point.x = cam_image_width/2;
+    start_point.y = cam_image_height/2;
   }
 
 }
@@ -1152,10 +1142,13 @@ CvPoint eyetracker_get_gaze_target(void)
 void eyetracker_setup(int argc, char **argv)
 {
   printf("Starting eyetracker setup\n");
+
   Open_IEEE1394();
+  cam_image_width = Get_Width();
+  cam_image_height = Get_Height();
+
   eyetracker_setup_image_buffs();
-  width = Get_Width();
-  height = Get_Height();
+
   Open_Logfile(argc,argv);
   Open_Calfile(argc, argv);
   Open_Ellipse_Log();
@@ -1182,44 +1175,41 @@ void eyetracker_cleanup(void)
 
 void eyetracker_setup_image_buffs(void)
 {
-  //Make the eye image (in monochrome):
-  eye_image=cvCreateImageHeader(cvSize(640,480), 8, 1 );
-  eye_image->imageData=(char *)malloc(640*480);
-  
-  //Make the eye image (in monochrome):
-  threshold_image = cvCloneImage(eye_image);
-  
-  //Make the ellipse image (in RGB) :
-  ellipse_image=cvCreateImageHeader(cvSize(640,480), 8, 3 );
-  ellipse_image->imageData=(char *)malloc(640*480*3);
- 
-  //Make the scene image:    
-  scene_image=cvCreateImageHeader(cvSize(640,480), 8, 3 );
-  scene_image->imageData=(char *)malloc(640*480*3);
-  
 
-  //Init colors
-  White = CV_RGB(255,255,255);
-  Red = CV_RGB(255,0,0);
-  Green = CV_RGB(0,255,0);
-  Blue = CV_RGB(0,0,255);
-  Yellow = CV_RGB(255,255,0);
+	//Make the (eye) threshold image (in monochrome):
+	threshold_image = cvCreateImageHeader( cvSize(cam_image_width,cam_image_height), 8, 1 );
+	threshold_image->imageData = (char *) malloc( cam_image_width*cam_image_height );
+	
+	//Make the ellipse image (in RGB) :
+	ellipse_image=cvCreateImageHeader( cvSize(cam_image_width,cam_image_height), 8, 3 );
+	ellipse_image->imageData = (char *) malloc( cam_image_width*cam_image_height*3 );
+
+
+	//horizontal intensity factor for noise reduction
+	intensity_factor_hori = (double*) malloc( cam_image_height*sizeof(double) ); 
+
+	//horizontal average intensity
+	avg_intensity_hori = (double*) malloc( cam_image_height*sizeof(double) ); 
+
+
+	//Init colors
+	White = CV_RGB(255,255,255);
+	Red = CV_RGB(255,0,0);
+	Green = CV_RGB(0,255,0);
+	Blue = CV_RGB(0,0,255);
+	Yellow = CV_RGB(255,255,0);
 }
 
 
 void eyetracker_cleanup_image_buffs(void)
 {  
-  cvReleaseImageHeader(&eye_image );
-  cvReleaseImageHeader(&threshold_image );
-  cvReleaseImageHeader(&original_eye_image );
-  cvReleaseImageHeader(&ellipse_image );
-  cvReleaseImageHeader(&scene_image );
+//  cvReleaseImageHeader(&threshold_image );
+//  cvReleaseImageHeader(&original_eye_image );
+//  cvReleaseImageHeader(&ellipse_image );
 
-  cvReleaseImage(&eye_image);
   cvReleaseImage(&threshold_image);
   cvReleaseImage(&original_eye_image);
   cvReleaseImage(&ellipse_image);
-  cvReleaseImage(&scene_image);
 }
 
 
@@ -1254,5 +1244,5 @@ int * eyetracker_get_cr_window_size_ptr(void)
 
 
 int eyetracker_get_FRAMEH(void)
-  { return (int) FRAMEH; }
+  { return (int) cam_image_height; }
 

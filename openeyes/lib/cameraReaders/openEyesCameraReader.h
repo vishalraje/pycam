@@ -16,14 +16,10 @@
  *      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  *      MA 02110-1301, USA.
  */
-#ifndef CVEYETRACKER_FIREWIRE
-#define CVEYETRACKER_FIREWIRE
-
-//#include <libraw1394/raw1394.h>
-//#include <libdc1394/dc1394_control.h>
+#ifndef OPENEYESCAMERAREADER_H
+#define OPENEYESCAMERAREADER_H
 
 #include <cv.h>
-#include <highgui.h>
 
 
 // Exposed functions
@@ -35,6 +31,5 @@ void Release_IEEE1394();
 void Open_IEEE1394();
 void Close_IEEE1394();
 IplImage *Get_Raw_Frame(unsigned int cam_index);
-//void FirewireFrame_to_RGBIplImage(void *FirewireFrame, IplImage *OpenCV_image);
 
-#endif
+#endif	// OPENEYESCAMERAREADER_H

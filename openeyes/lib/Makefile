@@ -31,18 +31,10 @@ OBJS 		= 	remove_corneal_reflection.o \
 				svd.o \
 				timing.o \
 				cvEyeTracker.o \
-				firewire_camera.o \
+				cameraReaders/openEyesCameraReader.o \
 				colour_conversions.o
 			  	
 			  	  
-HEADDERS 	=	remove_corneal_reflection.h \
-				ransac_ellipse.h \
-				svd.h \
-				timing.h \
-				firewire_camera.h \
-				colour_conversions.h \
-				$(LIBHEADER)
-				
 LIBSRC = cvEyeTracker.c
 
 #LIBOBJ = $(LIBSRC:.c=.o)
@@ -62,6 +54,12 @@ install: build $(LIB)
 	ldconfig -n $(LIBDEST)  # Might have to execute this in the dest?
 	@echo "Install Complete."
 	
+uninstall:
+	@echo Removing libraries from system.
+	rm -f $(LIBDEST)/$(LIB)
+	rm -f $(INCDEST)/$(LIBHEADER)
+	@echo "Uninstall Complete."
+
 	
 $(LIB): $(libObj)
 	@echo lib Makefile - archiving $(LIB)
@@ -70,33 +68,37 @@ $(LIB): $(libObj)
 build: $(OBJS)
 	@echo "Linking" 
 	$(CXX) -shared -Wl,-soname,$(LIB) -o $(LIB) \
-	*.o $(LIBS)
+	$(OBJS) $(LIBS)
 	@echo "Library Built."
 
-cvEyeTracker.o: cvEyeTracker.c ransac_ellipse.o $(HEADDERS)
+#	*.o $(LIBS)
+
+cvEyeTracker.o: cvEyeTracker.c ransac_ellipse.o 
 	$(CXX) $(CXXFLAGS) $(DEFINES) $(INCLUDES) -c cvEyeTracker.c 
 
-remove_corneal_reflection.o: remove_corneal_reflection.c $(HEADDERS)
+remove_corneal_reflection.o: remove_corneal_reflection.c 
 	$(CXX) $(CXXFLAGS) $(DEFINES) $(INCLUDES) -c remove_corneal_reflection.c 
 
-ransac_ellipse.o: ransac_ellipse.cpp $(HEADDERS)
+ransac_ellipse.o: ransac_ellipse.cpp 
 	$(CXX) $(CXXFLAGS) $(DEFINES) $(INCLUDES) -c ransac_ellipse.cpp
 
-firewire_camera.o: firewire_camera.cpp $(HEADDERS)
-	echo "$(CXX) $(CXXFLAGS) $(DEFINES) $(INCLUDES) -c firewire_camera.cpp"
-	$(CXX) $(CXXFLAGS) $(DEFINES) $(INCLUDES) -c firewire_camera.cpp
-
-svd.o: svd.c $(HEADDERS)
+svd.o: svd.c 
 	$(CXX) $(CXXFLAGS) $(DEFINES) -c svd.c
 
-timing.o: timing.c $(HEADDERS)
+timing.o: timing.c 
 	$(CXX) $(CXXFLAGS) $(DEFINES) -c timing.c
 	
-colour_conversions.o: colour_conversions.c $(HEADERS)
+colour_conversions.o: colour_conversions.c 
 	$(CXX) $(CXXFLAGS) $(DEFINES) -c colour_conversions.c
+
+cameraReaders/openEyesCameraReader.o:
+	make -C cameraReaders firewire_target
 
 clean:
 	rm -f *.o
 	rm -f *~
 	rm -f $(LIB)
+	@echo
+	make -C cameraReaders purge 
+
 	

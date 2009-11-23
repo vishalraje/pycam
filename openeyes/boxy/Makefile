@@ -1,58 +1,57 @@
+#
+# File:  Makefile (for example using the library)
+#
 
-all : boxy
 
-SOURCES		=	boxy.c
-OBJS 		= 	remove_corneal_reflection.o \
-				ransac_ellipse.o \
-				svd.o \
-				timing.o \
-				cvEyeTracker.o \
-			  	boxy.o 
-HEADDERS 	=	remove_corneal_reflection.h \
-				ransac_ellipse.h \
-				svd.h \
-				timing.h \
-				cvEyeTracker.h \
-				boxy.h
+EXAMPLE = boxy
 
 CXX			=	g++
-CXXFLAGS	=	-g -Wall
 
 #DEFINES= -O2
 DEFINES=
 
-#-L/usr/local/lib
-LIBDIRS		=	-L/usr/lib
-LIBS		=	-lm -ldc1394_control -lraw1394 -lcv -lcvaux -lhighgui
-INCLUDES	=	-I/usr/include/opencv -I/usr/include/dc1394
+# This is the base directory for the cvEyeTrack library
+# Underneath there may be a lib, and an include dir
+CV_EYE_PREFIX = /usr/local
+
+# This must point to the dir with cvEyeTrack.h
+CV_EYE_INC = $(CV_EYE_PREFIX)/include
 
 
-boxy: boxy.c $(OBJS)
-	$(CXX) $(CXXFLAGS) $(DEFINES) $(LIBDIRS) $(LIBS) \
-		-pg -o boxy $(OBJS) 
+# The following settings should probably not need to be changed.
+
+# This must point to the dir with the shared library
+CV_EYE_LIB = $(CV_EYE_PREFIX)/lib
+
+CXXFLAGS	= -g -Wall 
+
+# Insert the path of the cvEyeTrack library for runtime execution.
+# Was nessasary if libCvEyeTrack is not installed
+#LINKERFLAGS = -Wl,-rpath $(CV_EYE_LIB)
+
+INCLUDES	=	`pkg-config --cflags opencv`	\
+				-I$(CV_EYE_INC)
+
+LIBDIRS		=	-L/usr/X11R6/lib -L/lib `pkg-config --libs-only-L opencv`
+LIBS		=	-lm 							\
+				`pkg-config --libs opencv` 		\
+				-lCvEyeTrack
+
+OBJS 		= 	boxy.o
+			  	  
+HEADDERS 	=	
+
+default: boxy
+	
+boxy: boxy.o $(OBJS)
+	$(CXX) $(CXXFLAGS) $(LINKERFLAGS) $(DEFINES) $(LIBDIRS) $(LIBS) \
+		-pg -o boxy $(OBJS)
 
 boxy.o: boxy.c $(HEADDERS)
 	$(CXX) $(CXXFLAGS) $(DEFINES) $(INCLUDES) -c boxy.c 
-
-cvEyeTracker.o: cvEyeTracker.c $(HEADDERS)
-	$(CXX) $(CXXFLAGS)  $(DEFINES) $(INCLUDES)  -c cvEyeTracker.c 
-
-remove_corneal_reflection.o: remove_corneal_reflection.c $(HEADDERS)
-	$(CXX) $(CXXFLAGS)  $(DEFINES) $(INCLUDES)  -c remove_corneal_reflection.c 
-
-ransac_ellipse.o: ransac_ellipse.cpp $(HEADDERS)
-	$(CXX) $(CXXFLAGS)  $(DEFINES)  -c ransac_ellipse.cpp 
-
-svd.o: svd.c $(HEADDERS)
-	$(CXX) $(CXXFLAGS)  $(DEFINES)  -c svd.c
-
-timing.o: timing.c $(HEADDERS)
-	$(CXX) $(CXXFLAGS)  $(DEFINES)  -c timing.c
-
-
+	
 clean:
-	rm -f *.o 
-
-purge: clean
-	rm *~ boxy
+	rm -f *.o
+	rm -f *~
+	rm -f boxy
 

@@ -20,10 +20,11 @@
 //----------------------- Firewire Image Capture Code -----------------------//
 
 
-#include "firewire_camera.h"
+#include "openEyesCameraReader.h"
 #include "colour_conversions.h"
 
 #include <stdio.h>
+#include <highgui.h>
 
 // Firewire Capture Variables
 
@@ -32,15 +33,10 @@ int dev;
 int framerate=30;
 FILE* imagefile;
 
-//dc1394_cameracapture cameras[2];
 CvCapture *cameras[2];
 
 int numNodes;
 int numCameras;
-
-//raw1394handle_t handle;
-//nodeid_t * camera_nodes;
-//dc1394_feature_set features;
 
 typedef struct {
     int offset_value;
@@ -57,13 +53,7 @@ camera_features eye_camera_features[9];
 int Get_Height(){return firewire_height;}
 int Get_Width(){return firewire_width;}
 
-//int cameramode[2]={MODE_640x480_MONO, MODE_640x480_YUV411};
 
-
-void FirewireFrame_to_RGBIplImage(void *FirewireFrame, IplImage *OpenCV_image)
-{
-  uyyvyy2rgb((unsigned char *)FirewireFrame, (unsigned char *)OpenCV_image->imageData, 640*480);
-}
 
 IplImage *Get_Raw_Frame(unsigned int cam_index)
 {
@@ -116,7 +106,7 @@ void Open_IEEE1394()
     }
     
     IplImage* image2 = cvQueryFrame(cap2); // do not release or modify this image...
-    if(!image)
+    if(!image2)
     {
         printf("could not get initial image from second camera capture device!\n");
         exit(1);
