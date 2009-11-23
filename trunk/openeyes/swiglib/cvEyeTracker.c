@@ -250,7 +250,7 @@ void Open_IEEE1394()
 			FORMAT_VGA_NONCOMPRESSED,
 			cameramode[i],
 			SPEED_400,
-			FRAMERATE_30,40,1,"/dev/video1394-0",
+			FRAMERATE_30,40,1,"/dev/video1394/0",
 			&cameras[i])!=DC1394_SUCCESS) {
       fprintf( stderr,"unable to setup camera\n");
       dc1394_release_camera(handle,&cameras[i]);
