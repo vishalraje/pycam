@@ -1,23 +1,43 @@
-# Derived from Nirav Patel's Pygame Camera Tutorial
+"""
+This pygame module implements a menu interface where the user selects an
+option by placing their hand over a certain box.
+This is an early prototype for the open allure dialog system a collaborative
+project between John Graves of Auckland University of Technology 
+and Brian Thorne of HitLabNZ, University of Canterbury.
 
+@author Brian Thorne <brian.thorne@hitlabnz.org>
+"""
 import pygame
 from pycam import VideoCapturePlayer
 
-class GreenScreen():
+class VisionDS():
     def __init__(self):
         self.calibrated = False
         self.bgs = []
+        self.frames = 0
         
     def calibrate(self, snapshot):
         """
         Capture a bunch of background images and average them out.
+        We take 50 frames (approx 5 seconds worth) and just discard - 
+        this is to allow the camera to adjust to the light levels before
+        we store the background.
+        
+        We require that the top third or so is empty and ideally has
+        a static background.
+        
+        So we will show the webcam image, overlaid with instructions and an
+        outline of a person.
         """
-        if len(self.bgs) < 10:
-            self.bgs.append(snapshot)
+        if self.frames < 80:
+            
+            if self.frames > 50 and len(self.bgs) < 10:
+                self.bgs.append(snapshot)
         else:
             # Average them out to remove noise, and save as background
             self.background = pygame.transform.average_surfaces(self.bgs)
-            self.calibrated = True 
+            self.calibrated = True
+        self.frames += 1
         
     
     def threshold(self, snapshot):
@@ -36,7 +56,7 @@ class GreenScreen():
             return self.threshold(snapshot)
 
 if __name__ == "__main__":
-    greenScreen = GreenScreen()
+    ds = VisionDS()
     
-    vcp = VideoCapturePlayer(processFunction=greenScreen.process)
+    vcp = VideoCapturePlayer(processFunction=ds.process)
     vcp.main()
